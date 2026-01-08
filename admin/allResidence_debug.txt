@@ -1,0 +1,216 @@
+2025-12-03T15:51:55+01:00 FINAL SQL: 
+        SELECT
+            residence_information.residence_id,
+            residence_information.first_name,
+            residence_information.middle_name,
+            residence_information.last_name,
+            residence_information.age,
+            residence_information.image,
+            residence_information.image_path,
+            residence_status.voters,
+            residence_status.single_parent,
+            residence_status.pwd_info,
+            residence_status.status
+        
+        FROM residence_information
+        LEFT JOIN residence_status 
+            ON residence_information.residence_id = residence_status.residence_id
+        WHERE (residence_status.archive IS NULL OR residence_status.archive <> 'YES')
+        
+    
+         ORDER BY residence_information.residence_id DESC 
+         LIMIT 0, 10 
+    
+2025-12-03T15:51:55+01:00 REQUEST: {"draw":"1","columns":[{"data":"0","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"1","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"2","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"3","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"4","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"5","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"6","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"7","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"8","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}}],"start":"0","length":"10","search":{"value":"","regex":"false"},"voters":"","status":"","age":"","pwd":"","senior":"","first_name":"","middle_name":"","last_name":"","resident_id":"","single_parent":""}
+2025-12-03T15:52:03+01:00 FINAL SQL: 
+        SELECT
+            residence_information.residence_id,
+            residence_information.first_name,
+            residence_information.middle_name,
+            residence_information.last_name,
+            residence_information.age,
+            residence_information.image,
+            residence_information.image_path,
+            residence_status.voters,
+            residence_status.single_parent,
+            residence_status.pwd_info,
+            residence_status.status
+        
+        FROM residence_information
+        LEFT JOIN residence_status 
+            ON residence_information.residence_id = residence_status.residence_id
+        WHERE (residence_status.archive IS NULL OR residence_status.archive <> 'YES')
+        
+    
+         ORDER BY residence_information.residence_id DESC 
+         LIMIT 0, 10 
+    
+2025-12-03T15:52:03+01:00 REQUEST: {"draw":"1","columns":[{"data":"0","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"1","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"2","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"3","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"4","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"5","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"6","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"7","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"8","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}}],"start":"0","length":"10","search":{"value":"","regex":"false"},"voters":"","status":"","age":"","pwd":"","senior":"","first_name":"","middle_name":"","last_name":"","resident_id":"","single_parent":""}
+2025-12-03T15:55:11+01:00 FINAL SQL: 
+        SELECT
+            residence_information.residence_id,
+            residence_information.first_name,
+            residence_information.middle_name,
+            residence_information.last_name,
+            residence_information.age,
+            residence_information.image,
+            residence_information.image_path,
+            residence_status.voters,
+            residence_status.single_parent,
+            residence_status.pwd_info,
+            residence_status.status
+        
+        FROM residence_information
+        LEFT JOIN residence_status 
+            ON residence_information.residence_id = residence_status.residence_id
+        WHERE (residence_status.archive IS NULL OR residence_status.archive <> 'YES')
+        
+    
+         ORDER BY residence_information.residence_id DESC 
+         LIMIT 0, 10 
+    
+2025-12-03T15:55:11+01:00 REQUEST: {"draw":"1","columns":[{"data":"0","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"1","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"2","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"3","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"4","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"5","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"6","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"7","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"8","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}}],"start":"0","length":"10","search":{"value":"","regex":"false"},"voters":"","status":"","age":"","pwd":"","senior":"","first_name":"","middle_name":"","last_name":"","resident_id":"","single_parent":""}
+2025-12-03T18:15:57+01:00 SQL: 
+        SELECT
+            ri.residence_id,
+            ri.first_name,
+            ri.middle_name,
+            ri.last_name,
+            ri.age,
+            ri.image_path,
+            rs.voters,
+            rs.single_parent,
+            rs.pwd_info,
+            rs.status
+        
+        FROM residence_information ri
+        LEFT JOIN residence_status rs
+            ON ri.residence_id = rs.residence_id
+        WHERE (rs.archive IS NULL OR rs.archive <> 'YES')
+        
+    
+         ORDER BY ri.residence_id DESC 
+         LIMIT 0, 10 
+    
+POST: []
+
+2025-12-03T18:16:04+01:00 SQL: 
+        SELECT
+            ri.residence_id,
+            ri.first_name,
+            ri.middle_name,
+            ri.last_name,
+            ri.age,
+            ri.image_path,
+            rs.voters,
+            rs.single_parent,
+            rs.pwd_info,
+            rs.status
+        
+        FROM residence_information ri
+        LEFT JOIN residence_status rs
+            ON ri.residence_id = rs.residence_id
+        WHERE (rs.archive IS NULL OR rs.archive <> 'YES')
+        
+    
+         ORDER BY ri.residence_id DESC 
+         LIMIT 0, 10 
+    
+POST: []
+
+2025-12-03T18:16:23+01:00 FINAL SQL: 
+        SELECT
+            residence_information.residence_id,
+            residence_information.first_name,
+            residence_information.middle_name,
+            residence_information.last_name,
+            residence_information.age,
+            residence_information.image,
+            residence_information.image_path,
+            residence_status.voters,
+            residence_status.single_parent,
+            residence_status.pwd_info,
+            residence_status.status
+        
+        FROM residence_information
+        LEFT JOIN residence_status 
+            ON residence_information.residence_id = residence_status.residence_id
+        WHERE (residence_status.archive IS NULL OR residence_status.archive <> 'YES')
+        
+    
+         ORDER BY residence_information.residence_id DESC 
+         LIMIT 0, 10 
+    
+2025-12-03T18:16:23+01:00 REQUEST: {"draw":"1","columns":[{"data":"0","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"1","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"2","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"3","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"4","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"5","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"6","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"7","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"8","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}}],"start":"0","length":"10","search":{"value":"","regex":"false"},"voters":"","status":"","age":"","pwd":"","senior":"","first_name":"","middle_name":"","last_name":"","resident_id":"","single_parent":""}
+2025-12-03T18:18:02+01:00 FINAL SQL: 
+        SELECT
+            residence_information.residence_id,
+            residence_information.first_name,
+            residence_information.middle_name,
+            residence_information.last_name,
+            residence_information.age,
+            residence_information.image,
+            residence_information.image_path,
+            residence_status.voters,
+            residence_status.single_parent,
+            residence_status.pwd_info,
+            residence_status.status
+        
+        FROM residence_information
+        LEFT JOIN residence_status 
+            ON residence_information.residence_id = residence_status.residence_id
+        WHERE (residence_status.archive IS NULL OR residence_status.archive <> 'YES')
+        
+    
+         ORDER BY residence_information.residence_id DESC 
+         LIMIT 0, 10 
+    
+2025-12-03T18:18:02+01:00 REQUEST: {"draw":"1","columns":[{"data":"0","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"1","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"2","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"3","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"4","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"5","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"6","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"7","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"8","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}}],"start":"0","length":"10","search":{"value":"","regex":"false"},"voters":"","status":"","age":"","pwd":"","senior":"","first_name":"","middle_name":"","last_name":"","resident_id":"","single_parent":""}
+2025-12-04T09:07:24+01:00 FINAL SQL: 
+        SELECT
+            residence_information.residence_id,
+            residence_information.first_name,
+            residence_information.middle_name,
+            residence_information.last_name,
+            residence_information.age,
+            residence_information.image,
+            residence_information.image_path,
+            residence_status.voters,
+            residence_status.single_parent,
+            residence_status.pwd_info,
+            residence_status.status
+        
+        FROM residence_information
+        LEFT JOIN residence_status 
+            ON residence_information.residence_id = residence_status.residence_id
+        WHERE (residence_status.archive IS NULL OR residence_status.archive <> 'YES')
+        
+    
+         ORDER BY residence_information.residence_id DESC 
+         LIMIT 0, 10 
+    
+2025-12-04T09:07:24+01:00 REQUEST: {"draw":"1","columns":[{"data":"0","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"1","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"2","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"3","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"4","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"5","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"6","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"7","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"8","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}}],"start":"0","length":"10","search":{"value":"","regex":"false"},"voters":"","status":"","age":"","pwd":"","senior":"","first_name":"","middle_name":"","last_name":"","resident_id":"","single_parent":""}
+2025-12-04T09:09:10+01:00 FINAL SQL: 
+        SELECT
+            residence_information.residence_id,
+            residence_information.first_name,
+            residence_information.middle_name,
+            residence_information.last_name,
+            residence_information.age,
+            residence_information.image,
+            residence_information.image_path,
+            residence_status.voters,
+            residence_status.single_parent,
+            residence_status.pwd_info,
+            residence_status.status
+        
+        FROM residence_information
+        LEFT JOIN residence_status 
+            ON residence_information.residence_id = residence_status.residence_id
+        WHERE (residence_status.archive IS NULL OR residence_status.archive <> 'YES')
+        
+    
+         ORDER BY residence_information.residence_id DESC 
+         LIMIT 0, 10 
+    
+2025-12-04T09:09:10+01:00 REQUEST: {"draw":"1","columns":[{"data":"0","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"1","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"2","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"3","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"4","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"5","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"6","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"7","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}},{"data":"8","name":"","searchable":"true","orderable":"false","search":{"value":"","regex":"false"}}],"start":"0","length":"10","search":{"value":"","regex":"false"},"voters":"","status":"","age":"","pwd":"","senior":"","first_name":"","middle_name":"","last_name":"","resident_id":"","single_parent":""}

@@ -1,0 +1,2 @@
+2025-12-03T15:51:51+01:00 EXCEPTION: Unknown column 'province' in 'field list'
+2025-12-03T18:15:54+01:00 EXCEPTION: Unknown column 'province' in 'field list'
