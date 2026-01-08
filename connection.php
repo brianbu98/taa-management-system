@@ -1,19 +1,12 @@
-<?php 
+<?php
+$servername = "localhost";
+$username   = "u286236256_u123456_admin";
+$password   = "YOUR_DATABASE_PASSWORD";
+$dbname     = "u286236256_u123456_taaapp";
 
-// Define database credentials
-define("DB_USER", 'root');
-define("DB_PASSWORD", '');
-define("DB_NAME", 'taa');
-define("DB_HOST", 'localhost');
+$conn = mysqli_connect($servername, $username, $password, $dbname);
 
-// Create a database connection
-try {
-    $con = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-    if ($con->connect_error) {
-        die("Connection failed: " . $con->connect_error);
-    }
-} catch (Exception $e) {
-    die($e->getMessage());
+if (!$conn) {
+    die("Database connection failed: " . mysqli_connect_error());
 }
-
 ?>
