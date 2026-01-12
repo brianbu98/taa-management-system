@@ -1,12 +1,31 @@
 <?php
-$servername = "localhost";
-$username   = "u286236256_u123456_admin";
-$password   = "4~ySBY~g";
-$dbname     = "u286236256_u123456_taaapp";
+$host = "localhost";
 
-$con = mysqli_connect($servername, $username, $password, $dbname);
+$path = $_SERVER['REQUEST_URI'];
 
-if (!$con) {
-    die("Database connection failed: " . mysqli_connect_error());
+// DEFAULT = MAIN
+$db   = "u286236256_u123456_taaapp";
+$user = "u286236256_u123456_admin";
+$pass = "4~ySBY~g";
+
+// DEV
+if (strpos($path, "/dev/") !== false) {
+    $db   = "u286236256_taaapp_dev";
+    $user = "u286236256_taaapp_dev";
+    $pass = "!1slk7j1Q";
 }
+
+// TEST
+if (strpos($path, "/test/") !== false) {
+    $db   = "u286236256_taaapp_test";
+    $user = "u286236256_taaapp_test";
+    $pass = "MDXzaEN~v8";
+}
+
+$con = new mysqli($host, $user, $pass, $db);
+
+if ($con->connect_error) {
+    die("DB Connection failed: " . $con->connect_error);
+}
+?>
 
