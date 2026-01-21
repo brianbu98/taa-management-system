@@ -70,6 +70,8 @@ if (!$isValidPassword) {
 // LOGIN SUCCESS — SET SESSION
 $_SESSION['user_id']   = $user['id'];
 $_SESSION['user_type'] = $user['user_type'];
+$_SESSION['username'] = $username;
+
 
 // Return role to AJAX
 switch ($user['user_type']) {
