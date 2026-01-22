@@ -1,3 +1,13 @@
+
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+echo "LOGINFORM HIT<br>";
+var_dump($_POST);
+
+
+
 <?php
 require_once __DIR__ . '/connection.php';
 session_start();
@@ -9,9 +19,9 @@ session_start();
  */
 
 // Allow only POST
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    exit;
-}
+//if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+ //  exit;
+// }
 
 // Get inputs safely
 $username = trim($_POST['username'] ?? '');
