@@ -27,7 +27,7 @@ if ($username === '' || $password === '') {
 $sql = "
     SELECT id, password, user_type
     FROM users
-    WHERE username = ? OR resident_no = ?
+    WHERE username = ? OR id = ?
     LIMIT 1
 ";
 
