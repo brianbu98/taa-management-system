@@ -1,173 +1,350 @@
-<?php
+
+<?php 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-session_start();
 require_once __DIR__ . '/connection.php';
+session_start();
 
-/* ===============================
-   Redirect if already logged in
-   =============================== */
-if (isset($_SESSION['user_id'], $_SESSION['user_type'])) {
-    switch ($_SESSION['user_type']) {
-        case 'admin':
-            header("Location: admin/dashboard.php");
-            exit;
-        case 'secretary':
-            header("Location: secretary/dashboard.php");
-            exit;
-        default:
-            header("Location: resident/dashboard.php");
-            exit;
-    }
+try{
+
+  if(isset($_SESSION['user_id']) && $_SESSION['user_type']){
+
+
+    $user_id = $_SESSION['user_id'];
+    $sql = "SELECT * FROM users WHERE id = '$user_id'";
+    $query = $con->query($sql) or die ($con->error);
+    $row = $query->fetch_assoc();
+    $account_type = $row['user_type'];
+    if ($account_type == 'admin') {
+    echo '<script>
+            window.location.href="admin/dashboard.php";
+        </script>';
+    
+    } elseif ($account_type == 'secretary') {
+        echo '<script>
+            window.location.href="secretary/dashboard.php";
+        </script>';
+    
+    } else {
+        echo '<script>
+        window.location.href="resident/dashboard.php";
+    </script>';
+    
 }
 
-/* ===============================
-   Load system information
-   =============================== */
-$sql = "SELECT image, image_path, postal_address FROM taa_information LIMIT 1";
-$stmt = $con->prepare($sql);
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
 
-$image = $row['image'] ?? '';
-$image_path = $row['image_path'] ?? '';
-$postal_address = $row['postal_address'] ?? '';
+
+
+
+}
+
+$sql = "SELECT * FROM `taa_information`";
+  $query = $con->prepare($sql) or die ($con->error);
+  $query->execute();
+  $result = $query->get_result();
+  while($row = $result->fetch_assoc()){
+      $image = $row['image'];
+      $image_path = $row['image_path'];
+      $id = $row['id'];
+      $postal_address = $row['postal_address'];
+  }
+
+}catch(Exception $e){
+  echo $e->getMessage();
+}
+
+
+
+
+
+
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Login</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
-<link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
-<link rel="stylesheet" href="assets/plugins/sweetalert2/css/sweetalert2.min.css">
 
-<style>
-.logo {
-  height: 150px;
-  width: auto;
-  max-width: 500px;
+  <!-- Theme style -->
+  <link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="assets/plugins/sweetalert2/css/sweetalert2.min.css">
+ 
+
+  <style>
+    .rightBar:hover{
+      border-bottom: 3px solid red;
+     
+    }
+    
+
+
+    
+  
+
+    .logo{
+      height: 150px;
+      width:auto;
+      max-width:500px;
+    }
+    .content-wrapper{
+      background-image: url('assets/logo/newcover.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 100%;
+        height: 100%;
+        animation-name: example;
+        animation-duration: 5s;
+       
+       
+    }
+
+
+@keyframes example {
+  from {opacity: 0;}
+  to {opacity: 1.5;}
 }
-.content-wrapper {
-  background-image: url('assets/logo/newcover.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 100%;
-  height: 100%;
-}
-</style>
+
+
+
+
+
+  </style>
+
+
 </head>
+<body  class="hold-transition layout-top-nav">
 
-<body class="hold-transition layout-top-nav">
 
 <div class="wrapper">
 
-<!-- Navbar -->
-<nav class="main-header navbar navbar-expand-md" style="background-color:#2e8b57">
-  <div class="container">
-    <a href="#" class="navbar-brand">
-      <img src="assets/dist/img/<?= htmlspecialchars($image) ?>" class="brand-image img-circle">
-      <span class="brand-text text-white font-weight-bold">
-        TEREMIL ASSISTANCE APPLICATION
-      </span>
-    </a>
-  </div>
-</nav>
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand-md " style="background-color: #2e8b57">
+    <div class="container">
+      <a href="" class="navbar-brand">
+        <img src="assets/dist/img/<?= $image  ?>" alt="logo" class="brand-image img-circle " >
+        <span class="brand-text  text-white" style="font-weight: 700">TEREMIL ASSISTANCE APPLICATION</span>
+      </a>
 
-<!-- Content -->
-<div class="content-wrapper">
-  <div class="content px-4">
-    <div class="container-fluid pt-5" style="background-color: rgba(0,0,0,0.75);">
-      <div class="row justify-content-center">
+      <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <form id="loginForm" method="post">
-          <div class="card" style="border:10px solid rgba(0,54,175,.75)">
+      <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+        <!-- Left navbar links -->
+
+
+       
+      </div>
+
+      <!-- Right navbar links -->
+      <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto " >
+          
+      </ul>
+    </div>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" >
+    <!-- Content Header (Page header) -->
+ 
+    
+  
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content px-4" >
+      <div class="container-fluid pt-5 "  style="background-color:  rgba(0, 0, 0, 0.75);">
+      <br>
+      <br>
+        <div class="row justify-content-center">
+          <form id="loginForm" method="post">
+          <div class="card " style="border: 10px solid rgba(0,54,175,.75); border-radius: 0;">
             <div class="card-body text-center text-white">
-
-              <img src="assets/dist/img/<?= htmlspecialchars($image) ?>" class="img-circle logo">
-
-              <h3 class="mt-3 text-primary font-weight-bold">
-                TEREMIL ASSISTANCE APPLICATION
-              </h3>
-
-              <div class="form-group mt-4">
-                <input type="text" name="username" id="username"
-                       class="form-control" placeholder="USERNAME OR RESIDENT NUMBER">
+              <div class="col-sm-12">
+                <img src="assets/dist/img/<?= $image;?>" alt="logo" class="img-circle logo">
               </div>
-
-              <div class="form-group">
-                <input type="password" name="password" id="password"
-                       class="form-control" placeholder="PASSWORD">
+              <div class="col-sm-12">
+                <h1 class="card-text" style="font-weight: 1000; color: #0036af">TEREMIL ASSISTANCE APPLICATION</h1>
               </div>
-
-              <div class="text-right mb-3">
-                <a href="forgot.php">Forgot Password?</a>
+             
+              <div class="col-sm-12 mt-4">
+                <div class="form-group">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-transparent"><i class="fas fa-user"></i></span>
+                    </div>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="USERNAME OR RESIDENT NUMBER" >
+                  </div>
+                </div>
               </div>
-
-              <button type="submit" class="btn btn-primary btn-block btn-lg">
-                Sign In
-              </button>
-
+              <div class="col-sm-12 mt-4">
+                <div  class="form-group">
+                  <div class="input-group mb-3" id="show_hide_password">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-transparent"><i class="fas fa-key"></i></span>
+                    </div>
+                    <input type="password"  id="password" name="password" class="form-control" placeholder="PASSWORD"  style="border-right: none;">
+                    <div class="input-group-append bg">
+                      <span class="input-group-text bg-transparent"> <a href="" style=" text-decoration:none;"><i class="fas fa-eye-slash" aria-hidden="true"></i></a></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <div class="col-sm-12 text-right">
+                    <a href="forgot.php">Forgot Password</a>
+            </div>
+            <div class="col-sm-12 mt-4">
+                <button type="submit" class="btn btn-flat bg-blue btn-lg btn-block">Sign In</button>
             </div>
           </div>
-        </form>
+          </form>
+        </div>
+
+  
+      
 
       </div>
+
+
+      <br>
+        <br>
+        <br>
+        
+       
     </div>
+    <!-- /.content -->
   </div>
+  <!-- /.content-wrapper -->
+
+ 
+
+ 
+
+
 </div>
+<!-- ./wrapper -->
+<footer class="main-footer text-white" style="background-color: #2e8b57">
+    <div class="float-right d-none d-sm-block">
+    
+    </div>
+  <i class="fas fa-map-marker-alt"></i> <?= $postal_address?> 
+  </footer>
 
-<footer class="main-footer text-white" style="background-color:#2e8b57">
-  <i class="fas fa-map-marker-alt"></i> <?= htmlspecialchars($postal_address) ?>
-</footer>
 
-</div>
 
-<!-- Scripts -->
+
+<!-- jQuery -->
 <script src="assets/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap -->
 <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
 <script src="assets/dist/js/adminlte.js"></script>
 <script src="assets/plugins/sweetalert2/js/sweetalert2.all.min.js"></script>
 
 <script>
-$(function () {
+  $(document).ready(function() {
 
-  $("#loginForm").submit(function (e) {
-    e.preventDefault();
 
-    if ($("#username").val() === "" || $("#password").val() === "") {
-      Swal.fire("Warning", "Username and Password are required", "warning");
-      return;
-    }
-
-    $.ajax({
-      url: "/loginForm.php",
-      type: "POST",
-      data: $(this).serialize(),
-      success: function (data) {
-        if (data === "errorUsername" || data === "errorPassword") {
-          Swal.fire("Error", "Incorrect Username or Password", "error");
-        } else if (data === "admin") {
-          window.location.href = "admin/dashboard.php";
-        } else if (data === "secretary") {
-          window.location.href = "secretary/dashboard.php";
-        } else if (data === "resident") {
-          window.location.href = "resident/dashboard.php";
-        } else {
-          Swal.fire("Error", "Unexpected server response", "error");
-        }
+    $("#loginForm").submit(function(e){
+      e.preventDefault();
+      var username = $("#username").val();
+      var password = $("#password").val();
+      if(username == '' || password == ''){
+        Swal.fire({
+          title: '<strong class="text-danger">WARNING</strong>',
+          type: 'warning',
+          html: '<b>Username and Password is Required<b>',
+          width: '400px',
+        })
+      }else{
+        $.ajax({
+          url: 'loginForm.php',
+          type: 'POST',
+          data: $(this).serialize(),
+          success:function(data){
+              if(data == 'errorUsername'){
+                Swal.fire({
+                  title: '<strong class="text-danger">ERROR</strong>',
+                  type: 'error',
+                  html: '<b>Incorrect Username or Password<b>',
+                  width: '400px',
+                })
+              }else if(data =='errorPassword'){
+                Swal.fire({
+                  title: '<strong class="text-danger">ERROR</strong>',
+                  type: 'error',
+                  html: '<b>Incorrect Username or Password<b>',
+                  width: '400px',
+                })
+              }else if(data == 'admin'){
+                Swal.fire({
+                  title: '<strong class="text-success">SUCCESS</strong>',
+                  type: 'success',
+                  html: '<b>Login Successfully<b>',
+                  width: '400px',
+                  showConfirmButton:  false,
+                  allowOutsideClick: false,
+                  timer: 2000
+                }).then(()=>{
+                  window.location.href = 'admin/dashboard.php';
+                })
+              }else if(data == 'secretary'){
+                Swal.fire({
+                  title: '<strong class="text-success">SUCCESS</strong>',
+                  type: 'success',
+                  html: '<b>Login Successfully<b>',
+                  width: '400px',
+                  showConfirmButton:  false,
+                  allowOutsideClick: false,
+                  timer: 2000
+                }).then(()=>{
+                  window.location.href = 'secretary/dashboard.php';
+                })
+              }else if(data == 'resident'){
+                Swal.fire({
+                  title: '<strong class="text-success">SUCCESS</strong>',
+                  type: 'success',
+                  html: '<b>Login Successfully<b>',
+                  width: '400px',
+                  showConfirmButton:  false,
+                  allowOutsideClick: false,
+                  timer: 2000
+                }).then(()=>{
+                  window.location.href = 'resident/dashboard.php';
+                })
+              }
+          }
+        })
       }
-    });
-  });
+    })
 
+
+
+
+    $("#show_hide_password a").on('click', function(event) {
+        event.preventDefault();
+        if($('#show_hide_password input').attr("type") == "text"){
+            $('#show_hide_password input').attr('type', 'password');
+            $('#show_hide_password i').addClass( "fa-eye-slash" );
+            $('#show_hide_password i').removeClass( "fa-eye" );
+        }else if($('#show_hide_password input').attr("type") == "password"){
+            $('#show_hide_password input').attr('type', 'text');
+            $('#show_hide_password i').removeClass( "fa-eye-slash" );
+            $('#show_hide_password i').addClass( "fa-eye" );
+        }
+    });
 });
 </script>
+
 
 </body>
 </html>
