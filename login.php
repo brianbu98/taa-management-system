@@ -7,6 +7,9 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/connection.php';
 session_start();
 
+echo "<!-- PROD CODE UPDATED: " . date('Y-m-d H:i:s') . " -->";
+
+
 try{
 
 if (isset($_SESSION['user_id']) && $_SESSION['user_type']) {
