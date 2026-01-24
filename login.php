@@ -9,30 +9,26 @@ session_start();
 
 try{
 
-  if(isset($_SESSION['user_id']) && $_SESSION['user_type']){
+if (isset($_SESSION['user_id']) && $_SESSION['user_type']) {
 
+  $user_id = $_SESSION['user_id'];
 
-    $user_id = $_SESSION['user_id'];
-    $sql = "SELECT * FROM users WHERE id = '$user_id'";
-    $query = $con->query($sql) or die ($con->error);
-    $row = $query->fetch_assoc();
-    $account_type = $row['user_type'];
-    if ($account_type == 'admin') {
-    echo '<script>
-            window.location.href="admin/dashboard.php";
-        </script>';
-    
-    } elseif ($account_type == 'secretary') {
-        echo '<script>
-            window.location.href="secretary/dashboard.php";
-        </script>';
-    
-    } else {
-        echo '<script>
-        window.location.href="resident/dashboard.php";
-    </script>';
-    
-}
+  $sql = "SELECT * FROM users WHERE id = ?";
+  $stmt = $con->prepare($sql);
+  $stmt->bind_param("i", $user_id);
+  $stmt->execute();
+  $row = $stmt->get_result()->fetch_assoc();
+
+  if ($row['user_type'] === 'admin') {
+    header("Location: /admin/dashboard.php");
+    exit;
+  } elseif ($row['user_type'] === 'secretary') {
+    header("Location: /secretary/dashboard.php");
+    exit;
+  } else {
+    header("Location: /resident/dashboard.php");
+    exit;
+  }
 
 
 
@@ -166,7 +162,7 @@ $sql = "SELECT * FROM `taa_information`";
       <br>
       <br>
         <div class="row justify-content-center">
-          <form id="loginForm" method="post">
+         <form id="loginForm" method="post" action="/loginForm.php">
           <div class="card " style="border: 10px solid rgba(0,54,175,.75); border-radius: 0;">
             <div class="card-body text-center text-white">
               <div class="col-sm-12">
@@ -267,7 +263,7 @@ $sql = "SELECT * FROM `taa_information`";
         })
       }else{
         $.ajax({
-          url: 'loginForm.php',
+          url: '/loginForm.php',
           type: 'POST',
           data: $(this).serialize(),
           success:function(data){
@@ -295,7 +291,7 @@ $sql = "SELECT * FROM `taa_information`";
                   allowOutsideClick: false,
                   timer: 2000
                 }).then(()=>{
-                  window.location.href = 'admin/dashboard.php';
+                  window.location.href = '/admin/dashboard.php';
                 })
               }else if(data == 'secretary'){
                 Swal.fire({
@@ -307,7 +303,7 @@ $sql = "SELECT * FROM `taa_information`";
                   allowOutsideClick: false,
                   timer: 2000
                 }).then(()=>{
-                  window.location.href = 'secretary/dashboard.php';
+                  window.location.href = '/secretary/dashboard.php';
                 })
               }else if(data == 'resident'){
                 Swal.fire({
@@ -319,7 +315,7 @@ $sql = "SELECT * FROM `taa_information`";
                   allowOutsideClick: false,
                   timer: 2000
                 }).then(()=>{
-                  window.location.href = 'resident/dashboard.php';
+                  window.location.href = '/resident/dashboard.php';
                 })
               }
           }
