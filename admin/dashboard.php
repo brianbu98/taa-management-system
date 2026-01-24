@@ -31,21 +31,6 @@ try{
     $yes= 'YES';
     $no = 'NO';
 
-    // Existing queries ...
-    $sql_voters_yes = "SELECT voters, archive FROM residence_status WHERE voters = ? AND archive = ?";
-    $query_voters_yes = $con->prepare($sql_voters_yes) or die ($con->error);
-    $query_voters_yes->bind_param('ss',$yes,$no);
-    $query_voters_yes->execute();
-    $query_voters_yes->store_result();
-    $count_voters_yes = $query_voters_yes->num_rows;
-
-    $sql_voters_no = "SELECT voters, archive FROM residence_status WHERE voters = ? AND archive = ?";
-    $query_voters_no = $con->prepare($sql_voters_no) or die ($con->error);
-    $query_voters_no->bind_param('ss',$no,$no);
-    $query_voters_no->execute();
-    $query_voters_no->store_result();
-    $count_voters_no = $query_voters_no->num_rows;
-
     $sql_single_parent_yes = "SELECT single_parent, archive FROM residence_status WHERE single_parent = ? AND archive = ?";
     $query_single_parent_yes = $con->prepare($sql_single_parent_yes) or die ($con->error);
     $query_single_parent_yes->bind_param('ss',$yes,$no);
@@ -482,32 +467,29 @@ try{
                       <!-- small box -->
                       <div class="small-box bg-success">
                         <div class="inner">
-                          <h3><?= number_format($count_voters_yes ?? 0) ?><style style="font-size: 20px"></style></h3>
-
+                          <h3><?= number_format($count_users_yes ?? 0); ?></h3>
                           <p>UPSTANDING USERS</p>
                         </div>
                         <div class="icon">
                           <i class="fas fa-user-check"></i>
                         </div>
-                      
                       </div>
                     </div>
                     <!-- ./col -->
 
-                    <div class="col-sm-12 ">
+                    <div class="col-sm-12">
                       <!-- small box -->
-                      <div class="small-box bg-warning ">
+                      <div class="small-box bg-warning">
                         <div class="inner">
-                          <h3 class="text-white"><?= number_format($count_voters_no ?? 0); ?></h3>
-
+                          <h3 class="text-white"><?= number_format($count_users_no ?? 0); ?></h3>
                           <p class="text-white">DISREPUTABLE RESIDENTS</p>
                         </div>
                         <div class="icon">
                           <i class="fas fa-user-times"></i>
                         </div>
-                    
                       </div>
                     </div>
+
                     <!-- ./col -->
 
                     <div class="col-sm-12">
