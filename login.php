@@ -251,81 +251,62 @@ $sql = "SELECT * FROM `taa_information`";
 <script src="assets/plugins/sweetalert2/js/sweetalert2.all.min.js"></script>
 
 <script>
-  $(document).ready(function() {
+$(document).ready(function() {
 
+  $("#loginForm").on("submit", function(e){
+    e.preventDefault(); // stop normal form submit
 
-   $("#loginForm").on("submit", function(e){
-  e.preventDefault(); // 🔥 MUST BE FIRST
+    $.ajax({
+      url: "/loginForm.php",
+      type: "POST",
+      data: $(this).serialize(),
+      success: function(data){
 
-  $.ajax({
-    url: "/loginForm.php",
-    type: "POST",
-    data: $(this).serialize(),
-    success: function(data){
+        data = data.trim();
+        console.log("Login response:", data);
 
-      data = data.trim();
-      console.log("Login response:", data);
+        if (data === "errorUsername" || data === "errorPassword") {
+          Swal.fire({
+            title: "ERROR",
+            icon: "error",
+            text: "Incorrect username or password"
+          });
+          return;
+        }
 
-      if (['admin','secretary','resident'].includes(data)) {
-        Swal.fire({
-          title: "SUCCESS",
-          icon: "success",
-          text: "Login Successfully",
-          showConfirmButton: false,
-          timer: 2000
-        }).then(() => {
-          window.location.href = "/" + data + "/dashboard.php";
-        });
-        return;
+        if (["admin","secretary","resident"].includes(data)) {
+          Swal.fire({
+            title: "SUCCESS",
+            icon: "success",
+            text: "Login Successfully",
+            showConfirmButton: false,
+            timer: 2000
+          }).then(() => {
+            window.location.href = "/" + data + "/dashboard.php";
+          });
+          return;
+        }
+
+        // fallback safety
+        Swal.fire("Error", "Unexpected login response", "error");
       }
+    });
+  });
 
-      Swal.fire("Error", "Login failed", "error");
+  $("#show_hide_password a").on("click", function(e){
+    e.preventDefault();
+    const input = $("#show_hide_password input");
+    const icon = $("#show_hide_password i");
+
+    if (input.attr("type") === "password") {
+      input.attr("type", "text");
+      icon.removeClass("fa-eye-slash").addClass("fa-eye");
+    } else {
+      input.attr("type", "password");
+      icon.removeClass("fa-eye").addClass("fa-eye-slash");
     }
   });
-});
 
-
-  if(['admin','secretary','resident'].includes(data)){
-    Swal.fire({
-      title: '<strong class="text-success">SUCCESS</strong>',
-      icon: 'success',
-      html: '<b>Login Successfully</b>',
-      width: '400px',
-      showConfirmButton: false,
-      allowOutsideClick: false,
-      timer: 2000
-    }).then(() => {
-      window.location.href = `/${data}/dashboard.php`;
-    });
-    return;
-  }
-
-  // 🚨 fallback (PROD SAFETY NET)
-  console.error("Unexpected login response:", data);
-  Swal.fire({
-    title: 'Error',
-    text: 'Unexpected login response. Check console.',
-    icon: 'error'
-  });
-}
-});
-
-
-
-
-
-    $("#show_hide_password a").on('click', function(event) {
-        event.preventDefault();
-        if($('#show_hide_password input').attr("type") == "text"){
-            $('#show_hide_password input').attr('type', 'password');
-            $('#show_hide_password i').addClass( "fa-eye-slash" );
-            $('#show_hide_password i').removeClass( "fa-eye" );
-        }else if($('#show_hide_password input').attr("type") == "password"){
-            $('#show_hide_password input').attr('type', 'text');
-            $('#show_hide_password i').removeClass( "fa-eye-slash" );
-            $('#show_hide_password i').addClass( "fa-eye" );
-        }
-    });
 });
 </script>
 
