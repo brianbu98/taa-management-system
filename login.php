@@ -1,8 +1,8 @@
 ﻿
 <?php 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+ini_set('display_errors', 0);
+error_reporting(0);
+
 
 require_once __DIR__ . '/connection.php';
 session_start();
@@ -12,7 +12,8 @@ session_start();
 
 try{
 
-if (isset($_SESSION['user_id']) && $_SESSION['user_type']) {
+if (isset($_SESSION['user_id'], $_SESSION['user_type'])) {
+
 
   $user_id = $_SESSION['user_id'];
 
@@ -284,6 +285,7 @@ $sql = "SELECT * FROM `taa_information`";
     });
     return;
   }
+  });
 
   if(['admin','secretary','resident'].includes(data)){
     Swal.fire({
