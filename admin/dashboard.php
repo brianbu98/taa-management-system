@@ -1,7 +1,17 @@
-<?php 
-
+<?php
 include_once '../connection.php';
-session_start();
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION['user_id'], $_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
+    header("Location: /login.php");
+    exit;
+}
+
+try {
+
 
 try{
   if(isset($_SESSION['user_id']) && isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'admin'){
