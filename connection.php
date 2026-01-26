@@ -8,7 +8,7 @@ ini_set('session.cookie_secure', 0);    // set to 1 if HTTPS-only
 ini_set('session.cookie_httponly', 1);
 
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+  
 }
 
 /* ======================================================
