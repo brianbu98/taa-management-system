@@ -275,12 +275,14 @@ $(document).ready(function() {
         }
 
         if (["admin","secretary","resident"].includes(data)) {
-          Swal.fire({
-            title: "SUCCESS",
-            icon: "success",
-            text: "Login Successfully",
-            showConfirmButton: false,
-            timer: 2000
+        Swal.fire({
+          icon: 'success',
+          title: 'SUCCESS',
+          text: 'Login Successfully',
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          timer: 2000
+
           }).then(() => {
             window.location.href = "/" + data + "/dashboard.php";
           });
