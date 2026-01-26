@@ -1,10 +1,7 @@
-<?php
-include_once '../connection.php';
+﻿<?php
+require_once '../connection.php';
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
+/* 🔐 AUTH GUARD */
 if (!isset($_SESSION['user_id'], $_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
     header("Location: /login.php");
     exit;
@@ -12,31 +9,36 @@ if (!isset($_SESSION['user_id'], $_SESSION['user_type']) || $_SESSION['user_type
 
 try {
 
-
-try{
-  if(isset($_SESSION['user_id']) && isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'admin'){
-
+    /* 👤 ADMIN INFO */
     $user_id = $_SESSION['user_id'];
-    $sql_user = "SELECT * FROM `users` WHERE `id` = ? ";
-    $stmt_user = $con->prepare($sql_user) or die ($con->error);
-    $stmt_user->bind_param('s',$user_id);
-    $stmt_user->execute();
-    $result_user = $stmt_user->get_result();
-    $row_user = $result_user->fetch_assoc();
-    $first_name_user = $row_user['first_name'];
-    $last_name_user = $row_user['last_name'];
-    $user_type = $row_user['user_type'];
-    $user_image = $row_user['image'];
 
-    $sql = "SELECT * FROM `taa_information`";
-    $query = $con->prepare($sql) or die ($con->error);
+    $sql_user = "SELECT * FROM users WHERE id = ?";
+    $stmt_user = $con->prepare($sql_user);
+    $stmt_user->bind_param('i', $user_id);
+    $stmt_user->execute();
+    $row_user = $stmt_user->get_result()->fetch_assoc();
+
+    $first_name_user = $row_user['first_name'];
+    $last_name_user  = $row_user['last_name'];
+    $user_type       = $row_user['user_type'];
+    $user_image      = $row_user['image'];
+
+    /* 🏷️ APP INFO */
+    $sql = "SELECT * FROM taa_information";
+    $query = $con->prepare($sql);
     $query->execute();
     $result = $query->get_result();
-    while($row = $result->fetch_assoc()){
+
+    while ($row = $result->fetch_assoc()) {
         $image = $row['image'];
         $image_path = $row['image_path'];
         $id = $row['id'];
     }
+
+} catch (Exception $e) {
+    die("Dashboard error");
+}
+
 
     $yes= 'YES';
     $no = 'NO';
