@@ -166,7 +166,7 @@ $sql = "SELECT * FROM `taa_information`";
       <br>
       <br>
         <div class="row justify-content-center">
-         <form id="loginForm" method="post" action="/loginForm.php">
+         <form id="loginForm" method="post">
           <div class="card " style="border: 10px solid rgba(0,54,175,.75); border-radius: 0;">
             <div class="card-body text-center text-white">
               <div class="col-sm-12">
@@ -254,38 +254,36 @@ $sql = "SELECT * FROM `taa_information`";
   $(document).ready(function() {
 
 
-    $("#loginForm").submit(function(e){
-      e.preventDefault();
-      var username = $("#username").val();
-      var password = $("#password").val();
-      if(username == '' || password == ''){
+   $("#loginForm").on("submit", function(e){
+  e.preventDefault(); // 🔥 MUST BE FIRST
+
+  $.ajax({
+    url: "/loginForm.php",
+    type: "POST",
+    data: $(this).serialize(),
+    success: function(data){
+
+      data = data.trim();
+      console.log("Login response:", data);
+
+      if (['admin','secretary','resident'].includes(data)) {
         Swal.fire({
-          title: '<strong class="text-danger">WARNING</strong>',
-          type: 'warning',
-          html: '<b>Username and Password is Required<b>',
-          width: '400px',
-        })
-      }else{
-        $.ajax({
-          url: '/loginForm.php',
-          type: 'POST',
-          data: $(this).serialize(),
-          success:function(data){
+          title: "SUCCESS",
+          icon: "success",
+          text: "Login Successfully",
+          showConfirmButton: false,
+          timer: 2000
+        }).then(() => {
+          window.location.href = "/" + data + "/dashboard.php";
+        });
+        return;
+      }
 
-  data = data.trim(); // 🔥 VERY IMPORTANT
-
-  console.log("Login response:", data);
-
-  if(data === 'errorUsername' || data === 'errorPassword'){
-    Swal.fire({
-      title: '<strong class="text-danger">ERROR</strong>',
-      icon: 'error',
-      html: '<b>Incorrect Username or Password</b>',
-      width: '400px'
-    });
-    return;
-  }
+      Swal.fire("Error", "Login failed", "error");
+    }
   });
+});
+
 
   if(['admin','secretary','resident'].includes(data)){
     Swal.fire({
