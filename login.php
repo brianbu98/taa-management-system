@@ -281,12 +281,15 @@ $(document).ready(function() {
           text: 'Login Successfully',
           showConfirmButton: false,
           allowOutsideClick: false,
-          timer: 2000
+          timer: 1500
+        });
 
-          }).then(() => {
-            window.location.href = "/" + data + "/dashboard.php";
-          });
-          return;
+        setTimeout(function () {
+          window.location.href = "/" + data + "/dashboard.php";
+        }, 1600);
+
+        return;
+
         }
 
         // fallback safety
