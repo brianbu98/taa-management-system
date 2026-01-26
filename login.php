@@ -310,6 +310,7 @@ $sql = "SELECT * FROM `taa_information`";
     icon: 'error'
   });
 }
+});
 
 
 
