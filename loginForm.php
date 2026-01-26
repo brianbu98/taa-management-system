@@ -47,4 +47,6 @@ $stmt_log->execute();
 $stmt_log->close();
 
 /* 🔥 IMPORTANT: CLEAN OUTPUT ONLY */
-exit(trim($row['user_type']));
+$userType = strtolower(trim($row['user_type'] ?? 'resident'));
+exit($userType);
+
