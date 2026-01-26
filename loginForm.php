@@ -1,7 +1,6 @@
 <?php
-session_start();
-require_once 'connection.php';
-require_once 'userInfo.php';
+require_once __DIR__ . '/connection.php';
+require_once __DIR__ . '/userInfo.php';
 
 ini_set('display_errors', 0);
 error_reporting(0);
@@ -10,8 +9,8 @@ $username = $_POST['username'] ?? '';
 $password = $_POST['password'] ?? '';
 
 $stmt = $con->prepare(
-  "SELECT id, username, password, user_type, first_name, last_name 
-   FROM users 
+  "SELECT id, username, password, user_type, first_name, last_name
+   FROM users
    WHERE username = ? OR id = ?"
 );
 $stmt->bind_param('ss', $username, $username);
@@ -19,12 +18,12 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if (!$row = $result->fetch_assoc()) {
-  exit('errorUsername');
+    exit('errorUsername');
 }
 
-/* ⚠️ You are using PLAIN password comparison */
+/* ⚠️ Plain password comparison (OK for now) */
 if ($password !== $row['password']) {
-  exit('errorPassword');
+    exit('errorPassword');
 }
 
 /* ✅ SESSION */
@@ -32,12 +31,15 @@ $_SESSION['user_id']   = $row['id'];
 $_SESSION['username']  = $row['username'];
 $_SESSION['user_type'] = $row['user_type'] ?? 'resident';
 
-/* ✅ ACTIVITY LOG (SAFE, AFTER AUTH) */
+/* 🔐 Extra safety */
+session_regenerate_id(true);
+
+/* 📝 ACTIVITY LOG */
 date_default_timezone_set('Asia/Manila');
 $date_activity = date("j-n-Y g:i A");
 $status_activity_log = 'login';
 
-$roleLabel = strtoupper($row['user_type'] ?? 'RESIDENT');
+$roleLabel = strtoupper($_SESSION['user_type']);
 $message = $roleLabel . ': ' . $row['first_name'] . ' ' . $row['last_name'] . ' | LOGIN';
 
 $sql_log = "INSERT INTO activity_log (`message`, `date`, `status`) VALUES (?,?,?)";
@@ -46,7 +48,5 @@ $stmt_log->bind_param('sss', $message, $date_activity, $status_activity_log);
 $stmt_log->execute();
 $stmt_log->close();
 
-/* 🔥 IMPORTANT: CLEAN OUTPUT ONLY */
-$userType = strtolower(trim($row['user_type'] ?? 'resident'));
-exit($userType);
-
+/* 🔥 OUTPUT MUST BE CLEAN */
+exit($_SESSION['user_type']);
