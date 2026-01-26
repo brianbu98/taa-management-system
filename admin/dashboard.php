@@ -1,4 +1,5 @@
 ﻿<?php
+session_start();
 require_once '../connection.php';
 
 /* 🔐 AUTH GUARD */
@@ -6,6 +7,7 @@ if (!isset($_SESSION['user_id'], $_SESSION['user_type']) || $_SESSION['user_type
     header("Location: /login.php");
     exit;
 }
+
 
 try {
 
