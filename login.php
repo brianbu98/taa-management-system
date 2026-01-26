@@ -19,8 +19,19 @@ try{
 
 
 if (isset($_SESSION['user_id'], $_SESSION['user_type'])) {
-    // already logged in → frontend will redirect
+    switch ($_SESSION['user_type']) {
+        case 'admin':
+            header("Location: /admin/dashboard.php");
+            break;
+        case 'secretary':
+            header("Location: /secretary/dashboard.php");
+            break;
+        default:
+            header("Location: /resident/dashboard.php");
+    }
+    exit;
 }
+
 
 
 $sql = "SELECT * FROM `taa_information`";
