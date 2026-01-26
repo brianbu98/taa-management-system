@@ -251,65 +251,35 @@ $sql = "SELECT * FROM `taa_information`";
 <script src="assets/plugins/sweetalert2/js/sweetalert2.all.min.js"></script>
 
 <script>
-$(document).ready(function() {
+$(document).ready(function () {
 
-  $("#loginForm").on("submit", function(e){
-    e.preventDefault(); // stop normal form submit
+  $("#loginForm").on("submit", function (e) {
+    e.preventDefault();
 
     $.ajax({
       url: "/loginForm.php",
       type: "POST",
       data: $(this).serialize(),
-      success: function(data){
+      success: function (data) {
 
         data = data.trim();
-        console.log("Login response:", data);
+        console.log("SERVER RESPONSE:", data);
 
-        if (data === "errorUsername" || data === "errorPassword") {
-          Swal.fire({
-            title: "ERROR",
-            icon: "error",
-            text: "Incorrect username or password"
-          });
+        // 🔴 HARD PROOF
+        alert("Server returned: " + data);
+
+        if (data === "admin" || data === "secretary" || data === "resident") {
+          // 🔥 FORCE REDIRECT — NO SWEETALERT
+          window.location.replace("/" + data + "/dashboard.php");
           return;
         }
 
-        if (["admin","secretary","resident"].includes(data)) {
-        Swal.fire({
-          icon: 'success',
-          title: 'SUCCESS',
-          text: 'Login Successfully',
-          showConfirmButton: false,
-          allowOutsideClick: false,
-          timer: 1500
-        });
-
-        setTimeout(function () {
-          window.location.href = "/" + data + "/dashboard.php";
-        }, 1600);
-
-        return;
-
-        }
-
-        // fallback safety
-        Swal.fire("Error", "Unexpected login response", "error");
+        alert("Login failed: " + data);
+      },
+      error: function () {
+        alert("AJAX ERROR");
       }
     });
-  });
-
-  $("#show_hide_password a").on("click", function(e){
-    e.preventDefault();
-    const input = $("#show_hide_password input");
-    const icon = $("#show_hide_password i");
-
-    if (input.attr("type") === "password") {
-      input.attr("type", "text");
-      icon.removeClass("fa-eye-slash").addClass("fa-eye");
-    } else {
-      input.attr("type", "password");
-      icon.removeClass("fa-eye").addClass("fa-eye-slash");
-    }
   });
 
 });
