@@ -1,52 +1,27 @@
 ﻿<?php
 ini_set('session.cookie_path', '/');
 ini_set('session.cookie_httponly', 1);
-ini_set('session.cookie_secure', 0);
+ini_set('session.cookie_secure', 0); // set to 1 if HTTPS
+ini_set('display_errors', 0);
+error_reporting(0);
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
-ini_set('display_errors', 0);
-error_reporting(0);
 
 require_once __DIR__ . '/connection.php';
 
 
 
 
-
-
-
 try{
 
+
+
 if (isset($_SESSION['user_id'], $_SESSION['user_type'])) {
-
-
-  $user_id = $_SESSION['user_id'];
-
-  $sql = "SELECT * FROM users WHERE id = ?";
-  $stmt = $con->prepare($sql);
-  $stmt->bind_param("i", $user_id);
-  $stmt->execute();
-  $row = $stmt->get_result()->fetch_assoc();
-
-  if ($row['user_type'] === 'admin') {
-    header("Location: /admin/dashboard.php");
-    exit;
-  } elseif ($row['user_type'] === 'secretary') {
-    header("Location: /secretary/dashboard.php");
-    exit;
-  } else {
-    header("Location: /resident/dashboard.php");
-    exit;
-  }
-
-
-
-
-
+    // already logged in → frontend will redirect
 }
+
 
 $sql = "SELECT * FROM `taa_information`";
   $query = $con->prepare($sql) or die ($con->error);
