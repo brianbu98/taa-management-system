@@ -1,10 +1,18 @@
-﻿
-<?php 
+﻿<?php
+ini_set('session.cookie_path', '/');
+ini_set('session.cookie_httponly', 1);
+ini_set('session.cookie_secure', 0);
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 ini_set('display_errors', 0);
 error_reporting(0);
 
-
 require_once __DIR__ . '/connection.php';
+
+
 
 
 
@@ -252,37 +260,50 @@ $sql = "SELECT * FROM `taa_information`";
 
 <script>
 $(document).ready(function () {
+$("#loginForm").on("submit", function (e) {
+  e.preventDefault();
 
-  $("#loginForm").on("submit", function (e) {
-    e.preventDefault();
+  $.ajax({
+    url: "/loginForm.php",
+    type: "POST",
+    data: $(this).serialize(),
+    success: function (data) {
+      data = data.trim();
+      console.log("Server returned:", data);
 
-    $.ajax({
-      url: "/loginForm.php",
-      type: "POST",
-      data: $(this).serialize(),
-      success: function (data) {
-
-        data = data.trim();
-        console.log("SERVER RESPONSE:", data);
-
-        // 🔴 HARD PROOF
-        alert("Server returned: " + data);
-
-        if (data === "admin" || data === "secretary" || data === "resident") {
-          // 🔥 FORCE REDIRECT — NO SWEETALERT
-          window.location.replace("/" + data + "/dashboard.php");
-          return;
-        }
-
-        alert("Login failed: " + data);
-      },
-      error: function () {
-        alert("AJAX ERROR");
+      if (data === "errorUsername" || data === "errorPassword") {
+        Swal.fire({
+          icon: "error",
+          title: "ERROR",
+          text: "Incorrect username or password"
+        });
+        return;
       }
+
+      if (["admin", "secretary", "resident"].includes(data)) {
+        Swal.fire({
+          icon: "success",          // ✅ GREEN CHECK
+          title: "SUCCESS",
+          text: "Login Successfully",
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          timer: 1800
+        }).then(() => {
+          window.location.href = "/" + data + "/dashboard.php";
+        });
+        return;
+      }
+
+      Swal.fire({
+        icon: "error",
+        title: "ERROR",
+        text: "Unexpected server response"
     });
+    }
   });
 
 });
+
 </script>
 
 
