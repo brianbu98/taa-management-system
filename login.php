@@ -1,4 +1,4 @@
-
+﻿
 <?php 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -270,61 +270,45 @@ $sql = "SELECT * FROM `taa_information`";
           type: 'POST',
           data: $(this).serialize(),
           success:function(data){
-              if(data == 'errorUsername'){
-                Swal.fire({
-                  title: '<strong class="text-danger">ERROR</strong>',
-                  type: 'error',
-                  html: '<b>Incorrect Username or Password<b>',
-                  width: '400px',
-                })
-              }else if(data =='errorPassword'){
-                Swal.fire({
-                  title: '<strong class="text-danger">ERROR</strong>',
-                  type: 'error',
-                  html: '<b>Incorrect Username or Password<b>',
-                  width: '400px',
-                })
-              }else if(data == 'admin'){
-                Swal.fire({
-                  title: '<strong class="text-success">SUCCESS</strong>',
-                  type: 'success',
-                  html: '<b>Login Successfully<b>',
-                  width: '400px',
-                  showConfirmButton:  false,
-                  allowOutsideClick: false,
-                  timer: 2000
-                }).then(()=>{
-                  window.location.href = '/admin/dashboard.php';
-                })
-              }else if(data == 'secretary'){
-                Swal.fire({
-                  title: '<strong class="text-success">SUCCESS</strong>',
-                  type: 'success',
-                  html: '<b>Login Successfully<b>',
-                  width: '400px',
-                  showConfirmButton:  false,
-                  allowOutsideClick: false,
-                  timer: 2000
-                }).then(()=>{
-                  window.location.href = '/secretary/dashboard.php';
-                })
-              }else if(data == 'resident'){
-                Swal.fire({
-                  title: '<strong class="text-success">SUCCESS</strong>',
-                  type: 'success',
-                  html: '<b>Login Successfully<b>',
-                  width: '400px',
-                  showConfirmButton:  false,
-                  allowOutsideClick: false,
-                  timer: 2000
-                }).then(()=>{
-                  window.location.href = '/resident/dashboard.php';
-                })
-              }
-          }
-        })
-      }
-    })
+
+  data = data.trim(); // 🔥 VERY IMPORTANT
+
+  console.log("Login response:", data);
+
+  if(data === 'errorUsername' || data === 'errorPassword'){
+    Swal.fire({
+      title: '<strong class="text-danger">ERROR</strong>',
+      icon: 'error',
+      html: '<b>Incorrect Username or Password</b>',
+      width: '400px'
+    });
+    return;
+  }
+
+  if(['admin','secretary','resident'].includes(data)){
+    Swal.fire({
+      title: '<strong class="text-success">SUCCESS</strong>',
+      icon: 'success',
+      html: '<b>Login Successfully</b>',
+      width: '400px',
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      timer: 2000
+    }).then(() => {
+      window.location.href = `/${data}/dashboard.php`;
+    });
+    return;
+  }
+
+  // 🚨 fallback (PROD SAFETY NET)
+  console.error("Unexpected login response:", data);
+  Swal.fire({
+    title: 'Error',
+    text: 'Unexpected login response. Check console.',
+    icon: 'error'
+  });
+}
+
 
 
 
