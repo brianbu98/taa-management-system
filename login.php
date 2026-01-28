@@ -232,54 +232,58 @@ $sql = "SELECT * FROM `taa_information`";
 <!-- AdminLTE App -->
 <script src="assets/dist/js/adminlte.js"></script>
 <script src="assets/plugins/sweetalert2/js/sweetalert2.all.min.js"></script>
-
 <script>
 $(document).ready(function () {
-$("#loginForm").on("submit", function (e) {
-  e.preventDefault();
 
-  $.ajax({
-    url: "/loginForm.php",
-    type: "POST",
-    data: $(this).serialize(),
-    success: function (data) {
-      data = data.trim();
-      console.log("Server returned:", data);
+  $("#loginForm").on("submit", function (e) {
+    e.preventDefault();
 
-      if (data === "errorUsername" || data === "errorPassword") {
+    $.ajax({
+      url: "loginForm.php",
+      type: "POST",
+      data: $(this).serialize(),
+      success: function (data) {
+
+        data = data.trim();
+        console.log("Server returned:", data);
+
+        if (data === "errorUsername" || data === "errorPassword") {
+          Swal.fire({
+            icon: "error",
+            title: "ERROR",
+            text: "Incorrect username or password"
+          });
+          return;
+        }
+
+        if (["admin", "secretary", "resident"].includes(data)) {
+          Swal.fire({
+            icon: "success",
+            title: "SUCCESS",
+            text: "Login Successfully",
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            timer: 1800
+          }).then(() => {
+            window.location.href = "/" + data + "/dashboard.php";
+          });
+          return;
+        }
+
         Swal.fire({
           icon: "error",
           title: "ERROR",
-          text: "Incorrect username or password"
+          text: "Unexpected server response"
         });
-        return;
-      }
 
-      if (["admin", "secretary", "resident"].includes(data)) {
-        Swal.fire({
-          icon: "success",          // ✅ GREEN CHECK
-          title: "SUCCESS",
-          text: "Login Successfully",
-          showConfirmButton: false,
-          allowOutsideClick: false,
-          timer: 1800
-        }).then(() => {
-          window.location.href = "/" + data + "/dashboard.php";
-        });
-        return;
       }
-
-      Swal.fire({
-        icon: "error",
-        title: "ERROR",
-        text: "Unexpected server response"
     });
-    }
+
   });
 
 });
-
 </script>
+
 
 
 </body>
