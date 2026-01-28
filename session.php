@@ -1,16 +1,14 @@
 ﻿<?php
 /* ======================================================
-   🔐 CENTRAL SESSION HANDLER (PROD FIX)
+   🔐 CENTRAL SESSION HANDLER (HTTPS SAFE)
    ====================================================== */
 
-// IMPORTANT: allow session across www / non-www
+// IMPORTANT: HTTPS requires secure cookies
 ini_set('session.cookie_domain', '.taa-app.com');
 ini_set('session.cookie_path', '/');
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_strict_mode', 1);
-
-// set to 1 ONLY if HTTPS is enforced
-ini_set('session.cookie_secure', 0);
+ini_set('session.cookie_secure', 1); // 🔥 MUST be 1 on HTTPS
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
