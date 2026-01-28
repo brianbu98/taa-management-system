@@ -38,11 +38,39 @@ try {
         $image = $row['image'];
         $image_path = $row['image_path'];
         $id = $row['id'];
-    } // ✅ CLOSE while
+    }
 
-} catch (Exception $e) {
-    die("Dashboard error: " . $e->getMessage());
+    /* COUNTERS */
+    $yes = 'YES';
+    $no  = 'NO';
+
+    $sql_single_parent_yes = "SELECT single_parent FROM residence_status WHERE single_parent = ? AND archive = ?";
+    $stmt = $con->prepare($sql_single_parent_yes);
+    $stmt->bind_param('ss', $yes, $no);
+    $stmt->execute();
+    $stmt->store_result();
+    $count_single_parent_yes = $stmt->num_rows;
+
+    $sql_pwd_yes = "SELECT pwd FROM residence_status WHERE pwd = ? AND archive = ?";
+    $stmt = $con->prepare($sql_pwd_yes);
+    $stmt->bind_param('ss', $yes, $no);
+    $stmt->execute();
+    $stmt->store_result();
+    $count_pwd_yes = $stmt->num_rows;
+
+    $sql_total_residence = "SELECT residence_id FROM residence_status WHERE archive = ?";
+    $stmt = $con->prepare($sql_total_residence);
+    $stmt->bind_param('s', $no);
+    $stmt->execute();
+    $stmt->store_result();
+    $count_total_residence = $stmt->num_rows;
+
+    // continue your remaining queries HERE (still inside try)
+
+} catch (Throwable $e) {
+    die("Dashboard fatal error: " . $e->getMessage());
 }
+
 
 
     $yes= 'YES';
