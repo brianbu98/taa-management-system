@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/session.php';
 require_once __DIR__ . '/connection.php';
 require_once __DIR__ . '/userInfo.php';
 
@@ -25,14 +26,13 @@ if (!$row = $result->fetch_assoc()) {
 if ($password !== $row['password']) {
     exit('errorPassword');
 }
+/* 🔐 Regenerate session ID FIRST */
+session_regenerate_id(true);
 
 /* ✅ SESSION */
 $_SESSION['user_id']   = $row['id'];
-$_SESSION['username']  = $row['username'];
+$_SESSION['username'] = $row['username'];
 $_SESSION['user_type'] = $row['user_type'] ?? 'resident';
-
-/* 🔐 Extra safety */
-session_regenerate_id(true);
 
 /* 📝 ACTIVITY LOG */
 date_default_timezone_set('Asia/Manila');

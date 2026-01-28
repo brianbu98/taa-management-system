@@ -1,8 +1,9 @@
 
 <?php 
 
-include_once '../connection.php';
-session_start();
+require_once '../session.php';
+require_once '../connection.php';
+
 
 
 try{
