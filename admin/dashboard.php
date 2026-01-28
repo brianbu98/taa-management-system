@@ -1,6 +1,11 @@
 ﻿<?php
-require_once '../session.php';
-require_once '../connection.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once __DIR__ . '/../session.php';
+require_once __DIR__ . '/../connection.php';
+
 
 
 /* 🔐 AUTH GUARD */
@@ -36,7 +41,7 @@ try {
         $image = $row['image'];
         $image_path = $row['image_path'];
         $id = $row['id'];
-    }
+    
 
 } catch (Exception $e) {
     die("Dashboard error");
