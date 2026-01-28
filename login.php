@@ -1,17 +1,6 @@
 ﻿<?php
-ini_set('session.cookie_path', '/');
-ini_set('session.cookie_httponly', 1);
-ini_set('session.cookie_secure', 0); // set to 1 if HTTPS
-ini_set('display_errors', 0);
-error_reporting(0);
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
+require_once __DIR__ . '/session.php';
 require_once __DIR__ . '/connection.php';
-
-
 
 
 try{

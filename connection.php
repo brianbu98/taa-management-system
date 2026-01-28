@@ -1,15 +1,4 @@
 ﻿<?php
-/* ======================================================
-   🔐 SESSION CONFIG — MUST BE FIRST (BEFORE ANY OUTPUT)
-   ====================================================== */
-ini_set('session.cookie_path', '/');
-ini_set('session.cookie_domain', '');   // same domain (taa-app.com)
-ini_set('session.cookie_secure', 0);    // set to 1 if HTTPS-only
-ini_set('session.cookie_httponly', 1);
-
-if (session_status() === PHP_SESSION_NONE) {
-  
-}
 
 /* ======================================================
    🔌 DATABASE CONFIG
