@@ -12,6 +12,23 @@ if (!isset($_SESSION['user_id'], $_SESSION['user_type']) || $_SESSION['user_type
     exit;
 }
 
+// INIT ARRAYS (for charts)
+$year = [];
+$totalIncident = [];
+$official_postition = [];
+$position_color = [];
+$total_per_official = [];
+
+// INIT COUNTERS (dashboard safety)
+$count_users_yes = 0;
+$count_users_no = 0;
+$count_single_parent_yes = 0;
+$count_pwd_yes = 0;
+$count_total_residence = 0;
+$count_senior = 0;
+$total_incident_record = 0;
+
+
 try {
 
     /* 👤 ADMIN INFO */
@@ -40,48 +57,35 @@ try {
         $id = $row['id'];
     }
 
-    /* COUNTERS */
-    $yes = 'YES';
-    $no  = 'NO';
 
-    $sql_single_parent_yes = "SELECT single_parent FROM residence_status WHERE single_parent = ? AND archive = ?";
+    // continue your remaining queries HERE (still inside try)
+
+    
+
+    $yes= 'YES';
+    $no = 'NO';
+
+        // USERS STATUS COUNTERS
+    $sql_users_yes = "SELECT id FROM users WHERE status = 'YES'";
+    $stmt_users_yes = $con->prepare($sql_users_yes);
+    $stmt_users_yes->execute();
+    $stmt_users_yes->store_result();
+    $count_users_yes = $stmt_users_yes->num_rows;
+
+    $sql_users_no = "SELECT id FROM users WHERE status = 'NO'";
+    $stmt_users_no = $con->prepare($sql_users_no);
+    $stmt_users_no->execute();
+    $stmt_users_no->store_result();
+    $count_users_no = $stmt_users_no->num_rows;
+
+
+    $sql_single_parent_yes = "SELECT 1 FROM residence_status WHERE single_parent = ? AND archive = ?";
     $stmt = $con->prepare($sql_single_parent_yes);
     $stmt->bind_param('ss', $yes, $no);
     $stmt->execute();
     $stmt->store_result();
     $count_single_parent_yes = $stmt->num_rows;
 
-    $sql_pwd_yes = "SELECT pwd FROM residence_status WHERE pwd = ? AND archive = ?";
-    $stmt = $con->prepare($sql_pwd_yes);
-    $stmt->bind_param('ss', $yes, $no);
-    $stmt->execute();
-    $stmt->store_result();
-    $count_pwd_yes = $stmt->num_rows;
-
-    $sql_total_residence = "SELECT residence_id FROM residence_status WHERE archive = ?";
-    $stmt = $con->prepare($sql_total_residence);
-    $stmt->bind_param('s', $no);
-    $stmt->execute();
-    $stmt->store_result();
-    $count_total_residence = $stmt->num_rows;
-
-    // continue your remaining queries HERE (still inside try)
-
-} catch (Throwable $e) {
-    die("Dashboard fatal error: " . $e->getMessage());
-}
-
-
-
-    $yes= 'YES';
-    $no = 'NO';
-
-    $sql_single_parent_yes = "SELECT single_parent, archive FROM residence_status WHERE single_parent = ? AND archive = ?";
-    $query_single_parent_yes = $con->prepare($sql_single_parent_yes) or die ($con->error);
-    $query_single_parent_yes->bind_param('ss',$yes,$no);
-    $query_single_parent_yes->execute();
-    $query_single_parent_yes->store_result();
-    $count_single_parent_yes = $query_single_parent_yes->num_rows;
 
     $sql_pwd_yes = "SELECT pwd, archive FROM residence_status WHERE pwd = ? AND archive = ?";
     $query_pwd_yes = $con->prepare($sql_pwd_yes) or die ($con->error);
@@ -170,15 +174,14 @@ try {
     $query_total_payments->store_result();
     $count_total_payments = $query_total_payments->num_rows;
 
-  }else{
-    echo '<script>
-          window.location.href = "../login.php";
-        </script>';
-  }
 
-}catch(Exception $e){
-  echo $e->getMessage();
+
+} catch (Throwable $e) {
+    die("Dashboard fatal error: " . $e->getMessage());
 }
+
+
+  
 ?>
 
 
