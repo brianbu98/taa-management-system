@@ -143,12 +143,6 @@ try {
     }
 
     // -------------------------
-    // NEW: Total Announcements
-    $sql_total_announcements = "SELECT id FROM announcements";
-    $query_total_announcements = $con->prepare($sql_total_announcements) or die($con->error);
-    $query_total_announcements->execute();
-    $query_total_announcements->store_result();
-    $count_total_announcements = $query_total_announcements->num_rows;
 
     // NEW: Total Payments
     $sql_total_payments = "SELECT id FROM payments";
