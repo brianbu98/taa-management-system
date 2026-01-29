@@ -22,7 +22,6 @@ $total_per_official = [];
 // INIT COUNTERS (dashboard safety)
 $count_users_yes = 0;
 $count_users_no = 0;
-$count_pwd_yes = 0;
 $count_total_residence = 0;
 $count_senior = 0;
 $total_incident_record = 0;
@@ -77,14 +76,6 @@ try {
     $stmt_users_no->execute();
     $stmt_users_no->store_result();
     $count_users_no = $stmt_users_no->num_rows;
-
-
-    $sql_pwd_yes = "SELECT pwd, archive FROM residence_status WHERE pwd = ? AND archive = ?";
-    $query_pwd_yes = $con->prepare($sql_pwd_yes) or die ($con->error);
-    $query_pwd_yes->bind_param('ss',$yes,$no);
-    $query_pwd_yes->execute();
-    $query_pwd_yes->store_result();
-    $count_pwd_yes = $query_pwd_yes->num_rows;
 
     $sql_total_residence = "SELECT residence_id FROM residence_status WHERE archive = ?";
     $query_total_residence = $con->prepare($sql_total_residence) or die ($con->error);
@@ -545,22 +536,6 @@ try {
                         </div>
                   
                       </div>
-                    </div>
-                    <!-- ./col -->
-
-                    <div class="col-sm-12">
-                      <!-- small box -->
-                      <div class="small-box bg-blue">
-                        <div class="inner">
-                          <h3><?= number_format($count_pwd_yes ?? 0) ?><sup style="font-size: 20px"></sup></h3>
-
-                          <p>PERSONS WITH DISABILITIES</p>
-                        </div>
-                        <div class="icon">
-                          <i class="fas fa-wheelchair"></i>
-                        </div>
-                      
-                   </div>
                     </div>
                     <!-- ./col -->  
                     <div class="col-sm-12">
