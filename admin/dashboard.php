@@ -65,18 +65,20 @@ try {
     $yes= 'YES';
     $no = 'NO';
 
-        // USERS STATUS COUNTERS
-    $sql_users_yes = "SELECT id FROM users WHERE status = 'YES'";
+
+    // USERS COUNTERS BASED ON USER TYPE
+    $sql_users_yes = "SELECT 1 FROM users WHERE user_type = 'admin'";
     $stmt_users_yes = $con->prepare($sql_users_yes);
     $stmt_users_yes->execute();
     $stmt_users_yes->store_result();
     $count_users_yes = $stmt_users_yes->num_rows;
 
-    $sql_users_no = "SELECT id FROM users WHERE status = 'NO'";
+    $sql_users_no = "SELECT 1 FROM users WHERE user_type = 'resident'";
     $stmt_users_no = $con->prepare($sql_users_no);
     $stmt_users_no->execute();
     $stmt_users_no->store_result();
     $count_users_no = $stmt_users_no->num_rows;
+
 
 
     $sql_single_parent_yes = "SELECT 1 FROM residence_status WHERE single_parent = ? AND archive = ?";
