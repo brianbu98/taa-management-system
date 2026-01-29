@@ -22,7 +22,6 @@ $total_per_official = [];
 // INIT COUNTERS (dashboard safety)
 $count_users_yes = 0;
 $count_users_no = 0;
-$count_single_parent_yes = 0;
 $count_pwd_yes = 0;
 $count_total_residence = 0;
 $count_senior = 0;
@@ -78,15 +77,6 @@ try {
     $stmt_users_no->execute();
     $stmt_users_no->store_result();
     $count_users_no = $stmt_users_no->num_rows;
-
-
-
-    $sql_single_parent_yes = "SELECT 1 FROM residence_status WHERE single_parent = ? AND archive = ?";
-    $stmt = $con->prepare($sql_single_parent_yes);
-    $stmt->bind_param('ss', $yes, $no);
-    $stmt->execute();
-    $stmt->store_result();
-    $count_single_parent_yes = $stmt->num_rows;
 
 
     $sql_pwd_yes = "SELECT pwd, archive FROM residence_status WHERE pwd = ? AND archive = ?";
@@ -587,21 +577,7 @@ try {
 
                          </div>
                     </div>
-                    <!-- ./col -->   
-                    <div class="col-sm-12">
-                      <!-- small box -->
-                      <div class="small-box bg-fuchsia">
-                        <div class="inner">
-                          <h3><?= number_format($count_single_parent_yes ?? 0) ?><sup style="font-size: 20px"></sup></h3>
-
-                          <p>SINGLE PARENT</p>
-                        </div>
-                        <div class="icon">
-                          <i class="fas fa-baby"></i>
-                        </div>
-                      
-                      </div>
-                    </div>
+                  
                     <!-- ./col -->  
 
                   </div>
