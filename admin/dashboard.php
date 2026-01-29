@@ -23,7 +23,9 @@ $total_per_official = [];
 $count_users_yes = 0;
 $count_users_no = 0;
 $count_total_residence = 0;
-$count_senior = 0;
+$count_announcements = 0;
+$count_active_announcements = 0;
+$total_payment_amount = 0;
 $total_incident_record = 0;
 
 
@@ -84,10 +86,6 @@ try {
     $query_total_residence->store_result();
     $count_total_residence = $query_total_residence->num_rows;
 
-    $sql_senior = "SELECT age FROM residence_information  INNER JOIN residence_status ON residence_information.residence_id = residence_status.residence_id WHERE age  >= 60  AND archive = 'NO'";
-    $query_senior = $con->query($sql_senior) or die ($con->error);
-    $count_senior = $query_senior->num_rows;
-
     $sql_incident ="SELECT date_added as yyyy, count(incidentlog_id) as comp from incident_record group by date_added order by yyyy";
     $result_incident = $con->query($sql_incident) or die ($con->error);
     $count_incident_result = $result_incident->num_rows;
@@ -140,16 +138,56 @@ try {
       $official_postition[] = ['BLANK'];
       $position_color[] = ['red'];
       $total_per_official[] = ['1'];
+
     }
+   // ================= ANNOUNCEMENTS =================
+$sql_announce = "
+    SELECT 
+        COUNT(*) AS total,
+        SUM(CASE WHEN status = 'active' THEN 1 ELSE 0 END) AS active
+    FROM announcements
+";
+$result_announce = $con->query($sql_announce);
+$row_announce = $result_announce->fetch_assoc();
 
-    // -------------------------
+$count_announcements = (int)$row_announce['total'];
+$count_active_announcements = (int)$row_announce['active'];
 
-    // NEW: Total Payments
-    $sql_total_payments = "SELECT id FROM payments";
-    $query_total_payments = $con->prepare($sql_total_payments) or die($con->error);
-    $query_total_payments->execute();
-    $query_total_payments->store_result();
-    $count_total_payments = $query_total_payments->num_rows;
+
+// ================= PAYMENTS (BILLS / OBLIGATIONS) =================
+$sql_payments = "
+    SELECT
+        COUNT(*) AS total_bills,
+        SUM(CASE WHEN status = 'paid' THEN 1 ELSE 0 END) AS paid_bills,
+        SUM(CASE WHEN status = 'unpaid' THEN 1 ELSE 0 END) AS unpaid_bills,
+        SUM(CASE WHEN status = 'partial' THEN 1 ELSE 0 END) AS partial_bills,
+        IFNULL(SUM(amount_due), 0) AS total_amount_due
+    FROM payments
+";
+$result_payments = $con->query($sql_payments);
+$row_payments = $result_payments->fetch_assoc();
+
+$total_bills          = (int)$row_payments['total_bills'];
+$total_paid_bills     = (int)$row_payments['paid_bills'];
+$total_unpaid_bills   = (int)$row_payments['unpaid_bills'];
+$total_partial_bills  = (int)$row_payments['partial_bills'];
+$total_amount_due     = (float)$row_payments['total_amount_due'];
+
+
+// ================= PAYMENT RECORDS (MONEY RECEIVED) =================
+$sql_payment_records = "
+    SELECT
+        COUNT(*) AS total_records,
+        IFNULL(SUM(amount_paid), 0) AS total_collected
+    FROM payment_records
+";
+$result_payment_records = $con->query($sql_payment_records);
+$row_payment_records = $result_payment_records->fetch_assoc();
+
+$total_payment_records = (int)$row_payment_records['total_records'];
+$total_payment_amount  = (float)$row_payment_records['total_collected'];
+
+
 
 
 
@@ -515,22 +553,6 @@ try {
                       </div>
                     </div>
 
-                    <!-- ./col -->
-
-                    <div class="col-sm-12">
-                      <!-- small box -->
-                      <div class="small-box bg-danger">
-                        <div class="inner">
-                          <h3><?= number_format($count_senior?? 0) ?></h3>
-
-                          <p>SENIOR CITIZEN</p>
-                        </div>
-                        <div class="icon">
-                          <i class="fas fa-blind"></i>
-                        </div>
-                  
-                      </div>
-                    </div>
                     <!-- ./col -->  
                     <div class="col-sm-12">
                       <!-- small box -->
