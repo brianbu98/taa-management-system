@@ -1,4 +1,6 @@
 ﻿<?php
+require_once __DIR__ . '/session.php';
+
 /* ======================================================
    🔐 CENTRAL SESSION HANDLER (HTTPS SAFE)
    ====================================================== */
@@ -11,5 +13,7 @@ ini_set('session.use_strict_mode', 1);
 ini_set('session.cookie_secure', 1); // 🔥 MUST be 1 on HTTPS
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
+    ssession_name('TAA_DEV_SESSION');
     session_start();
+
 }
