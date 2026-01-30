@@ -747,6 +747,9 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
 <script src="../assets/plugins/chart.js/Chart.min.js"></script>
 <div id="showOfficial"></div>
 
+<script src="../assets/plugins/sweetalert2/js/sweetalert2.min.js"></script>
+
+
 
 
 <script>
@@ -929,13 +932,14 @@ new Chart("donutChart", {
             $("#viewOfficialModal").modal('show');              
           }
         }).fail(function(){
-          Swal.fire({
-            title: '<strong class="text-danger">Ooppss..</strong>',
-            type: 'error',
-            html: '<b>Something went wrong with ajax !<b>',
-            width: '400px',
-            confirmButtonColor: '#6610f2',
-          })
+              Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              html: '<b>Something went wrong with ajax!</b>',
+              width: 400,
+              confirmButtonColor: '#6610f2'
+            });
+
         })
      
 
