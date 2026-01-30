@@ -266,7 +266,7 @@ $(document).ready(function () {
             allowOutsideClick: false,
             timer: 1800
           }).then(() => {
-            window.location.href = "/" + data + "/dashboard.php";
+            window.location.href = data + "/dashboard.php";
           });
           return;
         }
