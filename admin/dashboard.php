@@ -542,7 +542,7 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
                       <!-- small box -->
                       <div class="small-box bg-success">
                         <div class="inner">
-                          <h3><?= number_format($count_users_yes ?? 0); ?></h3>
+                          <h3><?= number_format($count_admin_users ?? 0); ?></h3>
                           <p>UPSTANDING USERS</p>
                         </div>
                         <div class="icon">
@@ -556,7 +556,7 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
                       <!-- small box -->
                       <div class="small-box bg-warning">
                         <div class="inner">
-                          <h3 class="text-white"><?= number_format($count_users_no ?? 0); ?></h3>
+                          <h3 class="text-white"><?= number_format($count_resident_users ?? 0); ?></h3>
                           <p class="text-white">DISREPUTABLE RESIDENTS</p>
                         </div>
                         <div class="icon">
