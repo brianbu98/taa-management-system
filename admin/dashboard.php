@@ -52,7 +52,6 @@ try {
     $result = $query->get_result();
 
     while ($row = $result->fetch_assoc()) {
-        $image = $row['image'];
         $image_path = $row['image_path'];
         $id = $row['id'];
     }
@@ -270,13 +269,13 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
             <!-- Message Start -->
             <div class="media">
               <?php 
-                if($user_image != '' || $user_image != null || !empty($user_image)){
-                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle alt="User Image">';
-                }else{
-                  echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle alt="User Image">';
-                }
-              ?>
-            
+            if (!empty($user_image)) {
+                echo '<img src="../assets/dist/img/'.htmlspecialchars($user_image).'" class="img-size-50 mr-3 img-circle" alt="User Image">';
+            } else {
+                echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle" alt="User Image">';
+            }
+            ?>
+   
               <div class="media-body">
                 <h3 class="dropdown-item-title py-3">
                   <?= ucfirst($first_name_user) .' '. ucfirst($last_name_user) ?>
@@ -298,13 +297,18 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
     <!-- Brand Logo -->
     <a href="#" class="brand-link text-center">
     <?php 
-        if($image != '' || $image != null || !empty($image)){
-          echo '<img src="'.$image_path.'" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
-        }else{
-          echo ' <img src="../assets//logo//logo.png" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
-        }
+        $logoSrc = (!empty($image_path))
+    ? '../' . ltrim($image_path, '/')
+    : '../assets/logo/logo.png';
+?>
 
-      ?>
+<img src="<?= htmlspecialchars($logoSrc) ?>"
+     id="logo_image"
+     class="img-circle elevation-5 img-bordered-sm"
+     alt="logo"
+     style="width:70%;">
+
+    
       <span class="brand-text font-weight-light"></span>
     </a>
 
@@ -314,7 +318,15 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
 
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="../assets/dist/img/logo.png" class="img-circle elevation-5 img-bordered-sm" alt="User Image">
+         <?php
+        $sideLogo = (!empty($image_path))
+            ? '../' . ltrim($image_path, '/')
+            : '../assets/logo/logo.png';
+        ?>
+
+        <img src="<?= htmlspecialchars($sideLogo) ?>"
+             class="img-circle elevation-5 img-bordered-sm"
+             alt="Admin Logo">
         </div>
         <div class="info text-center">
           <a href="#" class="d-block text-bold"><?= strtoupper($user_type) ?></a>
