@@ -10,13 +10,13 @@ try{
 if (isset($_SESSION['user_id'], $_SESSION['user_type'])) {
     switch ($_SESSION['user_type']) {
         case 'admin':
-            header("Location: /admin/dashboard.php");
+            header("Location: /dev/admin/dashboard.php");
             break;
         case 'secretary':
-            header("Location: /secretary/dashboard.php");
+            header("Location: /dev/secretary/dashboard.php");
             break;
         default:
-            header("Location: /resident/dashboard.php");
+            header("Location: /dev/resident/dashboard.php");
     }
     exit;
 }
