@@ -91,7 +91,7 @@ try {
     if($count_incident_result > 0){
       while ($row_incident = $result_incident->fetch_array()) { 
         $year[]  = $row_incident['yyyy']  ;
-        $$totalIncident[] = (int)$row_incident['comp'];
+        $totalIncident[] = (int)$row_incident['comp'];
 
       }
     }else{
