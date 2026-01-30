@@ -88,10 +88,15 @@ $user_image      = $row_user['image'] ?? null;
     $stmt_users_no->store_result();
     $count_users_no = $stmt_users_no->num_rows;
 
-    $sql_total_residence = "SELECT residence_id FROM residence_status WHERE archive = ?";
-    $query_total_residence = $con->prepare($sql_total_residence) or die ($con->error);
-    $query_total_residence->bind_param('s',$no);
-    $query_total_residence->execute();
+    $sq$sql_total_residence = "SELECT residence_id FROM residence_status WHERE archive = ?";
+$query_total_residence = $con->prepare($sql_total_residence);
+if (!$query_total_residence) {
+    throw new Exception($con->error);
+}
+
+$query_total_residence->bind_param('s', $no);
+$query_total_residence->execute();
+
     $query_total_residence->store_result();
     $count_total_residence = $query_total_residence->num_rows;
 
