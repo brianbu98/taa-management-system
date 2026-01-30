@@ -88,7 +88,7 @@ $user_image      = $row_user['image'] ?? null;
     $stmt_users_no->store_result();
     $count_users_no = $stmt_users_no->num_rows;
 
-    $sq$sql_total_residence = "SELECT residence_id FROM residence_status WHERE archive = ?";
+    $sql_total_residence = "SELECT residence_id FROM residence_status WHERE archive = ?";
 $query_total_residence = $con->prepare($sql_total_residence);
 if (!$query_total_residence) {
     throw new Exception($con->error);
