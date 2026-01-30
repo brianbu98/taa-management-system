@@ -24,7 +24,11 @@ if (isset($_SESSION['user_id'], $_SESSION['user_type'])) {
 
 
 $sql = "SELECT * FROM `taa_information`";
-  $query = $con->prepare($sql) or die ($con->error);
+  $query = $con->prepare($sql);
+if (!$query) {
+    throw new Exception($con->error);
+}
+
   $query->execute();
   $result = $query->get_result();
   while($row = $result->fetch_assoc()){
