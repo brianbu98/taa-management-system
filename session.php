@@ -1,15 +1,16 @@
 ﻿<?php
 /* ======================================================
-   🔐 CENTRAL SESSION HANDLER (HTTPS SAFE)
+   🔐 TEST SESSION HANDLER
    ====================================================== */
 
-// IMPORTANT: HTTPS requires secure cookies
-ini_set('session.cookie_domain', '.taa-app.com');
-ini_set('session.cookie_path', '/');
+// Security flags (safe for HTTPS)
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_strict_mode', 1);
-ini_set('session.cookie_secure', 1); // 🔥 MUST be 1 on HTTPS
+ini_set('session.cookie_secure', 1);
+
+// IMPORTANT: do NOT force domain/path — let PHP isolate per folder
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_name('TAA_TEST_SESSION');
     session_start();
 }

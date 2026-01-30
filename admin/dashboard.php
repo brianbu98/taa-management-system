@@ -8,7 +8,7 @@ require_once __DIR__ . '/../connection.php';
 
 /* 🔐 AUTH GUARD */
 if (!isset($_SESSION['user_id'], $_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
-    header("Location: /login.php");
+    header("Location: ../login.php");
     exit;
 }
 
@@ -285,7 +285,7 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
             <!-- Message End -->
           </a>         
           <div class="dropdown-divider"></div>
-          <a href="../logout.php" class="dropdown-item dropdown-footer">LOGOUT</a>
+          <a href="logout.php" class="dropdown-item dropdown-footer">LOGOUT</a>
         </div>
       </li>
     </ul>
