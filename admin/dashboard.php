@@ -38,12 +38,22 @@ try {
     $stmt_user = $con->prepare($sql_user);
     $stmt_user->bind_param('i', $user_id);
     $stmt_user->execute();
-    $row_user = $stmt_user->get_result()->fetch_assoc();
+    $result_user = $stmt_user->get_result();
+    $row_user = $result_user->fetch_assoc();
 
-    $first_name_user = $row_user['first_name'];
-    $last_name_user  = $row_user['last_name'];
-    $user_type       = $row_user['user_type'];
-    $user_image      = $row_user['image'];
+if (!$row_user) {
+    // Session exists but user record is missing (DB mismatch, deleted user, wrong DB)
+    session_unset();
+    session_destroy();
+    header("Location: ../login.php");
+    exit;
+}
+
+$first_name_user = $row_user['first_name'] ?? '';
+$last_name_user  = $row_user['last_name'] ?? '';
+$user_type       = $row_user['user_type'] ?? '';
+$user_image      = $row_user['image'] ?? null;
+
 
     /* 🏷️ APP INFO */
     $sql = "SELECT * FROM taa_information";
