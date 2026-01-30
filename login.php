@@ -58,7 +58,8 @@ $sql = "SELECT * FROM `taa_information`";
 
   <!-- Theme style -->
   <link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
-  <link rel="stylesheet" href="assets/plugins/sweetalert2/css/sweetalert2.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
  
 
   <style>
@@ -231,7 +232,7 @@ $sql = "SELECT * FROM `taa_information`";
 <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="assets/dist/js/adminlte.js"></script>
-<script src="assets/plugins/sweetalert2/js/sweetalert2.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 $(document).ready(function () {
 
