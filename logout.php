@@ -3,8 +3,9 @@ require_once __DIR__ . '/session.php';
 require_once __DIR__ . '/connection.php';
 
 if (!isset($_SESSION['user_id'], $_SESSION['user_type'])) {
-    header("Location: login.php");
+    header("Location: /test/login.php");
     exit;
+
 }
 
 if ($_SESSION['user_type'] === 'admin') {
