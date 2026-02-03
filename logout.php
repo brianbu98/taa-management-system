@@ -41,6 +41,6 @@ session_unset();
 session_destroy();
 
 /* REDIRECT BACK TO TEST */
-header("Location: /test/login.php");
+header("Location: ../login.php");
 exit;
 
