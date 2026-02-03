@@ -16,7 +16,7 @@ if ($_SESSION['user_type'] === 'admin') {
     $user_type_log = 'RESIDENT';
 }
 
-$sql_user = "SELECT first_name, last_name FROM users WHERE id = ?";
+$sql_user = "SELECT first_name, last_name FROM users WHERE id = ?";a
 $stmt_user = $con->prepare($sql_user);
 $stmt_user->bind_param('i', $_SESSION['user_id']);
 $stmt_user->execute();
