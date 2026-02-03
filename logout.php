@@ -1,13 +1,14 @@
 <?php
-require_once __DIR__ . '/session.php';
-require_once __DIR__ . '/connection.php';
+require_once __DIR__ . '/../connection.php';
+session_start();
 
+/* SAFETY CHECK */
 if (!isset($_SESSION['user_id'], $_SESSION['user_type'])) {
     header("Location: /test/login.php");
     exit;
-
 }
 
+/* USER TYPE */
 if ($_SESSION['user_type'] === 'admin') {
     $user_type_log = 'ADMIN';
 } elseif ($_SESSION['user_type'] === 'secretary') {
@@ -16,20 +17,22 @@ if ($_SESSION['user_type'] === 'admin') {
     $user_type_log = 'RESIDENT';
 }
 
+/* FETCH USER */
 $sql_user = "SELECT first_name, last_name FROM users WHERE id = ?";
 $stmt_user = $con->prepare($sql_user);
 $stmt_user->bind_param('i', $_SESSION['user_id']);
 $stmt_user->execute();
 $row_user = $stmt_user->get_result()->fetch_assoc();
 
-$first_name = $row_user['first_name'];
-$last_name  = $row_user['last_name'];
+$first_name = $row_user['first_name'] ?? '';
+$last_name  = $row_user['last_name'] ?? '';
 
+/* LOG ACTIVITY */
 $date_activity = date("j-n-Y g:i A");
 $message = $user_type_log . ': ' . $first_name . ' ' . $last_name . ' | LOGOUT';
+$status_activity_log = 'logout';
 
 $sql_system_logs = "INSERT INTO activity_log (`message`, `date`, `status`) VALUES (?, ?, ?)";
-$status_activity_log = 'logout';
 $query_system_logs = $con->prepare($sql_system_logs);
 $query_system_logs->bind_param('sss', $message, $date_activity, $status_activity_log);
 $query_system_logs->execute();
@@ -40,7 +43,6 @@ $_SESSION = [];
 session_unset();
 session_destroy();
 
-/* REDIRECT BACK TO TEST */
-header("Location: ../login.php");
+/* REDIRECT */
+header("Location: /test/login.php");
 exit;
-
