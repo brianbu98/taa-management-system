@@ -41,5 +41,6 @@ session_unset();
 session_destroy();
 
 /* REDIRECT */
-header("Location: /dev/login.php");
+header("Location: ../login.php");
 exit;
+
