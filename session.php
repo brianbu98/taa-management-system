@@ -1,19 +1,24 @@
 ﻿<?php
-require_once __DIR__ . '/session.php';
-
 /* ======================================================
-   🔐 CENTRAL SESSION HANDLER (HTTPS SAFE)
+   🔐 DEV SESSION HANDLER
    ====================================================== */
 
-// IMPORTANT: HTTPS requires secure cookies
-ini_set('session.cookie_domain', '.taa-app.com');
-ini_set('session.cookie_path', '/');
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_strict_mode', 1);
-ini_set('session.cookie_secure', 1); // 🔥 MUST be 1 on HTTPS
+
+$isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
+ini_set('session.cookie_secure', $isHttps ? 1 : 0);
+
+/*
+  IMPORTANT:
+  - Do NOT force cookie domain
+  - Do NOT force cookie path
+*/
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_name('TAA_DEV_SESSION');
     session_start();
+}
+session_start();
 
 }
