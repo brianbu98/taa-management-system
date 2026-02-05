@@ -301,7 +301,7 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
             <!-- Message End -->
           </a>         
           <div class="dropdown-divider"></div>
-          <a href="../logout.php" class="dropdown-item dropdown-footer">LOGOUT</a>
+          <a href="/test/logout.php" class="dropdown-item dropdown-footer">LOGOUT</a>
         </div>
       </li>
     </ul>
