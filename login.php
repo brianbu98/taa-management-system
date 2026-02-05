@@ -10,21 +10,20 @@ require_once __DIR__ . '/connection.php';
 try{
 
 
-
 $base = dirname($_SERVER['SCRIPT_NAME']);
 
-switch ($_SESSION['user_type']) {
-    case 'admin':
-        header("Location: $base/admin/dashboard.php");
-        break;
-    case 'secretary':
-        header("Location: $base/secretary/dashboard.php");
-        break;
-    default:
-        header("Location: $base/resident/dashboard.php");
-}
-exit;
-
+if (isset($_SESSION['user_id'], $_SESSION['user_type'])) {
+    switch ($_SESSION['user_type']) {
+        case 'admin':
+            header("Location: $base/admin/dashboard.php");
+            break;
+        case 'secretary':
+            header("Location: $base/secretary/dashboard.php");
+            break;
+        default:
+            header("Location: $base/resident/dashboard.php");
+    }
+    exit;
 }
 
 
