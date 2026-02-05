@@ -34,6 +34,13 @@ session_set_cookie_params([
     'samesite' => 'Lax'
 ]);
 
+session_set_cookie_params([
+    'path' => dirname($_SERVER['SCRIPT_NAME']) . '/',
+    'secure' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),
+    'httponly' => true,
+    'samesite' => 'Lax'
+]);
+
 
 /* 🔐 Regenerate session ID FIRST */
 session_regenerate_id(true);

@@ -7,21 +7,20 @@ try{
 
 
 
-if (isset($_SESSION['user_id'], $_SESSION['user_type'])) {
-    switch ($_SESSION['user_type']) {
+$base = dirname($_SERVER['SCRIPT_NAME']);
 
-        case 'admin':
-            header("Location: admin/dashboard.php");
-            break;
+switch ($_SESSION['user_type']) {
+    case 'admin':
+        header("Location: $base/admin/dashboard.php");
+        break;
+    case 'secretary':
+        header("Location: $base/secretary/dashboard.php");
+        break;
+    default:
+        header("Location: $base/resident/dashboard.php");
+}
+exit;
 
-        case 'secretary':
-            header("Location: secretary/dashboard.php");
-            break;
-
-        default:
-            header("Location: resident/dashboard.php");
-    }
-    exit;
 }
 
 
