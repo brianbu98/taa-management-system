@@ -11,36 +11,22 @@ require_once __DIR__ . '/connection.php';
 try{
 
 
-$base = dirname($_SERVER['SCRIPT_NAME']);
+if (isset($_SESSION['user_id'])) {
+    $base = dirname($_SERVER['SCRIPT_NAME']);
 
-if (!empty($_SESSION['user_id']) && !empty($_SESSION['user_type'])) {
-
-    // Verify session is REAL by checking DB
-    $stmt = $con->prepare("SELECT id FROM users WHERE id = ?");
-    $stmt->bind_param('i', $_SESSION['user_id']);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        $base = dirname($_SERVER['SCRIPT_NAME']);
-
-        switch ($_SESSION['user_type']) {
-            case 'admin':
-                header("Location: $base/admin/dashboard.php");
-                break;
-            case 'secretary':
-                header("Location: $base/secretary/dashboard.php");
-                break;
-            default:
-                header("Location: $base/resident/dashboard.php");
-        }
-        exit;
-    } else {
-        // Session invalid → force logout state
-        session_unset();
-        session_destroy();
+    switch ($_SESSION['user_type']) {
+        case 'admin':
+            header("Location: $base/admin/dashboard.php");
+            break;
+        case 'secretary':
+            header("Location: $base/secretary/dashboard.php");
+            break;
+        default:
+            header("Location: $base/resident/dashboard.php");
     }
+    exit;
 }
+
 
 
 
