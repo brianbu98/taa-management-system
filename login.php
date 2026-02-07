@@ -1,30 +1,25 @@
 ﻿<?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 require_once __DIR__ . '/session.php';
 require_once __DIR__ . '/connection.php';
 
 
-if (isset($_SESSION['user_id'])) {
-    $base = dirname($_SERVER['SCRIPT_NAME']);
+try{
 
+
+
+if (isset($_SESSION['user_id'], $_SESSION['user_type'])) {
     switch ($_SESSION['user_type']) {
         case 'admin':
-            header("Location: $base/admin/dashboard.php");
+            header("Location: /admin/dashboard.php");
             break;
         case 'secretary':
-            header("Location: $base/secretary/dashboard.php");
+            header("Location: /secretary/dashboard.php");
             break;
         default:
-            header("Location: $base/resident/dashboard.php");
+            header("Location: /resident/dashboard.php");
     }
     exit;
 }
-
-
-
 
 
 
@@ -271,7 +266,7 @@ $(document).ready(function () {
             allowOutsideClick: false,
             timer: 1800
           }).then(() => {
-            window.location.href = data + "/dashboard.php";
+            window.location.href = "/" + data + "/dashboard.php";
           });
           return;
         }
