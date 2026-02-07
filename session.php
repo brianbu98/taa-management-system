@@ -7,9 +7,6 @@ ini_set('session.cookie_secure', $isHttps ? 1 : 0);
 
 session_name('TAA_DEV_SESSION');
 
-/* Only start session if allowed */
-if (!isset($NO_SESSION_START)) {
-    if (session_status() !== PHP_SESSION_ACTIVE) {
-        session_start();
-    }
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
 }
