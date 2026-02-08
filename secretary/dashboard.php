@@ -73,6 +73,22 @@ try {
                         group by date_added 
                         order by yyyy";
 
+=======
+
+        $result_incident = $con->query($sql_incident);
+
+        if($result_incident->num_rows > 0){
+            while ($row_incident = $result_incident->fetch_array()) { 
+                $year[]  = $row_incident['yyyy'];
+                $totalIncident[] = number_format($row_incident['comp']);
+            }
+        }else{
+            $year[]  = ['0000','1000'];
+            $totalIncident[] = ['100','200'];
+        }
+
+
+
         $result_incident = $con->query($sql_incident);
 
         if($result_incident->num_rows > 0){
@@ -126,6 +142,7 @@ try {
         // ------------------------------
         // ANNOUNCEMENTS (new)
         // ------------------------------
+<<<<<<< HEAD
        $sql_announcements = "
     SELECT a.*, CONCAT(u.first_name,' ',u.last_name) AS posted_name
     FROM announcements a
@@ -134,6 +151,9 @@ try {
     ORDER BY a.created_at DESC
     LIMIT 5
 ";
+=======
+       $sql_announcements = "SELECT * FROM announcements ORDER BY id DESC LIMIT 5";
+
         $result_announcements = $con->query($sql_announcements) or die($con->error);
 
         // ------------------------------
