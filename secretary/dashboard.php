@@ -17,7 +17,7 @@ try {
         $user_id = $_SESSION['user_id'];
         $sql_user = "SELECT * FROM `users` WHERE `id` = ? ";
         $stmt_user = $con->prepare($sql_user) or die ($con->error);
-        $stmt_user->bind_param('s',$user_id);
+        $stmt_user->bind_param('i',$user_id);
         $stmt_user->execute();
         $result_user = $stmt_user->get_result();
         $row_user = $result_user->fetch_assoc();
@@ -213,7 +213,7 @@ try {
             <div class="media">
               <?php 
                 if($user_image != '' || $user_image != null || !empty($user_image)){
-                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle alt="User Image">';
+                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle" alt="User Image">';
                 }else{
                   echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle alt="User Image">';
                 }
@@ -435,7 +435,7 @@ $logoSrc = (!empty($image_path))
       <!-- small box -->
       <div class="small-box bg-success">
         <div class="inner">
-          <h3><?= number_format($count_users_yes) ?><stlye style="font-size: 20px"></stlye></h3>
+          <h3><?= number_format($count_users_yes) ?><style style="font-size: 20px"></style></h3>
 
           <p>UPSTANDING USERS</p>
         </div>
