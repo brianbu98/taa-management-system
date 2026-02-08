@@ -33,51 +33,33 @@ try {
         $yes= 'YES';
         $no = 'NO';
 
-        // Voters, PWD, Single Parent, Seniors, etc.
-        $sql_voters_yes = "SELECT voters, archive FROM residence_status WHERE voters = ? AND archive = ?";
-        $query_voters_yes = $con->prepare($sql_voters_yes) or die ($con->error);
-        $query_voters_yes->bind_param('ss',$yes,$no);
-        $query_voters_yes->execute();
-        $query_voters_yes->store_result();
-        $count_voters_yes = $query_voters_yes->num_rows;
+        /* USERS COUNTERS BASED ON USER TYPE */
+        $sql_users_yes = "SELECT 1 FROM users WHERE user_type = 'admin'";
+        $stmt_users_yes = $con->prepare($sql_users_yes);
+        $stmt_users_yes->execute();
+        $stmt_users_yes->store_result();
+        $count_users_yes = $stmt_users_yes->num_rows;
 
-        $sql_voters_no = "SELECT voters, archive FROM residence_status WHERE voters = ? AND archive = ?";
-        $query_voters_no = $con->prepare($sql_voters_no) or die ($con->error);
-        $query_voters_no->bind_param('ss',$no,$no);
-        $query_voters_no->execute();
-        $query_voters_no->store_result();
-        $count_voters_no = $query_voters_no->num_rows;
+        $sql_users_no = "SELECT 1 FROM users WHERE user_type = 'resident'";
+        $stmt_users_no = $con->prepare($sql_users_no);
+        $stmt_users_no->execute();
+        $stmt_users_no->store_result();
+        $count_users_no = $stmt_users_no->num_rows;
 
-        $sql_single_parent_yes = "SELECT single_parent, archive FROM residence_status WHERE single_parent = ? AND archive = ?";
-        $query_single_parent_yes = $con->prepare($sql_single_parent_yes) or die ($con->error);
-        $query_single_parent_yes->bind_param('ss',$yes,$no);
-        $query_single_parent_yes->execute();
-        $query_single_parent_yes->store_result();
-        $count_single_parent_yes = $query_single_parent_yes->num_rows;
-
-        $sql_pwd_yes = "SELECT pwd, archive FROM residence_status WHERE pwd = ? AND archive = ?";
-        $query_pwd_yes = $con->prepare($sql_pwd_yes) or die ($con->error);
-        $query_pwd_yes->bind_param('ss',$yes,$no);
-        $query_pwd_yes->execute();
-        $query_pwd_yes->store_result();
-        $count_pwd_yes = $query_pwd_yes->num_rows;
-
+        /* TOTAL RESIDENCE */
         $sql_total_residence = "SELECT residence_id FROM residence_status WHERE archive = ?";
-        $query_total_residence = $con->prepare($sql_total_residence) or die ($con->error);
+        $query_total_residence = $con->prepare($sql_total_residence);
         $query_total_residence->bind_param('s',$no);
         $query_total_residence->execute();
         $query_total_residence->store_result();
         $count_total_residence = $query_total_residence->num_rows;
 
-        $sql_senior = "SELECT age FROM residence_information  INNER JOIN residence_status ON residence_information.residence_id = residence_status.residence_id WHERE age  >= 60  AND archive = 'NO'";
-        $query_senior = $con->query($sql_senior) or die ($con->error);
-        $count_senior = $query_senior->num_rows;
 
-       $sql_total_incident = "SELECT incidentlog_id FROM incident_record";
-$stmt_total_incident = $con->prepare($sql_total_incident) or die($con->error);
-$stmt_total_incident->execute();
-$result_total_incident = $stmt_total_incident->get_result(); // make sure spelling matches
-$total_incident_record = $result_total_incident->num_rows;    // use the correct variable
+               $sql_total_incident = "SELECT incidentlog_id FROM incident_record";
+        $stmt_total_incident = $con->prepare($sql_total_incident) or die($con->error);
+        $stmt_total_incident->execute();
+        $result_total_incident = $stmt_total_incident->get_result(); // make sure spelling matches
+        $total_incident_record = $result_total_incident->num_rows;    // use the correct variable
 
 
         $sql_gender ="SELECT COUNT(CASE WHEN gender = 'Male' THEN residence_information.residence_id END) as male,
@@ -234,10 +216,15 @@ $total_incident_record = $result_total_incident->num_rows;    // use the correct
     <!-- Brand Logo -->
     <a href="#" class="brand-link text-center">
     <?php 
-        if($image != '' || $image != null || !empty($image)){
-          echo '<img src="'.$image_path.'" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
-        }else{
-          echo ' <img src="../assets//logo//logo.png" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
+      $logoSrc = (!empty($image_path))
+    ? '../' . ltrim($image_path, '/')
+    : '../assets/logo/logo.png';
+?>
+
+<img src="<?= htmlspecialchars($logoSrc) ?>"
+     id="logo_image"
+     class="img-circle elevation-5 img-bordered-sm"
+     style="width:70%;">
         }
 
       ?>
@@ -426,7 +413,7 @@ $total_incident_record = $result_total_incident->num_rows;    // use the correct
       <!-- small box -->
       <div class="small-box bg-success">
         <div class="inner">
-          <h3><?= number_format($count_voters_yes) ?><stlye style="font-size: 20px"></stlye></h3>
+          <h3><?= number_format($count_users_yes) ?><stlye style="font-size: 20px"></stlye></h3>
 
           <p>UPSTANDING USERS</p>
         </div>
@@ -442,7 +429,7 @@ $total_incident_record = $result_total_incident->num_rows;    // use the correct
       <!-- small box -->
       <div class="small-box bg-warning ">
         <div class="inner">
-          <h3 class="text-white"><?= number_format($count_voters_no); ?></h3>
+          <h3 class="text-white"><?= number_format($count_users_no); ?></h3>
 
           <p class="text-white">DISREPUTABLE RESIDENTS</p>
         </div>
