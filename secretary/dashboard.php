@@ -4,6 +4,13 @@ require_once '../session.php';
 require_once '../connection.php';
 
 
+$year = [];
+$totalIncident = [];
+$official_postition = [];
+$position_color = [];
+$total_per_official = [];
+
+
 try {
     if(isset($_SESSION['user_id']) && isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'secretary'){
 
@@ -61,6 +68,23 @@ try {
         $result_total_incident = $stmt_total_incident->get_result(); // make sure spelling matches
         $total_incident_record = $result_total_incident->num_rows;    // use the correct variable
 
+         $sql_incident ="SELECT date_added as yyyy, count(incidentlog_id) as comp 
+                        FROM incident_record 
+                        group by date_added 
+                        order by yyyy";
+
+        $result_incident = $con->query($sql_incident);
+
+        if($result_incident->num_rows > 0){
+            while ($row_incident = $result_incident->fetch_array()) { 
+                $year[]  = $row_incident['yyyy'];
+                $totalIncident[] = number_format($row_incident['comp']);
+            }
+        }else{
+            $year[]  = ['0000','1000'];
+            $totalIncident[] = ['100','200'];
+        }
+
 
         $sql_gender ="SELECT COUNT(CASE WHEN gender = 'Male' THEN residence_information.residence_id END) as male,
         COUNT(CASE WHEN gender = 'Female' THEN residence_information.residence_id END) as female
@@ -100,7 +124,7 @@ try {
         // ------------------------------
         // ANNOUNCEMENTS (new)
         // ------------------------------
-        $sql_announcements = "SELECT * FROM announcements ORDER BY date_posted DESC LIMIT 5";
+       $sql_announcements = "SELECT * FROM announcements ORDER BY id DESC LIMIT 5";
         $result_announcements = $con->query($sql_announcements) or die($con->error);
 
         // ------------------------------
@@ -214,9 +238,9 @@ try {
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand">
     <!-- Brand Logo -->
-    <a href="#" class="brand-link text-center">
-    <?php 
-      $logoSrc = (!empty($image_path))
+<a href="#" class="brand-link text-center">
+<?php 
+$logoSrc = (!empty($image_path))
     ? '../' . ltrim($image_path, '/')
     : '../assets/logo/logo.png';
 ?>
@@ -225,11 +249,9 @@ try {
      id="logo_image"
      class="img-circle elevation-5 img-bordered-sm"
      style="width:70%;">
-        }
+<span class="brand-text font-weight-light"></span>
+</a>
 
-      ?>
-      <span class="brand-text font-weight-light"></span>
-    </a>
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -440,38 +462,7 @@ try {
       </div>
     </div>
     <!-- ./col -->
-
-    <div class="col-sm-12">
-      <!-- small box -->
-      <div class="small-box bg-danger">
-        <div class="inner">
-          <h3><?= number_format($count_senior) ?></h3>
-
-          <p>SENIOR CITIZEN</p>
-        </div>
-        <div class="icon">
-          <i class="fas fa-blind"></i>
-        </div>
   
-      </div>
-    </div>
-    <!-- ./col -->
-
-    <div class="col-sm-12">
-      <!-- small box -->
-      <div class="small-box bg-blue">
-        <div class="inner">
-          <h3><?= number_format($count_pwd_yes) ?><sup style="font-size: 20px"></sup></h3>
-
-          <p>PERSONS WITH DISABILITIES</p>
-        </div>
-        <div class="icon">
-          <i class="fas fa-wheelchair"></i>
-        </div>
-      
-      </div>
-    </div>
-    <!-- ./col -->  
     <div class="col-sm-12">
       <!-- small box -->
       <div class="small-box bg-indigo">
@@ -485,24 +476,7 @@ try {
         </div>
       
       </div>
-    </div>
-    <!-- ./col -->   
-    <div class="col-sm-12">
-      <!-- small box -->
-      <div class="small-box bg-fuchsia">
-        <div class="inner">
-          <h3><?= number_format($count_single_parent_yes) ?><sup style="font-size: 20px"></sup></h3>
-          <p>SINGLE PARENT</p>
-        </div>
-        <div class="icon">
-          <i class="fas fa-baby"></i>
-        </div>
-      
-      </div>
-
-
-    </div>
-    <!-- ./col -->  
+    </div> 
 
   </div>
 </div>
@@ -732,10 +706,6 @@ let massPopChart = new Chart(myChart,{
 
   }
 })
-
-
-
-
 
 
 
