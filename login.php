@@ -178,7 +178,8 @@ $sql = "SELECT * FROM `taa_information`";
                     </div>
                     <input type="password"  id="password" name="password" class="form-control" placeholder="PASSWORD"  style="border-right: none;">
                     <div class="input-group-append bg">
-                      <span class="input-group-text bg-transparent"> <a href="" style=" text-decoration:none;"><i class="fas fa-eye-slash" aria-hidden="true"></i></a></span>
+                      <span class="input-group-text bg-transparent" id="togglePassword" style="cursor:pointer;"><i class="fas fa-eye-slash" id="eyeIcon"></i></span>
+
                     </div>
                   </div>
                 </div>
@@ -280,6 +281,20 @@ $(document).ready(function () {
       }
     });
 
+  });
+
+
+$("#togglePassword").on("click", function () {
+    let passInput = $("#password");
+    let icon = $("#eyeIcon");
+
+    if (passInput.attr("type") === "password") {
+      passInput.attr("type", "text");
+      icon.removeClass("fa-eye-slash").addClass("fa-eye");
+    } else {
+      passInput.attr("type", "password");
+      icon.removeClass("fa-eye").addClass("fa-eye-slash");
+    }
   });
 
 });
