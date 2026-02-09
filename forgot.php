@@ -5,7 +5,8 @@ session_start();
 
 try{
 
-          if(isset($_SESSION['user_id']) && $_SESSION['user_type']){
+          if(isset($_SESSION['user_id']) && isset($_SESSION['user_type'])){
+
 
 
             $user_id = $_SESSION['user_id'];
@@ -40,12 +41,18 @@ $sql = "SELECT * FROM `taa_information`";
   $query = $con->prepare($sql) or die ($con->error);
   $query->execute();
   $result = $query->get_result();
-  while($row = $result->fetch_assoc()){
+  if($row = $result->fetch_assoc()){
       $image = $row['image'];
       $image_path = $row['image_path'];
       $id = $row['id'];
       $postal_address = $row['postal_address'];
   }
+
+  $logoSrc = (!empty($image_path))
+    ? $image_path
+    : 'assets/logo/logo.png';
+
+
 
 }catch(Exception $e){
   echo $e->getMessage();
@@ -129,7 +136,8 @@ $sql = "SELECT * FROM `taa_information`";
   <nav class="main-header navbar navbar-expand-md " style="background-color: #2e8b57">
     <div class="container">
       <a href="" class="navbar-brand">
-        <img src="assets/dist/img/<?= $image ?>" alt="logo" class="brand-image img-circle " >
+        <img src="<?= htmlspecialchars($logoSrc) ?>" alt="logo" class="brand-image img-circle">
+
         <span class="brand-text  text-white" style="font-weight: 700">TEREMIL ASSISTANCE APPLICATION</span>
       </a>
 
@@ -172,7 +180,8 @@ $sql = "SELECT * FROM `taa_information`";
           <div class="card " style="border: 10px solid rgba(0,54,175,.75); border-radius: 0;">
             <div class="card-body text-center text-white">
               <div class="col-sm-12">
-                <img src="assets/dist/img/<?= $image;?>" alt="logo" class="img-circle logo">
+                <img src="<?= htmlspecialchars($logoSrc) ?>" alt="logo"  class="img-circle logo">
+
               </div>
               <div class="col-sm-12">
                 <h1 class="card-text" style="font-weight: 1000; color: #0036af">FORGOT PASSWORD</h1>
@@ -260,7 +269,7 @@ $sql = "SELECT * FROM `taa_information`";
             url: 'recoverAccount.php',
             type: 'POST',
             data:{username:username},
-            cache: false,baran
+            cache: false,
             success:function(data){
               $("#show_number").html(data);
               $("#recoverModal").modal('show');
