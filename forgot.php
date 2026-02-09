@@ -41,7 +41,7 @@ $sql = "SELECT * FROM `taa_information`";
   $query = $con->prepare($sql) or die ($con->error);
   $query->execute();
   $result = $query->get_result();
-  while($row = $result->fetch_assoc()){
+  if($row = $result->fetch_assoc()){
       $image = $row['image'];
       $image_path = $row['image_path'];
       $id = $row['id'];
@@ -49,8 +49,9 @@ $sql = "SELECT * FROM `taa_information`";
   }
 
   $logoSrc = (!empty($image_path))
-    ? ltrim($image_path, '/')
+    ? $image_path
     : 'assets/logo/logo.png';
+
 
 
 }catch(Exception $e){
@@ -268,7 +269,7 @@ $sql = "SELECT * FROM `taa_information`";
             url: 'recoverAccount.php',
             type: 'POST',
             data:{username:username},
-            cache: false,baran
+            cache: false,
             success:function(data){
               $("#show_number").html(data);
               $("#recoverModal").modal('show');
