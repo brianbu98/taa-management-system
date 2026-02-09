@@ -36,7 +36,7 @@ try{
 
         }
 
-$sql = "SELECT * FROM `barangay_information`";
+$sql = "SELECT * FROM `taa_information`";
   $query = $con->prepare($sql) or die ($con->error);
   $query->execute();
   $result = $query->get_result();
@@ -83,7 +83,7 @@ $sql = "SELECT * FROM `barangay_information`";
 
 
     
-    #barangay_logo{
+    #taa_logo{
       height: 150px;
       width:auto;
       max-width:500px;
@@ -260,7 +260,7 @@ $sql = "SELECT * FROM `barangay_information`";
             url: 'recoverAccount.php',
             type: 'POST',
             data:{username:username},
-            cache: false,
+            cache: false,baran
             success:function(data){
               $("#show_number").html(data);
               $("#recoverModal").modal('show');
