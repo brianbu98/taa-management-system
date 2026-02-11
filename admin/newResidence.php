@@ -116,7 +116,7 @@ try{
                 if($user_image != '' || $user_image != null || !empty($user_image)){
                   echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle alt="User Image">';
                 }else{
-                  echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle alt="User Image">';
+                  echo '<img src="../assets/img/image.png" class="img-size-50 mr-3 img-circle alt="User Image">';
                 }
               ?>
             
@@ -142,7 +142,7 @@ try{
     <a href="#" class="brand-link text-center">
     <?php 
         if(!empty($image_path)){
-          echo '<img src="'.$image_path.'" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
+          echo '<img src="../'.$image_path.'" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
         }else{
           echo ' <img src="../assets/logo/logo.png" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
         }
@@ -157,7 +157,7 @@ try{
 
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="../assets/dist/img/logo.png" class="img-circle elevation-5 img-bordered-sm" alt="User Image">
+          <img src="../assets/logo/logo.png" class="img-circle elevation-5 img-bordered-sm" alt="User Image">
         </div>
         <div class="info text-center">
           <a href="#" class="d-block text-bold"><?= strtoupper($user_type) ?></a>
@@ -350,16 +350,7 @@ try{
                 <h3 class="profile-username text-center "><span id="keyup_first_name"></span> <span id="keyup_last_name"></span></h3>
   
                 <div class="row">
-                  <div class="col-sm-12">
-                    <div class="form-group">
-                      <label>Voters</label>
-                      <select name="add_voters" id="add_voters" class="form-control">
-                      <option value=""></option>
-                        <option value="NO">NO</option>
-                        <option value="YES">YES</option>
-                      </select>
-                    </div>
-                  </div>
+          
                   <div class="col-sm-12">
                     <div class="form-group ">
                       <label >Gender</label>
@@ -379,32 +370,6 @@ try{
                     <div class="form-group ">
                       <label >Place of Birth</label>
                       <input type="text" class="form-control" id="add_birth_place" name="add_birth_place">
-                    </div>
-                  </div>
-                  <div class="col-sm-12">
-                    <div class="form-group ">
-                      <label >PWD</label>
-                      <select name="add_pwd" id="add_pwd" class="form-control">
-                      <option value=""></option>
-                        <option value="NO">NO</option>
-                        <option value="YES">YES</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-sm-12" id="pwd_check" style="display: none;">
-                    <div class="form-group ">
-                      <label >TYPE OF PWD</label>
-                        <input type="text" class="form-control" id="add_pwd_info" name="add_pwd_info">
-                    </div>
-                  </div>
-                  <div class="col-sm-12">
-                    <div class="form-group ">
-                      <label >Single Parent</label>
-                      <select name="add_single_parent" id="add_single_parent" class="form-control">
-                        <option value=""></option>
-                        <option value="NO">NO</option>
-                        <option value="YES">YES</option>
-                      </select>
                     </div>
                   </div>
                 </div>
@@ -638,18 +603,6 @@ try{
 <script>
   $(document).ready(function(){
 
-    $("#add_pwd").change(function(){
-      var pwd_check = $(this).val();
-
-      if(pwd_check == 'YES'){
-        $("#pwd_check").css('display', 'block');
-        $("#add_pwd_info").prop('disabled', false);
-      }else{
-        $("#pwd_check").css('display', 'none');
-        $("#add_pwd_info").prop('disabled', true);
-      }
-
-    })
 
 
     $(function () {
@@ -706,18 +659,6 @@ try{
             minlength: 11
           },
           add_address:{
-            required: true,
-          },
-          add_voters:{
-            required: true,
-          },
-          add_pwd:{
-            required: true,
-          },
-          add_single_parent:{
-            required: true,
-          },
-          add_pwd_info:{
             required: true,
           },
           add_email_address:{
