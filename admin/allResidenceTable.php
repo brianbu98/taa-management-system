@@ -48,7 +48,11 @@ ON residence_information.household_id = households.household_id
 
     $totalFiltered = $totalData;
 
+
     // ORDERING (UPDATED FOR NEW COLUMNS)
+    // --- Column mapping for safe ORDER BY (index => column)
+    // DataTables columns (from your UI): image, id, name, age, status switch, actions
+
     $columns = [
         0 => 'residence_information.image_path',
         1 => 'residence_information.residence_id',
