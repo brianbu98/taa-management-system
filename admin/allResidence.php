@@ -404,7 +404,11 @@ input:checked + .slider .off{
     <a href="#" class="brand-link text-center">
     <?php 
         if(!empty($image_path)){
+
           echo '<img src="../'.$image_path.'" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
+=======
+          echo '<img src="'.$image_path.'" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
+
         }else{
           echo ' <img src="../assets//logo//logo.png" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
         }
@@ -671,6 +675,7 @@ input:checked + .slider .off{
               </div>
                 
               
+
                    <table class="table table-striped table-hover" id="allResidenceTable">
           <thead class="bg-black text-uppercase">
             <tr>
@@ -685,6 +690,20 @@ input:checked + .slider .off{
             </tr>
           </thead>
         </table>
+
+            <table class="table table-striped table-hover " id="allResidenceTable">
+              <thead class="bg-black text-uppercase">
+                <tr>
+                  <th>Image</th>
+                  <th>Resident Number</th>
+                  <th>Name</th>
+                  <th>Age</th>
+                  <th>Status</th>
+                  <th class="text-center">Action</th>
+                </tr>
+              </thead>
+            </table>
+
           </fieldset>
         </div>
       </div>   
