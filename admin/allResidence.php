@@ -403,7 +403,7 @@ input:checked + .slider .off{
     <!-- Brand Logo -->
     <a href="#" class="brand-link text-center">
     <?php 
-        if($image != '' || $image != null || !empty($image)){
+        if(!empty($image_path)){
           echo '<img src="'.$image_path.'" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
         }else{
           echo ' <img src="../assets//logo//logo.png" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
@@ -629,18 +629,7 @@ input:checked + .slider .off{
                     </div>
                         <input type="search" name="last_name" id="last_name" class="form-control"> 
                       </select>
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-indigo">VOTERS</span>
-                    </div>
-                      <select name="voters" id="voters" class="form-control">
-                        <option value="">--SELECT VOTERS--</option>
-                        <option value="YES">YES</option>
-                        <option value="NO">NO</option>
-                      </select>
+             
                   </div>
                 </div>
                 
@@ -668,42 +657,6 @@ input:checked + .slider .off{
                 <div class="col-sm-4">
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
-                      <span class="input-group-text bg-indigo">PWD</span>
-                    </div>
-                      <select name="pwd" id="pwd" class="form-control">
-                        <option value="">--SELECT PWD--</option>
-                        <option value="YES">YES</option>
-                        <option value="NO">NO</option>
-                      </select>
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-indigo">SINGLE PARENT</span>
-                    </div>
-                      <select name="single_parent" id="single_parent" class="form-control">
-                        <option value="">--SELECT PARENT STATUS--</option>
-                        <option value="YES">YES</option>
-                        <option value="NO">NO</option>
-                      </select>
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-indigo">SENIOR</span>
-                    </div>
-                      <select name="senior" id="senior" class="form-control">
-                        <option value="">--SELECT SENIOR--</option>
-                        <option value="YES">YES</option>
-                        <option value="NO">NO</option>
-                      </select>
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
                       <span class="input-group-text bg-indigo">RESIDENT NUMBER</span>
                     </div>
                         <input type="text" name="resident_id" id="resident_id" class="form-control"> 
@@ -725,9 +678,6 @@ input:checked + .slider .off{
                   <th>Resident Number</th>
                   <th>Name</th>
                   <th>Age</th>
-                  <th>Pwd</th>
-                  <th>Single Parent</th>
-                  <th>Voters</th>
                   <th>Status</th>
                   <th class="text-center">Action</th>
                 </tr>
@@ -930,15 +880,11 @@ input:checked + .slider .off{
 
     function filterData(){
         var status = $("#status").val();
-        var voters = $("#voters").val();
         var age = $("#age").val();
-        var pwd = $("#pwd").val();
-        var senior = $("#senior").val();
         var first_name = $("#first_name").val();
         var middle_name = $("#middle_name").val();
         var last_name = $("#last_name").val();
         var resident_id = $("#resident_id").val();
-        var single_parent = $("#single_parent").val();
         var allResidenceTable = $("#allResidenceTable").DataTable({
           processing: true,
           serverSide: true,
@@ -949,44 +895,33 @@ input:checked + .slider .off{
             url: 'allResidenceTable.php',
             type: 'POST',
             data:{
-              voters:voters,
               status:status,
               age:age,
-              pwd:pwd,
-              senior:senior,
               first_name:first_name,
               middle_name:middle_name,
               last_name:last_name,
               resident_id:resident_id,
-              single_parent:single_parent
             },
           },
           dom: "<'row'<'col-sm-12 col-md-6'><'col-sm-12 col-md-6'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'d-flex flex-sm-row-reverse flex-column border-top '<'px-2 'p><'px-2'i> <'px-2'l> >",
           order:[],
-          columnDefs:[
+         columnDefs:[
             {
               orderable: false,
               targets: "_all",
             },
             {
-              targets: 8,
+              targets: 4,
               className: "text-center",
             },
             {
               targets: 5,
               className: "text-center",
-            },
-            {
-              targets: 6,
-              className: "text-center",
-            },
-            {
-              targets: 7,
-              className: "text-center",
-            },
-          ],
+            }
+            ],
+
           pagingType: "full_numbers",
             language: {
               paginate: {
@@ -1018,43 +953,31 @@ input:checked + .slider .off{
 
     $(document).on('click', '#search',function(){
       var status = $("#status").val();
-      var voters = $("#voters").val();
       var age = $("#age").val();
-      var pwd = $("#pwd").val();
-      var senior = $("#senior").val();
       var first_name = $("#first_name").val();
       var middle_name = $("#middle_name").val();
       var last_name = $("#last_name").val();
       var resident_id = $("#resident_id").val();
-      var single_parent = $("#single_parent").val();
       
-      if(status != '' || voters != '' || age != '' || first_name != '' ||  middle_name != '' || last_name != '' || pwd != '' || senior != '' || resident_id != '' || single_parent != ''){
+      if(status != '' || age != '' || first_name != '' ||  middle_name != '' || last_name != '' || resident_id != '' ){
         $("#allResidenceTable").DataTable().destroy();
         filterData();
       }
     })
     $(document).on('click', '#reset',function(){
       var status = $("#status").val();
-      var voters = $("#voters").val();
       var age = $("#age").val();
-      var pwd = $("#pwd").val();
-      var senior = $("#senior").val();
       var first_name = $("#first_name").val()
       var middle_name = $("#middle_name").val()
       var last_name = $("#last_name").val()
       var resident_id = $("#resident_id").val();
-      var single_parent = $("#single_parent").val();
-      if(status != '' || voters != '' || age != '' || first_name != '' || middle_name != '' || last_name != '' || pwd != '' || senior != '' || resident_id != '' || single_parent != ''){
+      if(status != '' || age != '' || first_name != '' || middle_name != '' || last_name != '' || resident_id != ''){
         $("#status").val('');
-        $("#voters").val('');
-        $("#age").val('');
-        $("#pwd").val('');
-        $("#senior").val('');
+        $("#age").val('')
         $("#first_name").val('');
         $("#middle_name").val('');
         $("#last_name").val('');
         $("#resident_id").val('');
-        $("#single_parent").val('');
         $("#allResidenceTable").DataTable().destroy();
         filterData();
       }else{
