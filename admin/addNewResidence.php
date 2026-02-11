@@ -194,6 +194,8 @@ try {
 
     $con->commit();
 
+    file_put_contents(__DIR__.'/save_debug.txt', "Saved resident ID: ".$number.PHP_EOL, FILE_APPEND);
+
     echo json_encode(['success' => true, 'id' => $number, 'message' => 'inserted']);
     exit;
 
