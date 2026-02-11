@@ -42,10 +42,7 @@ try {
     $add_mothers_name     = $con->real_escape_string($_POST['add_mothers_name'] ?? '');
     $add_guardian         = $con->real_escape_string($_POST['add_guardian'] ?? '');
     $add_guardian_contact = $con->real_escape_string($_POST['add_guardian_contact'] ?? '');
-    $add_pwd              = $con->real_escape_string($_POST['add_pwd'] ?? 'NO');
-    $add_pwd_info         = $con->real_escape_string($_POST['add_pwd_info'] ?? '');
-    $add_single_parent    = $con->real_escape_string($_POST['add_single_parent'] ?? 'NO');
-    $add_voters           = $con->real_escape_string($_POST['add_voters'] ?? 'NO');
+    
 
     $add_status = 'ACTIVE';
     $archive = 'NO';
@@ -141,7 +138,7 @@ try {
     $stmt->close();
 
     // insert residence_status (with date_added)
-    $sql_status = "INSERT INTO residence_status (residence_id, status, voters, archive, pwd, pwd_info, senior, single_parent, date_added)
+    $sql_status = "INSERT INTO residence_status (residence_id, status, archive, date_added)
                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())";
     $stmt2 = $con->prepare($sql_status);
     if (!$stmt2) {
@@ -150,7 +147,7 @@ try {
         echo json_encode(['success' => false, 'message' => 'prepare_failed_status', 'error' => $con->error]);
         exit;
     }
-    $stmt2->bind_param('ssssssss', $number, $add_status, $add_voters, $archive, $add_pwd, $add_pwd_info, $senior, $add_single_parent);
+    $stmt2->bind_param('ssssssss', $number, $add_status, $archive);
     if (!$stmt2->execute()) {
         file_put_contents(__DIR__.'/addNewResidence_debug.txt', date('c')." EXECUTE ERROR STATUS: ".$stmt2->error.PHP_EOL, FILE_APPEND);
         $con->rollback();
