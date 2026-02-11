@@ -11,22 +11,14 @@ try {
     $middle_name   = $con->real_escape_string($_POST['middle_name'] ?? '');
     $last_name     = $con->real_escape_string($_POST['last_name'] ?? '');
     $status        = $con->real_escape_string($_POST['status'] ?? '');
-    $voters        = $con->real_escape_string($_POST['voters'] ?? '');
     $age           = $con->real_escape_string($_POST['age'] ?? '');
-    $pwd           = $con->real_escape_string($_POST['pwd'] ?? '');
-    $senior        = $con->real_escape_string($_POST['senior'] ?? '');
-    $single_parent = $con->real_escape_string($_POST['single_parent'] ?? '');
     $resident_id   = $con->real_escape_string($_POST['resident_id'] ?? '');
 
     $whereParts = [];
     if ($first_name !== '')    $whereParts[] = "residence_information.first_name LIKE '%$first_name%'";
     if ($middle_name !== '')   $whereParts[] = "residence_information.middle_name LIKE '%$middle_name%'";
     if ($last_name !== '')     $whereParts[] = "residence_information.last_name LIKE '%$last_name%'";
-    if ($pwd !== '')           $whereParts[] = "residence_status.pwd = '$pwd'";
-    if ($single_parent !== '') $whereParts[] = "residence_status.single_parent = '$single_parent'";
-    if ($senior !== '')        $whereParts[] = "residence_status.senior = '$senior'";
     if ($status !== '')        $whereParts[] = "residence_status.status = '$status'";
-    if ($voters !== '')        $whereParts[] = "residence_status.voters = '$voters'";
     if ($age !== '')           $whereParts[] = "residence_information.age = '$age'";
     if ($resident_id !== '')   $whereParts[] = "residence_information.residence_id = '$resident_id'";
 
@@ -73,11 +65,8 @@ try {
         1 => 'residence_information.residence_id',
         2 => 'residence_information.first_name',
         3 => 'residence_information.age',
-        4 => 'residence_status.pwd_info',
-        5 => 'residence_status.single_parent',
-        6 => 'residence_status.voters',
-        7 => 'residence_status.status',
-        8 => 'residence_information.residence_id' // safe placeholder for actions column
+        4 => 'residence_status.status',
+        5 => 'residence_information.residence_id' // safe placeholder for actions column
     ];
 
     // Default safe ordering
@@ -109,9 +98,6 @@ try {
             residence_information.age,
             residence_information.image,
             residence_information.image_path,
-            residence_status.voters,
-            residence_status.single_parent,
-            residence_status.pwd_info,
             residence_status.status
         $sqlBase
         $orderSql
@@ -142,12 +128,6 @@ try {
             $middleInit = strtoupper($row['middle_name'][0]) . '.';
         }
 
-        $votersVal = $row['voters'] ?? '';
-        $votersBadge = ($votersVal === 'YES') ? '<span class="badge badge-success">YES</span>' : '<span class="badge badge-danger">' . htmlspecialchars($votersVal ?: 'NO', ENT_QUOTES) . '</span>';
-
-        $singleVal = $row['single_parent'] ?? '';
-        $singleBadge = ($singleVal === 'YES') ? '<span class="badge badge-info">YES</span>' : '<span class="badge badge-warning">' . htmlspecialchars($singleVal ?: 'NO', ENT_QUOTES) . '</span>';
-
         $statusVal = $row['status'] ?? 'INACTIVE';
         $isActive = ($statusVal === 'ACTIVE') ? 'checked' : '';
         $statusSwitch = '
@@ -171,9 +151,6 @@ try {
             $row['residence_id'],
             $fullName,
             $row['age'] ?? '',
-            $row['pwd_info'] ?? '',
-            $singleBadge,
-            $votersBadge,
             $statusSwitch,
             $actions
         ];
