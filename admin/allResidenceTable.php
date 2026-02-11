@@ -59,7 +59,7 @@ try {
     $totalFiltered = $totalData;
 
     // --- Column mapping for safe ORDER BY (index => column)
-    // DataTables columns (from your UI): image, id, name, age, pwd_info, single_parent, voters, status switch, actions
+    // DataTables columns (from your UI): image, id, name, age, status switch, actions
     $columns = [
         0 => 'residence_information.image_path',
         1 => 'residence_information.residence_id',
