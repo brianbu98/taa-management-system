@@ -37,14 +37,15 @@ try {
 
     // --- Archive logic: exclude only rows explicitly archived = 'YES' in residence_status ---
     // Use only residence_status.archive because residence_information doesn't have 'archive' column.
-    $archiveChecks = "(residence_status.archive IS NULL OR residence_status.archive <> 'YES')";
+    $archiveChecks = "1=1";
+
 
     // --- BASE SQL (LEFT JOIN so new rows without status still appear) ---
     $sqlBase = "
         FROM residence_information
         LEFT JOIN residence_status 
             ON residence_information.residence_id = residence_status.residence_id
-        WHERE $archiveChecks
+        WHERE 1 = 1
         $where
     ";
 
