@@ -403,14 +403,20 @@ input:checked + .slider .off{
     <div class="sidebar">
     
 
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="../assets/dist/img/logo.png" class="img-circle elevation-5 img-bordered-sm" alt="User Image">
-        </div>
-        <div class="info text-center">
-          <a href="#" class="d-block text-bold"><?= strtoupper($user_type) ?></a>
-        </div>
-      </div>
+   <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+  <div class="image">
+    <?php 
+      if(!empty($image_path)){
+        echo '<img src="../'.$image_path.'" class="img-circle elevation-5 img-bordered-sm" alt="User Image">';
+      } else {
+        echo '<img src="../assets/logo/logo.png" class="img-circle elevation-5 img-bordered-sm" alt="User Image">';
+      }
+    ?>
+  </div>
+  <div class="info text-center">
+    <a href="#" class="d-block text-bold"><?= strtoupper($user_type) ?></a>
+  </div>
+</div>
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
