@@ -139,7 +139,7 @@ try {
 
     // insert residence_status (with date_added)
     $sql_status = "INSERT INTO residence_status (residence_id, status, archive, date_added)
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+                   VALUES (?, ?, ?, NOW())";
     $stmt2 = $con->prepare($sql_status);
     if (!$stmt2) {
         file_put_contents(__DIR__.'/addNewResidence_debug.txt', date('c')." PREPARE ERROR STATUS: ".$con->error.PHP_EOL, FILE_APPEND);
@@ -147,7 +147,7 @@ try {
         echo json_encode(['success' => false, 'message' => 'prepare_failed_status', 'error' => $con->error]);
         exit;
     }
-    $stmt2->bind_param('ssssssss', $number, $add_status, $archive);
+    $stmt2->bind_param('sss', $number, $add_status, $archive);
     if (!$stmt2->execute()) {
         file_put_contents(__DIR__.'/addNewResidence_debug.txt', date('c')." EXECUTE ERROR STATUS: ".$stmt2->error.PHP_EOL, FILE_APPEND);
         $con->rollback();
