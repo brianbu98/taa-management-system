@@ -24,6 +24,7 @@ try {
     $add_middle_name      = trim($con->real_escape_string($_POST['add_middle_name'] ?? ''));
     $add_last_name        = trim($con->real_escape_string($_POST['add_last_name'] ?? ''));
     $add_suffix           = $con->real_escape_string($_POST['add_suffix'] ?? '');
+    $add_alias = $con->real_escape_string($_POST['add_alias'] ?? '');
     $add_gender           = $con->real_escape_string($_POST['add_gender'] ?? '');
     $add_civil_status     = $con->real_escape_string($_POST['add_civil_status'] ?? '');
     $add_religion         = $con->real_escape_string($_POST['add_religion'] ?? '');
@@ -33,9 +34,6 @@ try {
     $add_address          = $con->real_escape_string($_POST['add_address'] ?? '');
     $add_birth_date       = $con->real_escape_string($_POST['add_birth_date'] ?? '');
     $add_birth_place      = $con->real_escape_string($_POST['add_birth_place'] ?? '');
-    $add_province         = $con->real_escape_string($_POST['add_province'] ?? '');
-    $add_zip              = $con->real_escape_string($_POST['add_zip'] ?? '');
-    $add_city             = $con->real_escape_string($_POST['add_city'] ?? '');
     $add_house_number     = $con->real_escape_string($_POST['add_house_number'] ?? '');
     $add_street           = $con->real_escape_string($_POST['add_street'] ?? '');
     $add_fathers_name     = $con->real_escape_string($_POST['add_fathers_name'] ?? '');
@@ -91,8 +89,8 @@ try {
 
     // insert residence_information (no date_added here)
     $sql_info = "INSERT INTO residence_information
-      (residence_id, first_name, middle_name, last_name, age, suffix, gender, civil_status, religion, nationality, contact_number, email_address, address, birth_date, birth_place, province, zip, city, house_number, street, fathers_name, mothers_name, guardian, guardian_contact, image, image_path)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      (residence_id, first_name, middle_name, last_name, age, suffix, alias, gender, civil_status, religion, nationality, contact_number, email_address, address, birth_date, birth_place, house_number, street, fathers_name, mothers_name, guardian, guardian_contact, image, image_path)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $con->prepare($sql_info);
     if (!$stmt) {
         file_put_contents(__DIR__.'/addNewResidence_debug.txt', date('c')." PREPARE ERROR INFO: ".$con->error.PHP_EOL, FILE_APPEND);
@@ -101,13 +99,14 @@ try {
         exit;
     }
     $stmt->bind_param(
-        'ssssssssssssssssssssssssss',
+        'ssssssssssssssssssssssss',
         $number,
         $add_first_name,
         $add_middle_name,
         $add_last_name,
         $age_value,
         $add_suffix,
+        $add_alias,
         $add_gender,
         $add_civil_status,
         $add_religion,
@@ -117,9 +116,6 @@ try {
         $add_address,
         $add_birth_date,
         $add_birth_place,
-        $add_province,
-        $add_zip,
-        $add_city,
         $add_house_number,
         $add_street,
         $add_fathers_name,
@@ -137,9 +133,11 @@ try {
     }
     $stmt->close();
 
+    $is_approved = 'YES';
+
     // insert residence_status (with date_added)
-    $sql_status = "INSERT INTO residence_status (residence_id, status, archive, date_added)
-                   VALUES (?, ?, ?, NOW())";
+    $sql_status = "INSERT INTO residence_status (residence_id, status, is_approved, archive, date_added)
+                   VALUES (?, ?, ?, ?, NOW())";
     $stmt2 = $con->prepare($sql_status);
     if (!$stmt2) {
         file_put_contents(__DIR__.'/addNewResidence_debug.txt', date('c')." PREPARE ERROR STATUS: ".$con->error.PHP_EOL, FILE_APPEND);
@@ -147,7 +145,7 @@ try {
         echo json_encode(['success' => false, 'message' => 'prepare_failed_status', 'error' => $con->error]);
         exit;
     }
-    $stmt2->bind_param('sss', $number, $add_status, $archive);
+    $stmt2->bind_param('ssss', $number, $add_status, $is_approved, $archive);
     if (!$stmt2->execute()) {
         file_put_contents(__DIR__.'/addNewResidence_debug.txt', date('c')." EXECUTE ERROR STATUS: ".$stmt2->error.PHP_EOL, FILE_APPEND);
         $con->rollback();
