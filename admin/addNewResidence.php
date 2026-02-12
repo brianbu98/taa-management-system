@@ -91,8 +91,8 @@ try {
 
     // insert residence_information (no date_added here)
     $sql_info = "INSERT INTO residence_information
-      (residence_id, first_name, middle_name, last_name, age, suffix, gender, civil_status, religion, nationality, contact_number, email_address, address, birth_date, birth_place, province, zip, city, house_number, street, fathers_name, mothers_name, guardian, guardian_contact, image, image_path)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      (residence_id, first_name, middle_name, last_name, age, suffix, gender, civil_status, religion, nationality, contact_number, email_address, address, birth_date, birth_place, house_number, street, fathers_name, mothers_name, guardian, guardian_contact, image, image_path)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $con->prepare($sql_info);
     if (!$stmt) {
         file_put_contents(__DIR__.'/addNewResidence_debug.txt', date('c')." PREPARE ERROR INFO: ".$con->error.PHP_EOL, FILE_APPEND);
@@ -101,7 +101,7 @@ try {
         exit;
     }
     $stmt->bind_param(
-        'ssssssssssssssssssssssssss',
+        'sssssssssssssssssssssss',
         $number,
         $add_first_name,
         $add_middle_name,
@@ -117,9 +117,6 @@ try {
         $add_address,
         $add_birth_date,
         $add_birth_place,
-        $add_province,
-        $add_zip,
-        $add_city,
         $add_house_number,
         $add_street,
         $add_fathers_name,
@@ -139,7 +136,7 @@ try {
 
     // insert residence_status (with date_added)
     $sql_status = "INSERT INTO residence_status (residence_id, status, archive, date_added)
-                   VALUES (?, ?, ?, NOW())";
+                   VALUES (?, ?, ?, ?, NOW())";
     $stmt2 = $con->prepare($sql_status);
     if (!$stmt2) {
         file_put_contents(__DIR__.'/addNewResidence_debug.txt', date('c')." PREPARE ERROR STATUS: ".$con->error.PHP_EOL, FILE_APPEND);
@@ -147,7 +144,7 @@ try {
         echo json_encode(['success' => false, 'message' => 'prepare_failed_status', 'error' => $con->error]);
         exit;
     }
-    $stmt2->bind_param('sss', $number, $add_status, $archive);
+    $stmt2->bind_param('ssss', $number, $add_status, $archive);
     if (!$stmt2->execute()) {
         file_put_contents(__DIR__.'/addNewResidence_debug.txt', date('c')." EXECUTE ERROR STATUS: ".$stmt2->error.PHP_EOL, FILE_APPEND);
         $con->rollback();
