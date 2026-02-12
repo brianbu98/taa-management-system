@@ -651,9 +651,6 @@ input:checked + .slider .off{
                   <th>Resident Number</th>
                   <th>Name</th>
                   <th>Age</th>
-                  <th>Pwd</th>
-                  <th>Single Parent</th>
-                  <th>Voters</th>
                   <th>Status</th>
                   <th class="text-center">Action</th>
                 </tr>
