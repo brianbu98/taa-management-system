@@ -90,8 +90,13 @@ try {
 
     // insert residence_information (no date_added here)
     $sql_info = "INSERT INTO residence_information
+
       (residence_id, first_name, middle_name, last_name, age, suffix, alias, gender, civil_status, religion, nationality, contact_number, email_address, address, birth_date, birth_place, house_number, street, fathers_name, mothers_name, guardian, guardian_contact, image, image_path, household_id)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+      (residence_id, first_name, middle_name, last_name, age, suffix, alias, gender, civil_status, religion, nationality, contact_number, email_address, address, birth_date, birth_place, house_number, street, fathers_name, mothers_name, guardian, guardian_contact, image, image_path)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
     $stmt = $con->prepare($sql_info);
     if (!$stmt) {
         file_put_contents(__DIR__.'/addNewResidence_debug.txt', date('c')." PREPARE ERROR INFO: ".$con->error.PHP_EOL, FILE_APPEND);
