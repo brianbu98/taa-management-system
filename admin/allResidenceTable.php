@@ -33,13 +33,14 @@ try {
 
 
     // --- BASE SQL (LEFT JOIN so new rows without status still appear) ---
-    $sqlBase = "
-        FROM residence_information
-        LEFT JOIN residence_status 
-            ON residence_information.residence_id = residence_status.residence_id
-        WHERE 1 = 1
-        $where
-    ";
+   $sqlBase = "
+    FROM residence_information
+    LEFT JOIN residence_status 
+        ON residence_information.residence_id = residence_status.residence_id
+    WHERE (residence_status.archive IS NULL OR residence_status.archive = 'NO')
+    $where
+";
+
 
     // --- COUNT matching rows ---
     $countSql = "SELECT COUNT(*) AS total $sqlBase";
