@@ -37,7 +37,7 @@ try {
     FROM residence_information
     LEFT JOIN residence_status 
         ON residence_information.residence_id = residence_status.residence_id
-    WHERE (residence_status.archive IS NULL OR residence_status.archive = 'NO')
+    WHERE (residence_status.archive IS NULL OR UPPER(residence_status.archive) != 'YES')
     $where
 ";
 
