@@ -24,7 +24,17 @@ try{
 
 
 
-    $sql_archive_residence_information = "UPDATE `residence_status` SET `archive` = ?, `date_archive` = ?,  `status` = ? WHERE `residence_id` = ?";
+    $sql_archive_residence_information = "
+    INSERT INTO residence_status (residence_id, archive, status, date_archive)
+    VALUES (?, 'YES', 'INACTIVE', ?)
+    ON DUPLICATE KEY UPDATE
+    archive='YES',
+    status='INACTIVE',
+    date_archive=?
+    ";
+
+
+
     $stmt_archive_residence_information = $con->prepare($sql_archive_residence_information) or die($con->error);
     $stmt_archive_residence_information->bind_param('ssss',$archive_status,$date_archive,$residence_status,$residence_id);
     $stmt_archive_residence_information->execute();
