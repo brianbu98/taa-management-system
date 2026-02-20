@@ -1,7 +1,6 @@
-<?php
+﻿<?php
 include_once '../connection.php';
-header('Content-Type: application/json; charset=utf-8');
-ob_clean(); // clear any accidental whitespace
+header('Content-Type: application/json');
 
 if (empty($_POST['user_id'])) {
     echo json_encode(['data' => []]);
@@ -10,8 +9,14 @@ if (empty($_POST['user_id'])) {
 
 $user_id = intval($_POST['user_id']);
 
-// Fetch payments for this user
-$sql = "SELECT * FROM payments WHERE user_id = ? ORDER BY date_submitted DESC";
+$sql = "
+SELECT pr.*, p.payment_name
+FROM payment_records pr
+JOIN payments p ON pr.payment_id = p.id
+WHERE p.user_id = ?
+ORDER BY pr.created_at DESC
+";
+
 $stmt = $con->prepare($sql);
 $stmt->bind_param('i', $user_id);
 $stmt->execute();
@@ -21,38 +26,16 @@ $data = [];
 $count = 1;
 
 while ($row = $result->fetch_assoc()) {
-    $amount = '? ' . number_format($row['amount'], 2);
-    $date_paid = date("m/d/Y - h:i A", strtotime($row['date_submitted']));
-    $method = htmlspecialchars(ucfirst($row['method']));
-    $type = htmlspecialchars($row['type'] ?? '');
-    $status = $row['status'] ?? 'Pending';
-
-    // Status badge
-    $status_badge = match($status) {
-        'Completed' => '<span class="badge badge-success">Completed</span>',
-        'Rejected'  => '<span class="badge badge-danger">Rejected</span>',
-        default     => '<span class="badge badge-warning">Pending</span>',
-    };
-
-    // Proof link
-    $proof = (!empty($row['proof']) && file_exists("../uploads/" . $row['proof']))
-             ? "<a href='../uploads/" . htmlspecialchars($row['proof']) . "' target='_blank'>View</a>"
-             : "<span class='text-muted'>No proof</span>";
-
-    // Outstanding
-    $outstanding = ($status !== 'Completed') ? 'Yes' : 'No';
 
     $data[] = [
         $count++,
-        $type,
-        $amount,
-        $method,
-        $proof,
-        $status_badge,
-        $date_paid,
-        $outstanding
+        htmlspecialchars($row['payment_name']),
+        '₱ ' . number_format($row['amount_paid'],2),
+        htmlspecialchars($row['payment_method']),
+        htmlspecialchars($row['reference_no'] ?? '-'),
+        date("m/d/Y - h:i A", strtotime($row['created_at']))
     ];
 }
 
-echo json_encode(["data" => $data], JSON_UNESCAPED_UNICODE);
+echo json_encode(["data" => $data]);
 exit;
