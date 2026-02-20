@@ -7,15 +7,6 @@ if(!isset($_SESSION['user_id']) || $_SESSION['user_type'] != 'resident'){
   exit;
 }
 
-$user_id = $_SESSION['user_id'];
-
-// Fetch TAA Info
-$sql_taa = "SELECT * FROM taa_information LIMIT 1";
-$res_taa = $con->query($sql_taa);
-$row_taa = $res_taa->fetch_assoc();
-$image = $row_taa['image'] ?? '';
-$postal_address = $row_taa['postal_address'] ?? '';
-
 // Fetch Announcements
 $ann_query = $con->query("SELECT * FROM announcements WHERE status='active' ORDER BY created_at DESC");
 ?>
@@ -24,36 +15,96 @@ $ann_query = $con->query("SELECT * FROM announcements WHERE status='active' ORDE
 <head>
 <meta charset="UTF-8">
 <title>Announcements</title>
+
 <link rel="stylesheet" href="../assets/dist/css/adminlte.min.css">
 <link rel="stylesheet" href="../assets/plugins/fontawesome-free/css/all.min.css">
+
+<style>
+body {
+    background-color: #343a40;
+}
+
+.center-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.announcement-container {
+    width: 100%;
+    max-width: 800px;
+}
+
+.announcement-card {
+    background: #495057;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+.announcement-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #ffc107;
+}
+
+.announcement-date {
+    font-size: 14px;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+.announcement-message {
+    font-size: 20px;
+    color: #fff;
+    line-height: 1.6;
+}
+
+.back-btn {
+    font-size: 18px;
+    padding: 10px 25px;
+}
+</style>
+
 </head>
-<body class="layout-top-nav dark-mode">
 
-<div class="wrapper">
+<body class="dark-mode">
 
-<div class="content-wrapper bg-dark p-5">
-<div class="container">
-<h3 class="text-warning mb-4">Announcements</h3>
+<div class="center-wrapper">
+<div class="announcement-container text-center">
+
+<h1 class="text-warning mb-4" style="font-size: 48px;">
+    <i class="fas fa-bullhorn"></i> Announcements
+</h1>
+
+<a href="dashboard.php" class="btn btn-outline-warning back-btn mb-5">
+    <i class="fas fa-arrow-left"></i> Back to Dashboard
+</a>
 
 <?php if($ann_query && $ann_query->num_rows > 0): ?>
-<?php while($row = $ann_query->fetch_assoc()): ?>
-<div class="card bg-secondary mb-3 p-3">
-<h5 class="text-warning"><?= htmlspecialchars($row['title']) ?></h5>
-<small><?= date('F d, Y h:i A', strtotime($row['created_at'])) ?></small>
-<p class="mt-2"><?= nl2br(htmlspecialchars($row['message'])) ?></p>
-</div>
-<?php endwhile; ?>
+    <?php while($row = $ann_query->fetch_assoc()): ?>
+        <div class="announcement-card text-left">
+            <div class="announcement-title">
+                <?= htmlspecialchars($row['title']) ?>
+            </div>
+            <div class="announcement-date">
+                <?= date('F d, Y h:i A', strtotime($row['created_at'])) ?>
+            </div>
+            <div class="announcement-message">
+                <?= nl2br(htmlspecialchars($row['message'])) ?>
+            </div>
+        </div>
+    <?php endwhile; ?>
 <?php else: ?>
-<p class="text-white">No announcements available.</p>
+    <p class="text-white" style="font-size: 26px;">
+        No announcements available.
+    </p>
 <?php endif; ?>
 
 </div>
-</div>
-
-<footer class="main-footer text-white bg-success p-3">
-<i class="fas fa-map-marker-alt"></i> <?= htmlspecialchars($postal_address) ?>
-</footer>
-
 </div>
 
 </body>
