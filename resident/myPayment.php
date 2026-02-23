@@ -2,9 +2,6 @@
 include_once '../connection.php';
 session_start();
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] != 'resident') {
     header("Location: ../login.php");
     exit;
@@ -12,22 +9,26 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] != 'resident') {
 
 $user_id = $_SESSION['user_id'];
 
-// Fetch unpaid bills
+/* =========================
+   FETCH USER BILLS
+========================= */
 $bills = $con->prepare("SELECT * FROM payments WHERE user_id=? ORDER BY created_at DESC");
 $bills->bind_param("i", $user_id);
 $bills->execute();
 $bills_result = $bills->get_result();
 
-// Handle submission
+/* =========================
+   HANDLE PAYMENT SUBMIT
+========================= */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $payment_id = $_POST['payment_id'];
-    $amount_paid = $_POST['amount_paid'];
-    $payment_method = $_POST['payment_method'];
-    $reference_no = $_POST['reference_no'];
+    $payment_id    = intval($_POST['payment_id']);
+    $amount_paid   = floatval($_POST['amount_paid']);
+    $payment_method= $_POST['payment_method'];
+    $reference_no  = $_POST['reference_no'] ?? '';
 
     $stmt = $con->prepare("
-        INSERT INTO payment_records 
+        INSERT INTO payment_records
         (payment_id, amount_paid, payment_method, reference_no, received_by, created_at)
         VALUES (?, ?, ?, ?, 0, NOW())
     ");
@@ -35,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("idss", $payment_id, $amount_paid, $payment_method, $reference_no);
     $stmt->execute();
 
-    echo "<script>alert('Payment submitted successfully'); window.location.href=window.location.href;</script>";
+    echo "<script>alert('Payment submitted successfully'); window.location.reload();</script>";
     exit;
 }
 ?>
@@ -45,20 +46,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 <meta charset="UTF-8">
 <title>Payments</title>
+
 <link rel="stylesheet" href="../assets/dist/css/adminlte.min.css">
 <link rel="stylesheet" href="../assets/plugins/fontawesome-free/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css">
 </head>
+
 <body class="layout-top-nav dark-mode">
 
 <div class="wrapper">
-
 <div class="content-wrapper p-5 bg-dark">
 <div class="container">
+
+<a href="dashboard.php" class="btn btn-secondary mb-4">
+<i class="fas fa-arrow-left"></i> Back
+</a>
 
 <h3 class="text-warning mb-4">Submit Payment</h3>
 
 <form method="post">
+
 <div class="form-group">
 <label>Select Bill</label>
 <select name="payment_id" class="form-control" required>
@@ -113,7 +120,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 </div>
 </div>
-
 </div>
 
 <script src="../assets/plugins/jquery/jquery.min.js"></script>
