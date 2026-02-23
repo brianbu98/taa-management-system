@@ -1,359 +1,237 @@
 <?php
-// admin/announcements.php
 include_once '../connection.php';
 session_start();
 
-try {
-  if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'admin') {
+if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'admin') {
     header("Location: ../login.php");
     exit;
-  }
-
-  $user_id = $_SESSION['user_id'];
-
-  // Fetch admin info
-  $stmt_user = $con->prepare("SELECT * FROM users WHERE id = ?");
-  $stmt_user->bind_param('s', $user_id);
-  $stmt_user->execute();
-  $user = $stmt_user->get_result()->fetch_assoc();
-
-
-  $stmt_brg = $con->query("SELECT * FROM taa_information");
-  $taa = $stmt_brg->fetch_assoc();
-
-   $taa_image = $taa['image'] ?? '../assets/dist/img/image.png';
-  $taa_image_path = $taa['image_path'] ?? $taa_image;
-  $first_name_user = $user['first_name'] ?? '';
-  $last_name_user = $user['last_name'] ?? '';
-  $user_type = $user['user_type'] ?? '';
-  $user_image = $user['image'] ?? '';
-
-  // Handle add/edit/delete
-  $msg = '';
-  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    $action = $_POST['action'];
-
-    if ($action === 'add') {
-      $title = trim($_POST['title'] ?? '');
-      $content = trim($_POST['content'] ?? '');
-      if ($title && $content) {
-        $stmt = $con->prepare("INSERT INTO announcements (title, content, date_posted) VALUES (?, ?, NOW())");
-        $stmt->bind_param('ss', $title, $content);
-        $stmt->execute();
-        $msg = "Announcement added successfully.";
-      } else $msg = "Please fill in all fields.";
-    }
-
-    if ($action === 'edit') {
-      $id = intval($_POST['id']);
-      $title = trim($_POST['title'] ?? '');
-      $content = trim($_POST['content'] ?? '');
-      if ($id && $title && $content) {
-        $stmt = $con->prepare("UPDATE announcements SET title = ?, content = ? WHERE id = ?");
-        $stmt->bind_param('ssi', $title, $content, $id);
-        $stmt->execute();
-        $msg = "Announcement updated.";
-      }
-    }
-
-    if ($action === 'delete') {
-      $id = intval($_POST['id']);
-      $stmt = $con->prepare("DELETE FROM announcements WHERE id = ?");
-      $stmt->bind_param('i', $id);
-      $stmt->execute();
-      $msg = "Announcement deleted.";
-    }
-  }
-
-  // Fetch all announcements
-  $res = $con->query("SELECT * FROM announcements ORDER BY date_posted DESC");
-} catch (Exception $e) {
-  echo $e->getMessage();
 }
+
+$user_id = $_SESSION['user_id'];
+$msg = "";
+
+/* ================= ADMIN INFO ================= */
+$stmt_user = $con->prepare("SELECT first_name, last_name, user_type, image FROM users WHERE id = ?");
+$stmt_user->bind_param("i", $user_id);
+$stmt_user->execute();
+$user = $stmt_user->get_result()->fetch_assoc();
+
+$first_name_user = $user['first_name'] ?? '';
+$last_name_user  = $user['last_name'] ?? '';
+$user_type       = $user['user_type'] ?? '';
+$user_image      = $user['image'] ?? 'image.png';
+
+/* ================= HANDLE FORM ACTIONS ================= */
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $action = $_POST['action'] ?? '';
+
+    // ADD
+    if ($action === 'add') {
+        $title   = trim($_POST['title'] ?? '');
+        $message = trim($_POST['message'] ?? '');
+
+        if ($title && $message) {
+            $stmt = $con->prepare("
+                INSERT INTO announcements (title, message, posted_by, status)
+                VALUES (?, ?, ?, 'active')
+            ");
+            $stmt->bind_param("ssi", $title, $message, $user_id);
+            $stmt->execute();
+            $msg = "Announcement published successfully.";
+        } else {
+            $msg = "Please fill in all fields.";
+        }
+    }
+
+    // EDIT
+    if ($action === 'edit') {
+        $id      = intval($_POST['id']);
+        $title   = trim($_POST['title'] ?? '');
+        $message = trim($_POST['message'] ?? '');
+        $status  = $_POST['status'] ?? 'active';
+
+        if ($id && $title && $message) {
+            $stmt = $con->prepare("
+                UPDATE announcements
+                SET title = ?, message = ?, status = ?
+                WHERE id = ?
+            ");
+            $stmt->bind_param("sssi", $title, $message, $status, $id);
+            $stmt->execute();
+            $msg = "Announcement updated successfully.";
+        }
+    }
+
+    // DELETE
+    if ($action === 'delete') {
+        $id = intval($_POST['id']);
+        $stmt = $con->prepare("DELETE FROM announcements WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $msg = "Announcement deleted.";
+    }
+}
+
+/* ================= FETCH ANNOUNCEMENTS ================= */
+$result = $con->query("
+    SELECT a.*, CONCAT(u.first_name, ' ', u.last_name) AS author
+    FROM announcements a
+    LEFT JOIN users u ON a.posted_by = u.id
+    ORDER BY a.created_at DESC
+");
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin | Announcements</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Announcements</title>
 
-  <link rel="stylesheet" href="../assets/plugins/fontawesome-free/css/all.min.css">
-  <link rel="stylesheet" href="../assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <link rel="stylesheet" href="../assets/dist/css/adminlte.min.css">
-  <link rel="stylesheet" href="../assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="../assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="../assets/plugins/sweetalert2/css/sweetalert2.min.css">
+<link rel="stylesheet" href="../assets/plugins/fontawesome-free/css/all.min.css">
+<link rel="stylesheet" href="../assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="../assets/dist/css/adminlte.min.css">
+<link rel="stylesheet" href="../assets/plugins/sweetalert2/css/sweetalert2.min.css">
 </head>
 
-<body class="hold-transition dark-mode sidebar-mini layout-fixed">
+<body class="hold-transition dark-mode sidebar-mini">
 <div class="wrapper">
 
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-dark">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link text-white" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-    </ul>
+<div class="content-wrapper p-4">
 
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#"><i class="far fa-user"></i></a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="myProfile.php" class="dropdown-item">
-            <div class="media">
-              <img src="../assets/dist/img/<?= $user_image ?: 'image.png' ?>" class="img-size-50 mr-3 img-circle" alt="User Image">
-              <div class="media-body">
-                <h3 class="dropdown-item-title"><?= ucfirst($first_name_user) . ' ' . ucfirst($last_name_user) ?></h3>
-              </div>
-            </div>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="../logout.php" class="dropdown-item dropdown-footer">LOGOUT</a>
-        </div>
-      </li>
-    </ul>
-  </nav>
-  <!-- /.navbar -->
+<h3 class="mb-3">Announcements</h3>
 
-<!-- Sidebar (exact same items as settings) -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand">
-    <a href="#" class="brand-link text-center">
-      <?php
-        if (!empty($taa_image_path)) {
-          echo '<img src="' . htmlspecialchars($taa_image_path) . '" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
-        } else {
-          echo '<img src="../assets/logo/logo.png" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
-        }
-      ?>
-      <span class="brand-text font-weight-light"></span>
-    </a>
+<?php if ($msg): ?>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    Swal.fire({
+        icon: 'success',
+        title: "<?= htmlspecialchars($msg, ENT_QUOTES) ?>",
+        timer: 1500,
+        showConfirmButton: false
+    });
+});
+</script>
+<?php endif; ?>
 
-    <div class="sidebar">
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="../assets/dist/img/logo.png" class="img-circle elevation-5 img-bordered-sm" alt="User Image">
-        </div>
-        <div class="info text-center">
-          <a href="#" class="d-block text-bold"><?= htmlspecialchars(strtoupper($user_type)) ?></a>
-        </div>
-      </div>
+<!-- ADD ANNOUNCEMENT -->
+<div class="card card-outline card-primary">
+    <div class="card-header"><h5>Add Announcement</h5></div>
+    <div class="card-body">
+        <form method="post">
+            <input type="hidden" name="action" value="add">
 
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
-          <li class="nav-item">
-            <a href="dashboard.php" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i><p>Dashboard</p>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-users-cog"></i>
-              <p>Homeowner Officials<i class="right fas fa-angle-left"></i></p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item"><a href="newOfficial.php" class="nav-link"><i class="fas fa-circle nav-icon text-red"></i><p>New Official</p></a></li>
-              <li class="nav-item"><a href="allOfficial.php" class="nav-link"><i class="fas fa-circle nav-icon text-red"></i><p>List of Official</p></a></li>
-              <li class="nav-item"><a href="officialEndTerm.php" class="nav-link"><i class="fas fa-circle nav-icon text-red"></i><p>Official End Term</p></a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
-              <p>Residence<i class="right fas fa-angle-left"></i></p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item"><a href="newResidence.php" class="nav-link"><i class="fas fa-circle nav-icon text-red"></i><p>New Residence</p></a></li>
-              <li class="nav-item"><a href="allResidence.php" class="nav-link"><i class="fas fa-circle nav-icon text-red"></i><p>All Residence</p></a></li>
-              <li class="nav-item"><a href="archiveResidence.php" class="nav-link"><i class="fas fa-circle nav-icon text-red"></i><p>Archive Residence</p></a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-user-shield"></i>
-              <p>Users<i class="right fas fa-angle-left"></i></p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item"><a href="usersResident.php" class="nav-link"><i class="fas fa-circle nav-icon text-red"></i><p>Resident</p></a></li>
-              <li class="nav-item"><a href="userAdministrator.php" class="nav-link"><i class="fas fa-circle nav-icon text-red"></i><p>Administrator</p></a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item"><a href="position.php" class="nav-link"><i class="nav-icon fas fa-user-tie"></i><p>Position</p></a></li>
-          <li class="nav-item"><a href="incidentRecord.php" class="nav-link"><i class="nav-icon fas fa-clipboard"></i><p>Incident Record</p></a></li>
-          <li class="nav-item"><a href="report.php" class="nav-link"><i class="nav-icon fas fa-bookmark"></i><p>Reports</p></a></li>
-
-          <li class="nav-item">
-            <a href="announcements.php" class="nav-link bg-indigo">
-              <i class="nav-icon fas fa-bullhorn"></i><p>Announcements</p>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a href="payments.php" class="nav-link">
-              <i class="nav-icon fas fa-money-bill-wave"></i><p>Payments</p>
-            </a>
-          </li>
-
-          <li class="nav-item"><a href="settings.php" class="nav-link"><i class="nav-icon fas fa-cog"></i><p>Settings</p></a></li>
-          <li class="nav-item"><a href="systemLog.php" class="nav-link"><i class="nav-icon fas fa-history"></i><p>System Logs</p></a></li>
-          <li class="nav-item"><a href="backupRestore.php" class="nav-link"><i class="nav-icon fas fa-database"></i><p>Backup/Restore</p></a></li>
-        </ul>
-      </nav>
-
-    </div>
-  </aside>
-
-  <!-- Content Wrapper -->
-  <div class="content-wrapper">
-    <div class="content-header">
-      <div class="container-fluid">
-        <h3 style="font-variant: small-caps;">Announcements</h3>
-      </div>
-    </div>
-
-    <section class="content">
-      <div class="container-fluid">
-
-        <?php if (!empty($msg)): ?>
-          <script>
-            document.addEventListener('DOMContentLoaded', function() {
-              Swal.fire({
-                icon: 'info',
-                title: '<?= htmlspecialchars($msg, ENT_QUOTES) ?>',
-                confirmButtonColor: '#6610f2',
-                timer: 1800,
-                showConfirmButton: false
-              });
-            });
-          </script>
-        <?php endif; ?>
-
-        <div class="card">
-          <div class="card-header bg-indigo"><h5 class="card-title">Add New Announcement</h5></div>
-          <div class="card-body">
-            <form method="post">
-              <input type="hidden" name="action" value="add">
-              <div class="form-group">
+            <div class="form-group">
                 <label>Title</label>
                 <input type="text" name="title" class="form-control" required>
-              </div>
-              <div class="form-group">
-                <label>Content</label>
-                <textarea name="content" rows="4" class="form-control" required></textarea>
-              </div>
-              <button class="btn btn-success btn-block">Publish</button>
-            </form>
-          </div>
-        </div>
+            </div>
 
-        <div class="card mt-4">
-          <div class="card-header bg-indigo"><h5 class="card-title">All Announcements</h5></div>
-          <div class="card-body">
-            <table id="announcementsTable" class="table table-bordered table-hover table-dark">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Title</th>
-                  <th>Content</th>
-                  <th>Date Posted</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php while ($a = $res->fetch_assoc()): ?>
-                  <tr>
-                    <td><?= $a['id'] ?></td>
-                    <td><?= htmlspecialchars($a['title']) ?></td>
-                    <td><?= nl2br(htmlspecialchars($a['content'])) ?></td>
-                    <td><?= date('M d, Y h:i A', strtotime($a['date_posted'])) ?></td>
-                    <td>
-                      <button class="btn btn-sm btn-warning editBtn" 
-                        data-id="<?= $a['id'] ?>"
-                        data-title="<?= htmlspecialchars($a['title'], ENT_QUOTES) ?>"
-                        data-content="<?= htmlspecialchars($a['content'], ENT_QUOTES) ?>">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                      <form method="post" style="display:inline;" onsubmit="return confirm('Delete this announcement?');">
-                        <input type="hidden" name="action" value="delete">
-                        <input type="hidden" name="id" value="<?= $a['id'] ?>">
-                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                      </form>
-                    </td>
-                  </tr>
-                <?php endwhile; ?>
-              </tbody>
-            </table>
-          </div>
-        </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea name="message" rows="4" class="form-control" required></textarea>
+            </div>
 
-      </div>
-    </section>
-  </div>
-
-  <footer class="main-footer text-center">
-    <strong>Copyright &copy; <?= date("Y") ?> - <?= date('Y', strtotime('+1 year')) ?> </strong>
-  </footer>
-
+            <button class="btn btn-success">Publish</button>
+        </form>
+    </div>
 </div>
 
-<!-- JS FILES -->
+<!-- ANNOUNCEMENTS TABLE -->
+<div class="card card-outline card-primary mt-4">
+<div class="card-header"><h5>All Announcements</h5></div>
+<div class="card-body table-responsive">
+
+<table id="annTable" class="table table-dark table-bordered table-striped">
+<thead>
+<tr>
+<th>ID</th>
+<th>Title</th>
+<th>Message</th>
+<th>Status</th>
+<th>Author</th>
+<th>Date</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<?php while ($row = $result->fetch_assoc()): ?>
+<tr>
+<td><?= $row['id'] ?></td>
+<td><?= htmlspecialchars($row['title']) ?></td>
+<td><?= nl2br(htmlspecialchars($row['message'])) ?></td>
+<td>
+<?php if ($row['status'] === 'active'): ?>
+<span class="badge badge-success">Active</span>
+<?php else: ?>
+<span class="badge badge-secondary">Inactive</span>
+<?php endif; ?>
+</td>
+<td><?= htmlspecialchars($row['author']) ?></td>
+<td><?= date('M d, Y h:i A', strtotime($row['created_at'])) ?></td>
+<td>
+
+<button class="btn btn-warning btn-sm editBtn"
+data-id="<?= $row['id'] ?>"
+data-title="<?= htmlspecialchars($row['title'], ENT_QUOTES) ?>"
+data-message="<?= htmlspecialchars($row['message'], ENT_QUOTES) ?>"
+data-status="<?= $row['status'] ?>">
+<i class="fas fa-edit"></i>
+</button>
+
+<form method="post" style="display:inline;" onsubmit="return confirm('Delete this announcement?');">
+<input type="hidden" name="action" value="delete">
+<input type="hidden" name="id" value="<?= $row['id'] ?>">
+<button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+</form>
+
+</td>
+</tr>
+<?php endwhile; ?>
+</tbody>
+</table>
+
+</div>
+</div>
+
+</div>
+</div>
+
 <script src="../assets/plugins/jquery/jquery.min.js"></script>
 <script src="../assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <script src="../assets/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="../assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="../assets/plugins/sweetalert2/js/sweetalert2.all.min.js"></script>
-<script src="../assets/dist/js/adminlte.js"></script>
-
-<!-- Edit modal -->
-<div class="modal fade" id="editModal" tabindex="-1">
-  <div class="modal-dialog">
-    <form method="post" class="modal-content">
-      <div class="modal-header bg-indigo">
-        <h5 class="modal-title">Edit Announcement</h5>
-        <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" name="action" value="edit">
-        <input type="hidden" name="id" id="edit_id">
-        <div class="form-group">
-          <label>Title</label>
-          <input id="edit_title" name="title" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label>Content</label>
-          <textarea id="edit_content" name="content" class="form-control" rows="5" required></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button class="btn btn-success">Save changes</button>
-      </div>
-    </form>
-  </div>
-</div>
 
 <script>
-$(function() {
-  $('#announcementsTable').DataTable({
-    responsive: true,
-    autoWidth: false,
-    order: [[0, 'desc']]
-  });
+$(function(){
+    $('#annTable').DataTable();
 
-  $('.editBtn').on('click', function() {
-    $('#edit_id').val($(this).data('id'));
-    $('#edit_title').val($(this).data('title'));
-    $('#edit_content').val($(this).data('content'));
-    $('#editModal').modal('show');
-  });
+    $('.editBtn').click(function(){
+        let id = $(this).data('id');
+        let title = $(this).data('title');
+        let message = $(this).data('message');
+        let status = $(this).data('status');
+
+        Swal.fire({
+            title: 'Edit Announcement',
+            html:
+                '<input id="swal-title" class="swal2-input" value="'+title+'">' +
+                '<textarea id="swal-message" class="swal2-textarea">'+message+'</textarea>',
+            showCancelButton: true,
+            confirmButtonText: 'Save',
+            preConfirm: () => {
+                let form = $('<form method="post"></form>');
+                form.append('<input type="hidden" name="action" value="edit">');
+                form.append('<input type="hidden" name="id" value="'+id+'">');
+                form.append('<input type="hidden" name="title" value="'+$('#swal-title').val()+'">');
+                form.append('<input type="hidden" name="message" value="'+$('#swal-message').val()+'">');
+                form.append('<input type="hidden" name="status" value="'+status+'">');
+                $('body').append(form);
+                form.submit();
+            }
+        });
+    });
 });
 </script>
 
