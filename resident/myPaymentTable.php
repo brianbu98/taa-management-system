@@ -3,8 +3,15 @@ include_once '../connection.php';
 
 header('Content-Type: application/json');
 
+$response = ["data" => []];
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode($response);
+    exit;
+}
+
 if (!isset($_POST['user_id'])) {
-    echo json_encode(["data"=>[]]);
+    echo json_encode($response);
     exit;
 }
 
@@ -21,38 +28,27 @@ ORDER BY pr.created_at DESC
 $stmt = $con->prepare($sql);
 
 if (!$stmt) {
-    echo json_encode([
-        "data"=>[],
-        "error"=>$con->error
-    ]);
+    echo json_encode($response);
     exit;
 }
 
 $stmt->bind_param("i", $user_id);
-
-if (!$stmt->execute()) {
-    echo json_encode([
-        "data"=>[],
-        "error"=>$stmt->error
-    ]);
-    exit;
-}
-
+$stmt->execute();
 $result = $stmt->get_result();
 
-$data = [];
 $count = 1;
 
 while ($row = $result->fetch_assoc()) {
-    $data[] = [
+
+    $response["data"][] = [
         $count++,
         $row['payment_name'],
-        $row['amount_paid'],
-        $row['payment_method'],
-        $row['reference_no'],
-        $row['created_at']
+        '₱ ' . number_format((float)$row['amount_paid'], 2),
+        ucfirst($row['payment_method']),
+        $row['reference_no'] ?: '-',
+        date("m/d/Y - h:i A", strtotime($row['created_at']))
     ];
 }
 
-echo json_encode(["data"=>$data]);
+echo json_encode($response);
 exit;

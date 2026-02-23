@@ -42,9 +42,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Payments</title>
 
 <link rel="stylesheet" href="../assets/dist/css/adminlte.min.css">
@@ -131,11 +132,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $(document).ready(function() {
 
 $('#paymentTable').DataTable({
+    processing: true,
     ajax: {
         url: "myPaymentTable.php",
         type: "POST",
         data: { user_id: <?= $user_id ?> }
-    }
+    },
+    columns: [
+        { data: 0 },
+        { data: 1 },
+        { data: 2 },
+        { data: 3 },
+        { data: 4 },
+        { data: 5 }
+    ]
 });
 
 });
