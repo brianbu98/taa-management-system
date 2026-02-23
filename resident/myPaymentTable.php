@@ -3,16 +3,8 @@ include_once '../connection.php';
 
 header('Content-Type: application/json');
 
-$response = ["data" => []];
-
-// Only allow POST
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode($response);
-    exit;
-}
-
 if (!isset($_POST['user_id'])) {
-    echo json_encode($response);
+    echo json_encode(["data"=>[]]);
     exit;
 }
 
@@ -29,26 +21,38 @@ ORDER BY pr.created_at DESC
 $stmt = $con->prepare($sql);
 
 if (!$stmt) {
-    echo json_encode($response);
+    echo json_encode([
+        "data"=>[],
+        "error"=>$con->error
+    ]);
     exit;
 }
 
 $stmt->bind_param("i", $user_id);
-$stmt->execute();
+
+if (!$stmt->execute()) {
+    echo json_encode([
+        "data"=>[],
+        "error"=>$stmt->error
+    ]);
+    exit;
+}
+
 $result = $stmt->get_result();
 
+$data = [];
 $count = 1;
 
 while ($row = $result->fetch_assoc()) {
-    $response["data"][] = [
+    $data[] = [
         $count++,
         $row['payment_name'],
-        '₱ ' . number_format((float)$row['amount_paid'], 2),
+        $row['amount_paid'],
         $row['payment_method'],
-        $row['reference_no'] ?? '-',
-        date("m/d/Y - h:i A", strtotime($row['created_at']))
+        $row['reference_no'],
+        $row['created_at']
     ];
 }
 
-echo json_encode($response);
+echo json_encode(["data"=>$data]);
 exit;
