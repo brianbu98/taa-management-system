@@ -1,24 +1,20 @@
 ﻿<?php
+require_once __DIR__ . '/../session.php';
 require_once __DIR__ . '/../connection.php';
-session_start();
 
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'admin') {
-    header("Location: ../login.php");
+    header("Location: /login.php");
     exit;
 }
 
-$user_id = $_SESSION['user_id'];
-
-$stmt_user = $con->prepare("SELECT first_name,last_name,user_type,image FROM users WHERE id=?");
-$stmt_user->bind_param("i",$user_id);
-$stmt_user->execute();
-$user = $stmt_user->get_result()->fetch_assoc();
-
-$user_image = $user['image'] ?? 'image.png';
-$user_type  = $user['user_type'];
-
-$taa = $con->query("SELECT * FROM taa_information LIMIT 1")->fetch_assoc();
-$image_path = $taa['image_path'] ?? '../assets/logo/logo.png';
+/* LOGO (SAME AS DASHBOARD) */
+$sql = "SELECT * FROM taa_information";
+$query = $con->prepare($sql);
+$query->execute();
+$result = $query->get_result();
+$row = $result->fetch_assoc();
+$image = $row['image'];
+$image_path = $row['image_path'];
 
 $records = $con->query("
 SELECT pr.*, CONCAT(u.first_name,' ',u.last_name) AS resident
@@ -29,32 +25,64 @@ ORDER BY pr.created_at DESC
 ");
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <title>Payment Records</title>
-
 <link rel="stylesheet" href="../assets/plugins/fontawesome-free/css/all.min.css">
 <link rel="stylesheet" href="../assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="../assets/dist/css/adminlte.min.css">
 </head>
 
-<body class="hold-transition dark-mode sidebar-mini layout-fixed">
+<body class="hold-transition dark-mode sidebar-mini layout-footer-fixed">
 <div class="wrapper">
 
-<!-- NAVBAR SAME AS ABOVE -->
-<!-- SIDEBAR SAME AS ABOVE but highlight payment_records -->
-
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-<a href="dashboard.php" class="brand-link text-center">
-<img src="<?= htmlspecialchars($image_path) ?>" class="img-circle elevation-3" style="width:70%;">
+<nav class="main-header navbar navbar-expand navbar-dark">
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link text-white" data-widget="pushmenu">
+<i class="fas fa-bars"></i>
 </a>
+</li>
+</ul>
+</nav>
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand">
+<a href="dashboard.php" class="brand-link text-center">
+<?php
+if($image != '' || !empty($image)){
+echo '<img src="'.$image_path.'" class="img-circle elevation-5 img-bordered-sm" style="width:70%;">';
+}else{
+echo '<img src="../assets/logo/logo.png" class="img-circle elevation-5 img-bordered-sm" style="width:70%;">';
+}
+?>
+</a>
+
 <div class="sidebar">
 <nav class="mt-2">
 <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent">
-<li class="nav-item"><a href="dashboard.php" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p>Dashboard</p></a></li>
-<li class="nav-item"><a href="payments.php" class="nav-link"><i class="nav-icon fas fa-money-bill-wave"></i><p>Payments</p></a></li>
-<li class="nav-item"><a href="payment_records.php" class="nav-link active bg-indigo"><i class="nav-icon fas fa-receipt"></i><p>Payment Records</p></a></li>
+
+<li class="nav-item">
+<a href="dashboard.php" class="nav-link">
+<i class="nav-icon fas fa-tachometer-alt"></i>
+<p>Dashboard</p>
+</a>
+</li>
+
+<li class="nav-item">
+<a href="payments.php" class="nav-link">
+<i class="nav-icon fas fa-money-bill-wave"></i>
+<p>Payments</p>
+</a>
+</li>
+
+<li class="nav-item">
+<a href="payment_records.php" class="nav-link bg-indigo">
+<i class="nav-icon fas fa-receipt"></i>
+<p>Payment Records</p>
+</a>
+</li>
+
 </ul>
 </nav>
 </div>
@@ -62,7 +90,7 @@ ORDER BY pr.created_at DESC
 
 <div class="content-wrapper p-4">
 
-<h3>Payment Records (Money Received)</h3>
+<h3>Payment Records</h3>
 
 <div class="card">
 <div class="card-body table-responsive">
@@ -103,7 +131,6 @@ ORDER BY pr.created_at DESC
 
 <script src="../assets/plugins/jquery/jquery.min.js"></script>
 <script src="../assets/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="../assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script>
 $(function(){ $('#recordsTable').DataTable(); });
 </script>
