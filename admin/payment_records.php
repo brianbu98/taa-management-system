@@ -1,102 +1,112 @@
-<?php
-include_once '../connection.php';
+﻿<?php
+require_once __DIR__ . '/../connection.php';
 session_start();
 
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'admin') {
-    header("HTTP/1.1 403 Forbidden");
-    exit('Access denied');
+    header("Location: ../login.php");
+    exit;
 }
 
-header('Content-Type: application/json; charset=utf-8');
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+$user_id = $_SESSION['user_id'];
 
-// DataTables variables
-$draw   = intval($_GET['draw'] ?? 1);
-$start  = intval($_GET['start'] ?? 0);
-$length = intval($_GET['length'] ?? 10);
-$search = $con->real_escape_string($_GET['search']['value'] ?? '');
+$stmt_user = $con->prepare("SELECT first_name,last_name,user_type,image FROM users WHERE id=?");
+$stmt_user->bind_param("i",$user_id);
+$stmt_user->execute();
+$user = $stmt_user->get_result()->fetch_assoc();
 
-// WHERE clause
-$where = "1=1";
-$params = [];
-$types  = '';
+$user_image = $user['image'] ?? 'image.png';
+$user_type  = $user['user_type'];
 
-if ($search !== '') {
-    $where .= " AND (u.first_name LIKE ? OR u.last_name LIKE ? OR p.reference_no LIKE ?)";
-    $params = ["%$search%", "%$search%", "%$search%"];
-    $types  = 'sss';
-}
+$taa = $con->query("SELECT * FROM taa_information LIMIT 1")->fetch_assoc();
+$image_path = $taa['image_path'] ?? '../assets/logo/logo.png';
 
-// Total count
-$totalQuery = $con->query("SELECT COUNT(*) AS cnt FROM payments");
-$total = $totalQuery->fetch_assoc()['cnt'] ?? 0;
-
-// Filtered count
-$sqlFiltered = "SELECT COUNT(*) AS cnt FROM payments p 
-                LEFT JOIN users u ON p.user_id = u.id 
-                WHERE $where";
-$stmtCount = $con->prepare($sqlFiltered);
-if ($params) $stmtCount->bind_param($types, ...$params);
-$stmtCount->execute();
-$filtered = $stmtCount->get_result()->fetch_assoc()['cnt'] ?? 0;
-
-// Fetch data
-$sql = "SELECT p.*, CONCAT(u.first_name, ' ', u.last_name) AS name
-        FROM payments p
-        LEFT JOIN users u ON p.user_id = u.id
-        WHERE $where
-        ORDER BY p.date_submitted DESC
-        LIMIT ?, ?";
-$stmt = $con->prepare($sql);
-
-if ($params) {
-    $types .= 'ii';
-    $params[] = $start;
-    $params[] = $length;
-    $stmt->bind_param($types, ...$params);
-} else {
-    $stmt->bind_param('ii', $start, $length);
-}
-
-$stmt->execute();
-$res = $stmt->get_result();
-
-$data = [];
-$count = $start + 1;
-
-while ($row = $res->fetch_assoc()) {
-    $status = $row['status'] ?? 'Pending';
-    $status_badge = match ($status) {
-        'Completed' => '<span class="badge badge-success">Completed</span>',
-        'Rejected'  => '<span class="badge badge-danger">Rejected</span>',
-        default     => '<span class="badge badge-warning">Pending</span>',
-    };
-
-    $proof = (!empty($row['proof']) && file_exists("../uploads/" . $row['proof']))
-        ? "<a href='../uploads/" . htmlspecialchars($row['proof']) . "' target='_blank' class='text-warning'><i class='fas fa-file-alt'></i> View</a>"
-        : "<span class='text-muted'>No proof</span>";
-
-    $outstanding = ($status !== 'Completed') ? 'Yes' : 'No';
-
-    $data[] = [
-        $count++,
-        htmlspecialchars($row['name']),
-        '? ' . number_format($row['amount'], 2),
-        htmlspecialchars($row['method']),
-        htmlspecialchars($row['reference_no']),
-        $status_badge,
-        date('M d, Y h:i A', strtotime($row['date_submitted'])),
-        $outstanding,
-        $proof
-    ];
-}
-
-echo json_encode([
-    'draw'            => $draw,
-    'recordsTotal'    => intval($total),
-    'recordsFiltered' => intval($filtered),
-    'data'            => $data
-], JSON_UNESCAPED_UNICODE);
-exit;
+$records = $con->query("
+SELECT pr.*, CONCAT(u.first_name,' ',u.last_name) AS resident
+FROM payment_records pr
+JOIN payments p ON pr.payment_id = p.id
+JOIN users u ON p.user_id = u.id
+ORDER BY pr.created_at DESC
+");
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Payment Records</title>
+
+<link rel="stylesheet" href="../assets/plugins/fontawesome-free/css/all.min.css">
+<link rel="stylesheet" href="../assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="../assets/dist/css/adminlte.min.css">
+</head>
+
+<body class="hold-transition dark-mode sidebar-mini layout-fixed">
+<div class="wrapper">
+
+<!-- NAVBAR SAME AS ABOVE -->
+<!-- SIDEBAR SAME AS ABOVE but highlight payment_records -->
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<a href="dashboard.php" class="brand-link text-center">
+<img src="<?= htmlspecialchars($image_path) ?>" class="img-circle elevation-3" style="width:70%;">
+</a>
+<div class="sidebar">
+<nav class="mt-2">
+<ul class="nav nav-pills nav-sidebar flex-column nav-child-indent">
+<li class="nav-item"><a href="dashboard.php" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p>Dashboard</p></a></li>
+<li class="nav-item"><a href="payments.php" class="nav-link"><i class="nav-icon fas fa-money-bill-wave"></i><p>Payments</p></a></li>
+<li class="nav-item"><a href="payment_records.php" class="nav-link active bg-indigo"><i class="nav-icon fas fa-receipt"></i><p>Payment Records</p></a></li>
+</ul>
+</nav>
+</div>
+</aside>
+
+<div class="content-wrapper p-4">
+
+<h3>Payment Records (Money Received)</h3>
+
+<div class="card">
+<div class="card-body table-responsive">
+<table id="recordsTable" class="table table-dark table-bordered">
+<thead>
+<tr>
+<th>ID</th>
+<th>Resident</th>
+<th>Amount Paid</th>
+<th>Method</th>
+<th>Reference</th>
+<th>Date</th>
+</tr>
+</thead>
+<tbody>
+<?php while($r=$records->fetch_assoc()): ?>
+<tr>
+<td><?= $r['id'] ?></td>
+<td><?= htmlspecialchars($r['resident']) ?></td>
+<td>₱ <?= number_format($r['amount_paid'],2) ?></td>
+<td><?= htmlspecialchars($r['payment_method']) ?></td>
+<td><?= htmlspecialchars($r['reference_no']) ?></td>
+<td><?= date('M d, Y h:i A',strtotime($r['created_at'])) ?></td>
+</tr>
+<?php endwhile; ?>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+<footer class="main-footer text-center">
+<strong>&copy; <?= date("Y") ?></strong>
+</footer>
+
+</div>
+
+<script src="../assets/plugins/jquery/jquery.min.js"></script>
+<script src="../assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script>
+$(function(){ $('#recordsTable').DataTable(); });
+</script>
+
+</body>
+</html>
