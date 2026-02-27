@@ -281,15 +281,6 @@ width: 100%;
             </div>
           </div>
         </td>
-      <td>
-       VOTERS
-        <br>
-        <select name="edit_voters" id="edit_voters" class="form-control">
-          <option value="NO" <?= $row_resident['voters'] == 'NO'? 'selected': '' ?>>NO</option>
-          <option value="YES" <?= $row_resident['voters'] == 'YES'? 'selected': '' ?>>YES</option>
-        </select>
-        <input type="hidden" value="false" id="edit_voters_check">
-      </td>
     </tr>
     <tr>
       <td>
@@ -312,35 +303,9 @@ width: 100%;
        
         <input type="text" class="editInfo  form-control form-control-sm" value="<?= $row_resident['age'] ?>"  name="edit_age" id="edit_age" disabled> 
       </td>
-      <td >
-        SINGLE PARENT
-          <br>
-          <select name="edit_single_parent" id="edit_single_parent" class="form-control">
-            <option value="YES" <?= $row_resident['single_parent'] == 'YES'? 'selected': '' ?>>YES</option>
-            <option value="NO" <?= $row_resident['single_parent'] == 'NO'? 'selected': '' ?>>NO</option>
-        </select>
-        <input type="hidden" id="edit_single_parent_check" value="false">
-      </td>
-   
    
     </tr>
     <tr>
-    <td >
-        PWD
-          <br>
-          <select name="edit_pwd" id="edit_pwd" class="form-control">
-            <option value="YES" <?= $row_resident['pwd'] == 'YES'? 'selected': '' ?>>YES</option>
-            <option value="NO" <?= $row_resident['pwd'] == 'NO'? 'selected': '' ?>>NO</option>
-        </select>
-        <input type="hidden" id="edit_pwd_check" value="false">
-      </td>
-    <td >
-        TYPE OF PWD
-          <br>
-          <input type="text" class="editInfo  form-control form-control-sm" value="<?= $row_resident['pwd_info'] ?>"  name="edit_pwd_info" id="edit_pwd_info" <?= $row_resident['pwd_info'] == ''? 'disabled': '' ?>> 
-        <input type="hidden" id="edit_pwd_info_check" value="false">
-      </td>
-      <td>
         GENDER
         <br>
         <select name="edit_gender" id="edit_gender" class="form-control">
@@ -567,14 +532,12 @@ width: 100%;
             var edit_last_name = $("#edit_last_name").val();
             var edit_term_from = $("#edit_term_from").val();
             var edit_term_to = $("#edit_term_to").val();
-            var edit_voters = $("#edit_voters").val();
-            var edit_pwd = $("#edit_pwd").val();
             var edit_birth_date = $("#edit_birth_date").val();
             var edit_birth_place = $("#edit_birth_place").val();
             var edit_middle_name = $("#edit_middle_name").val();
             var edit_suffix = $("#edit_suffix").val();
             var edit_gender = $("#edit_gender").val();
-            var edit_vivil_status = $("#edit_vivil_status").val();
+            var edit_vivil_status = $("#edit_civil_status").val();
             var edit_nationality = $("#edit_nationality").val();
             var edit_province = $("#edit_province").val();
             var edit_zip = $("#edit_zip").val();
@@ -588,8 +551,6 @@ width: 100%;
             var edit_mothers_name = $("#edit_mothers_name").val();
             var edit_guardian = $("#edit_guardian").val();
             var edit_guardian_contact = $("#edit_guardian_contact").val();
-            var edit_pwd_info = $("#edit_pwd_info").val();
-            var edit_single_parent = $("#edit_single_parent").val();
 
 
             $("#edit_pwd_info").change(function(){
