@@ -135,7 +135,7 @@ width: 100%;
       outline:none;
       width: 100%;
     }
-    #edit_gender, #edit_civil_status, #edit_voters, #edit_pwd, select {
+    #edit_gender, #edit_civil_status, select {
       /* for Firefox */
       -moz-appearance: none;
       /* for Chrome */
@@ -145,7 +145,7 @@ width: 100%;
       background-color: transparent;
     color: #fff;
     }
-    #edit_gender, #edit_civil_status, #edit_voters, #edit_pwd, #edit_single_parent, option:focus{
+    #edit_gender, #edit_civil_status, option:focus{
       outline:none;
       border:none;
       box-shadow:none;
@@ -154,7 +154,7 @@ width: 100%;
     }
 
     /* For IE10 */
-    #edit_gender, #edit_civil_status, #edit_voters, #edit_pwd,#edit_single_parent select::-ms-expand {
+    #edit_gender, #edit_civil_status select::-ms-expand {
       display: none;
       background-color: transparent;
     color: #fff;
@@ -305,7 +305,7 @@ width: 100%;
       </td>
    
     </tr>
-    <tr>
+    <td>
         GENDER
         <br>
         <select name="edit_gender" id="edit_gender" class="form-control">
