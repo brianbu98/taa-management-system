@@ -21,8 +21,13 @@ $first_name_user = $sec['first_name'] ?? '';
 $last_name_user  = $sec['last_name'] ?? '';
 $user_image      = $sec['image'] ?? '';
 
-$brgy = $con->query("SELECT * FROM taa_information LIMIT 1")->fetch_assoc() ?: [];
-$taa_image_path = $brgy['image_path'] ?? '../assets/dist/img/logo.png';
+$sql_logo = "SELECT * FROM taa_information LIMIT 1";
+$stmt_logo = $con->prepare($sql_logo) or die($con->error);
+$stmt_logo->execute();
+$result_logo = $stmt_logo->get_result();
+$row_logo = $result_logo->fetch_assoc();
+
+$image_path = $row_logo['image_path'] ?? '';
 
 // Handle Add Payment
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add_payment') {
@@ -103,10 +108,15 @@ $res = $con->query("SELECT p.*, CONCAT(u.first_name, ' ', u.last_name) AS name F
 
   <!-- Brand Logo -->
   <div class="text-center mt-3">
-    <img src="<?= htmlspecialchars($taa_image_path) ?>" 
-         alt="Sample Logo" 
-         class="brand-image img-circle elevation-3" 
-         style="width:100px; height:100px; object-fit:cover;">
+<?php 
+$logoSrc = (!empty($image_path))
+    ? '../' . ltrim($image_path, '/')
+    : '../assets/logo/logo.png';
+?>
+
+<img src="<?= htmlspecialchars($logoSrc) ?>"
+     class="brand-image img-circle elevation-3"
+     style="width:100px; height:100px; object-fit:cover;">
   </div>
 
   <!-- Role Label -->
