@@ -553,35 +553,6 @@ width: 100%;
             var edit_guardian_contact = $("#edit_guardian_contact").val();
 
 
-            $("#edit_pwd_info").change(function(){
-
-              var newPwdIfo = $(this).val();
-
-              if(!(newPwdIfo == edit_pwd_info )){
-
-                $("#edit_pwd_info_check").val('true');
-
-              }else{
-
-                $("#edit_pwd_info_check").val('false');
-              }
-
-            })
-
-            $("#edit_single_parent").change(function(){
-
-              var newSingleParent = $(this).val();
-
-              if(!(newSingleParent == edit_single_parent )){
-
-                $("#edit_single_parent_check").val('true');
-
-              }else{
-
-                $("#edit_single_parent_check").val('false');
-              }
-
-            })
 
 
             $("#edit_first_name").change(function(){
@@ -616,40 +587,6 @@ width: 100%;
                 }
 
               })
-
-          
-
-                $("#edit_voters").change(function(){
-
-                  var newVoters = $(this).val();
-
-                  if(!(newVoters == edit_voters )){
-
-                  $("#edit_voters_check").val('true');
-
-                  }else{
-
-                  $("#edit_voters_check").val('false');
-
-                  }
-
-                })
-
-                $("#edit_pwd").change(function(){
-
-                  var newPwd = $(this).val();
-
-                  if(!(newPwd == edit_pwd )){
-
-                  $("#edit_pwd_check").val('true');
-
-                  }else{
-
-                  $("#edit_pwd_check").val('false');
-
-                  }
-
-                })
 
                 $("#edit_birth_date").change(function(){
 
@@ -965,7 +902,6 @@ width: 100%;
 
 
 
-
                 $.validator.setDefaults({
           submitHandler: function (form) {
             Swal.fire({
@@ -985,8 +921,6 @@ width: 100%;
                   
                   formData.append("edit_first_name_check",$("#edit_first_name_check").val())
                   formData.append("edit_last_name_check",$("#edit_last_name_check").val())
-                  formData.append("edit_voters_check",$("#edit_voters_check").val())
-                  formData.append("edit_pwd_check",$("#edit_pwd_check").val())
                   formData.append("edit_birth_date_check",$("#edit_birth_date_check").val())
                   formData.append("edit_birth_place_check",$("#edit_birth_place_check").val())
                   formData.append("edit_middle_name_check",$("#edit_middle_name_check").val())
@@ -1007,8 +941,6 @@ width: 100%;
                   formData.append("edit_mothers_name_check",$("#edit_mothers_name_check").val())
                   formData.append("edit_guardian_check",$("#edit_guardian_check").val())
                   formData.append("edit_guardian_contact_check",$("#edit_guardian_contact_check").val())
-                  formData.append("edit_pwd_info_check",$("#edit_pwd_info_check").val())
-                  formData.append("edit_single_parent_check",$("#edit_single_parent_check").val())
                   
 
                   $.ajax({
