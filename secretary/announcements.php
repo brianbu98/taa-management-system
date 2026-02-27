@@ -29,38 +29,66 @@ try {
   $user_image = $user['image'] ?? '';
   $msg = '';
 
-  // Handle Add / Edit
-  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    $action = $_POST['action'];
-    $title = trim($_POST['title'] ?? '');
-    $content = trim($_POST['content'] ?? '');
+// Handle Add / Edit
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
+    $action  = $_POST['action'];
+    $title   = trim($_POST['title'] ?? '');
+    $message = trim($_POST['message'] ?? '');
+    $status  = $_POST['status'] ?? 'Active';
+
+    // ADD
     if ($action === 'add') {
-      if ($title && $content) {
-        $stmt = $con->prepare("INSERT INTO announcements (title, content, date_posted) VALUES (?, ?, NOW())");
-        $stmt->bind_param('ss', $title, $content);
-        $stmt->execute();
-        $msg = "Announcement added successfully.";
-      } else {
-        $msg = "Please fill in all fields.";
-      }
+
+        if ($title && $message) {
+
+            $stmt = $con->prepare("
+                INSERT INTO announcements 
+                (title, message, posted_by, status, created_at, updated_at)
+                VALUES (?, ?, ?, ?, NOW(), NOW())
+            ");
+
+            $stmt->bind_param('ssis', $title, $message, $user_id, $status);
+            $stmt->execute();
+
+            $msg = "Announcement added successfully.";
+
+        } else {
+            $msg = "Please fill in all fields.";
+        }
     }
 
+    // EDIT
     if ($action === 'edit') {
-      $id = intval($_POST['id']);
-      if ($id && $title && $content) {
-        $stmt = $con->prepare("UPDATE announcements SET title = ?, content = ? WHERE id = ?");
-        $stmt->bind_param('ssi', $title, $content, $id);
-        $stmt->execute();
-        $msg = "Announcement updated successfully.";
-      } else {
-        $msg = "Invalid data provided.";
-      }
+
+        $id = intval($_POST['id']);
+
+        if ($id && $title && $message) {
+
+            $stmt = $con->prepare("
+                UPDATE announcements
+                SET title = ?, message = ?, status = ?, updated_at = NOW()
+                WHERE id = ?
+            ");
+
+            $stmt->bind_param('sssi', $title, $message, $status, $id);
+            $stmt->execute();
+
+            $msg = "Announcement updated successfully.";
+
+        } else {
+            $msg = "Invalid data provided.";
+        }
     }
-  }
+}
 
   // Fetch all announcements
-  $res = $con->query("SELECT * FROM announcements ORDER BY date_posted DESC");
+$res = $con->query("
+    SELECT a.*, CONCAT(u.first_name, ' ', u.last_name) AS posted_name
+    FROM announcements a
+    LEFT JOIN users u ON a.posted_by = u.id
+    ORDER BY a.created_at DESC
+");
 
 } catch (Exception $e) {
   echo $e->getMessage();
@@ -294,23 +322,21 @@ try {
                 </tr>
               </thead>
               <tbody>
-                <?php while ($a = $res->fetch_assoc()): ?>
-                  <tr>
-                    <td><?= $a['id'] ?></td>
-                    <td><?= htmlspecialchars($a['title']) ?></td>
-                    <td><?= nl2br(htmlspecialchars($a['content'])) ?></td>
-                    <td><?= date('M d, Y h:i A', strtotime($a['date_posted'])) ?></td>
-                    <td>
-                      <button class="btn btn-sm btn-warning editBtn" 
-                        data-id="<?= $a['id'] ?>"
-                        data-title="<?= htmlspecialchars($a['title'], ENT_QUOTES) ?>"
-                        data-content="<?= htmlspecialchars($a['content'], ENT_QUOTES) ?>">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                    </td>
-                  </tr>
-                <?php endwhile; ?>
-              </tbody>
+            <?php while ($a = $res->fetch_assoc()): ?>
+            <tr>
+                <td><?= $a['id'] ?></td>
+                <td><?= htmlspecialchars($a['title']) ?></td>
+                <td><?= nl2br(htmlspecialchars($a['message'])) ?></td>
+                <td>
+                    <span class="badge <?= $a['status']=='Active' ? 'badge-success':'badge-danger' ?>">
+                        <?= $a['status'] ?>
+                    </span>
+                </td>
+                <td><?= htmlspecialchars($a['posted_name'] ?? '—') ?></td>
+                <td><?= date('M d, Y h:i A', strtotime($a['created_at'])) ?></td>
+            </tr>
+            <?php endwhile; ?>
+            </tbody>
             </table>
           </div>
         </div>
