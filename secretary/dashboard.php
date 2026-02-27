@@ -124,7 +124,14 @@ try {
         // ------------------------------
         // ANNOUNCEMENTS (new)
         // ------------------------------
-       $sql_announcements = "SELECT * FROM announcements ORDER BY id DESC LIMIT 5";
+       $sql_announcements = "
+    SELECT a.*, CONCAT(u.first_name,' ',u.last_name) AS posted_name
+    FROM announcements a
+    LEFT JOIN users u ON a.posted_by = u.id
+    WHERE a.status = 'Active'
+    ORDER BY a.created_at DESC
+    LIMIT 5
+";
         $result_announcements = $con->query($sql_announcements) or die($con->error);
 
         // ------------------------------

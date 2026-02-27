@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // secretary/payment_table.php
 include_once '../connection.php';
 session_start();
@@ -22,18 +22,29 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
     $total = $con->query("SELECT COUNT(*) AS cnt FROM payments p")->fetch_assoc()['cnt'];
     $filtered = $con->query("SELECT COUNT(*) AS cnt FROM payments p LEFT JOIN users u ON p.user_id = u.id WHERE $where")->fetch_assoc()['cnt'];
 
-    $sql = "SELECT p.*, CONCAT(u.first_name,' ',u.last_name) AS name FROM payments p LEFT JOIN users u ON p.user_id = u.id WHERE $where ORDER BY p.date_submitted DESC LIMIT $start, $length";
-    $res = $con->query($sql);
+    $sql = "
+    SELECT pr.id,
+           CONCAT(u.first_name,' ',u.last_name) AS name,
+           pr.amount_paid,
+           pr.reference_no,
+           pr.payment_method,
+           pr.created_at
+    FROM payment_records pr
+    LEFT JOIN payments p ON pr.payment_id = p.id
+    LEFT JOIN users u ON p.user_id = u.id
+    ORDER BY pr.created_at DESC
+    LIMIT $start,$length
+    ";
 
     $data = [];
     while ($r = $res->fetch_assoc()) {
         $row = [];
         $row[] = htmlspecialchars($r['id']);
         $row[] = htmlspecialchars($r['name']);
-        $row[] = '? ' . number_format($r['amount'],2);
+        $row[] = '₱' . number_format($r['amount_paid'],2);
         $row[] = htmlspecialchars($r['reference_no']);
-        $row[] = htmlspecialchars($r['method']);
-        $row[] = date('M d, Y h:i A', strtotime($r['date_submitted']));
+        $row[] = htmlspecialchars($r['payment_method']);
+        $row[] = date('M d, Y h:i A', strtotime($r['created_at']));
         $row[] = '<button class="btn btn-sm btn-info viewPayment" data-id="'.$r['id'].'">View</button>';
         $data[] = $row;
     }
