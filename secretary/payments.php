@@ -31,24 +31,47 @@ $image_path = $row_logo['image_path'] ?? '';
 
 // Handle Add Payment
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add_payment') {
-    $user_id   = intval($_POST['user_id'] ?? 0);
-    $amount    = floatval($_POST['amount'] ?? 0);
-    $reference = trim($_POST['reference'] ?? '');
-    $method    = trim($_POST['method'] ?? '');
 
-    if (!$user_id || $amount <= 0 || $reference === '' || $method === '') {
-        $msg = "Please complete all fields and provide a valid amount.";
+    $user_id     = intval($_POST['user_id']);
+    $payment_name= trim($_POST['payment_name']);
+    $amount_due  = floatval($_POST['amount_due']);
+    $due_date    = $_POST['due_date'];
+    $amount_paid = floatval($_POST['amount_paid']);
+    $method      = trim($_POST['method']);
+    $reference   = trim($_POST['reference']);
+
+    if (!$user_id || !$payment_name || $amount_due <= 0 || !$due_date) {
+        $msg = "Please complete required fields.";
         $msg_type = "error";
     } else {
-        $stmtI = $con->prepare("INSERT INTO payments (user_id, amount, reference_no, method, date_submitted) VALUES (?, ?, ?, ?, NOW())");
-        $stmtI->bind_param('idss', $user_id, $amount, $reference, $method);
-        if ($stmtI->execute()) {
-            $msg = "Payment recorded successfully.";
-            $msg_type = "success";
-        } else {
-            $msg = "Error: " . $stmtI->error;
-            $msg_type = "error";
+
+        $stmt = $con->prepare("
+            INSERT INTO payments 
+            (user_id, payment_name, amount_due, due_date, status, created_at)
+            VALUES (?, ?, ?, ?, 'Pending', NOW())
+        ");
+        $stmt->bind_param('isds', $user_id, $payment_name, $amount_due, $due_date);
+        $stmt->execute();
+
+        $payment_id = $stmt->insert_id;
+
+        if ($amount_paid > 0 && $method && $reference) {
+
+            $stmtRec = $con->prepare("
+                INSERT INTO payment_records
+                (payment_id, amount_paid, payment_method, reference_no, received_by, created_at)
+                VALUES (?, ?, ?, ?, ?, NOW())
+            ");
+            $stmtRec->bind_param('idssi', $payment_id, $amount_paid, $method, $reference, $sec_id);
+            $stmtRec->execute();
+
+            if ($amount_paid >= $amount_due) {
+                $con->query("UPDATE payments SET status='Completed' WHERE id=$payment_id");
+            }
         }
+
+        $msg = "Payment created successfully.";
+        $msg_type = "success";
     }
 }
 
@@ -56,7 +79,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add_p
 $resResidents = $con->query("SELECT id, CONCAT(first_name, ' ', last_name) AS name FROM users WHERE user_type = 'resident' ORDER BY last_name, first_name");
 
 // Fetch payments
-$res = $con->query("SELECT p.*, CONCAT(u.first_name, ' ', u.last_name) AS name FROM payments p LEFT JOIN users u ON p.user_id = u.id ORDER BY p.date_submitted DESC");
+$res = $con->query("
+    SELECT p.*, 
+           CONCAT(u.first_name,' ',u.last_name) AS name,
+           SUM(pr.amount_paid) AS total_paid
+    FROM payments p
+    LEFT JOIN users u ON p.user_id = u.id
+    LEFT JOIN payment_records pr ON p.id = pr.payment_id
+    GROUP BY p.id
+    ORDER BY p.created_at DESC
+");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -273,10 +305,10 @@ $logoSrc = (!empty($image_path))
                   <tr>
                     <td><?= htmlspecialchars($rw['id']) ?></td>
                     <td><?= htmlspecialchars($rw['name'] ?? '—') ?></td>
-                    <td>?<?= number_format($rw['amount'], 2) ?></td>
-                    <td><?= htmlspecialchars($rw['method']) ?></td>
-                    <td><?= htmlspecialchars($rw['reference_no']) ?></td>
-                    <td><?= htmlspecialchars(date('M d, Y h:i A', strtotime($rw['date_submitted']))) ?></td>
+                    <td>?<?= number_format($rw['amount_due'], 2) ?></td>
+                    <td><?= htmlspecialchars($rw['total_paid']) ?></td>
+                    <td><?= htmlspecialchars($rw['status']) ?></td>
+                    <td><?= htmlspecialchars(date('M d, Y h:i A', strtotime($rw['due_date']))) ?></td>
                   </tr>
                 <?php endwhile; ?>
               </tbody>
