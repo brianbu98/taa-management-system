@@ -304,8 +304,8 @@ width: 100%;
         <input type="text" class="editInfo  form-control form-control-sm" value="<?= $row_resident['age'] ?>"  name="edit_age" id="edit_age" disabled> 
       </td>
    
-    </tr>
-    <td>
+    <tr>
+      <td>
         GENDER
         <br>
         <select name="edit_gender" id="edit_gender" class="form-control">
@@ -314,18 +314,18 @@ width: 100%;
         </select>
         <input type="hidden" id="edit_gender_check" value="false">
       </td>
+
       <td>
         CIVIL STATUS
         <br>
         <select name="edit_civil_status" id="edit_civil_status" class="form-control">
-          <option value="Single" <?= $row_resident['civil_status'] == 'Single'? 'selected': ''; ?>>Single</option>
-          <option value="Married" <?= $row_resident['civil_status'] == 'Married'? 'selected': ''; ?>>Married</option>
+          <option value="Single" <?= $row_resident['civil_status'] == 'Single'? 'selected': '' ?>>Single</option>
+          <option value="Married" <?= $row_resident['civil_status'] == 'Married'? 'selected': '' ?>>Married</option>
         </select>
         <input type="hidden" id="edit_civil_status_check" value="false">
       </td>
-    
-         
     </tr>
+         
 
     <tr>
     <td >
@@ -514,19 +514,6 @@ width: 100%;
 
     $(function () {
 
-
-      $("#edit_pwd").change(function(){
-        var edit_pwd_one = $(this).val();
-
-
-        if(edit_pwd_one == 'YES'){
-          $("#edit_pwd_info").prop('disabled', false)
-        }else{
-          $("#edit_pwd_info").prop('disabled', true)
-        }
-
-
-      })
 
            var edit_first_name = $("#edit_first_name").val();
             var edit_last_name = $("#edit_last_name").val();
