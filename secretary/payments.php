@@ -139,23 +139,22 @@ $res = $con->query("
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
   <!-- Brand Logo -->
-  <div class="text-center mt-3">
-<?php 
+ <?php 
 $logoSrc = (!empty($image_path))
     ? '../' . ltrim($image_path, '/')
     : '../assets/logo/logo.png';
 ?>
 
-<img src="<?= htmlspecialchars($logoSrc) ?>"
-     class="brand-image img-circle elevation-3"
-     style="width:100px; height:100px; object-fit:cover;">
-  </div>
+<div class="d-flex align-items-center justify-content-center mt-3 mb-3">
+  
+  <img src="<?= htmlspecialchars($logoSrc) ?>"
+       class="img-circle elevation-3 mr-2"
+       style="width:45px; height:45px; object-fit:cover;">
 
-  <!-- Role Label -->
-  <div class="text-center mt-2 mb-2">
-    <i class="fas fa-cog text-info"></i>
-    <span class="text-white font-weight-bold ml-1">OFFICIAL</span>
-  </div>
+  <i class="fas fa-cog text-info mr-1"></i>
+  <span class="text-white font-weight-bold">OFFICIAL</span>
+
+</div>
 
   <!-- Sidebar -->
   <div class="sidebar">
