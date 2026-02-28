@@ -42,12 +42,8 @@ residence_information.middle_name,
 residence_information.age,
 residence_information.image, 
 residence_information.image_path,
-residence_status.pwd, 
 residence_status.status, 
-residence_status.voters, 
 residence_status.archive,
-residence_status.single_parent,
-residence_status.pwd_info,
 residence_status.date_added  
 FROM residence_information INNER JOIN residence_status ON residence_information.residence_id = residence_status.residence_id WHERE residence_status.archive = '$archive_status'" .$where;
 
@@ -92,17 +88,6 @@ while($row = $query->fetch_assoc()){
     $middle_name = '';
   }
 
-  if($row['voters'] == 'YES'){
-    $voters = '<span class="badge badge-success text-md ">'.$row['voters'].'</span>';
-  }else{
-    $voters = '<span class="badge badge-danger text-md ">'.$row['voters'].'</span>';
-  }
-
-  if($row['single_parent'] == 'YES'){
-    $single_parent = '<span class="badge badge-info text-md ">'.$row['single_parent'].'</span>';
-  }else{
-    $single_parent = '<span class="badge badge-warning text-md ">'.$row['single_parent'].'</span>';
-  }
 
   if($row['status'] == 'ACTIVE'){
     $status = '<label class="switch">
@@ -127,9 +112,6 @@ $subdata[] = $image;
 $subdata[] =  $row['residence_id'];
 $subdata[] =  ucfirst($row['first_name']).' '. $middle_name .' '. ucfirst($row['last_name']); 
 $subdata[] =  $row['age'];
-$subdata[] =  $row['pwd_info']; 
-$subdata[] =  $single_parent; 
-$subdata[] = $voters;
 $subdata[] = $status;
   $subdata[] = '<i style="cursor: pointer;  color: yellow;  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" class="fa fa-user-edit text-lg px-3 viewResidence" id="'.$row['residence_id'].'"></i>
   <i style="cursor: pointer;  color: red;  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" class="fa fa-times text-lg px-2 unArchiveResidence" id="'.$row['residence_id'].'"></i>';
