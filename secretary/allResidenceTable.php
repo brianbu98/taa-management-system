@@ -1,157 +1,194 @@
-<?php 
-
+<?php
 include_once '../connection.php';
 
-try{
-  
+try {
 
-$first_name = $con->real_escape_string($_POST['first_name']);
-$middle_name = $con->real_escape_string($_POST['middle_name']);
-$last_name = $con->real_escape_string($_POST['last_name']);
-$status = $con->real_escape_string($_POST['status']);
-$age =  $con->real_escape_string($_POST['age']);
-$resident_id =  $con->real_escape_string($_POST['resident_id']);
+    // ----------------------------
+    // INPUTS
+    // ----------------------------
+    $first_name  = $_POST['first_name']  ?? '';
+    $middle_name = $_POST['middle_name'] ?? '';
+    $last_name   = $_POST['last_name']   ?? '';
+    $status      = $_POST['status']      ?? '';
+    $age         = $_POST['age']         ?? '';
+    $resident_id = $_POST['resident_id'] ?? '';
 
-$whereClause = [];
+    $draw   = isset($_REQUEST['draw']) ? intval($_REQUEST['draw']) : 0;
+    $start  = isset($_REQUEST['start']) ? intval($_REQUEST['start']) : 0;
+    $length = isset($_REQUEST['length']) ? intval($_REQUEST['length']) : 10;
 
-if(!empty($first_name))  
-$whereClause[] = "first_name LIKE '%" .$first_name. "%'";
+    // ----------------------------
+    // WHERE FILTER
+    // ----------------------------
+    $whereClause = [];
 
-if(!empty($middle_name))  
-$whereClause[] = "middle_name LIKE '%" .$middle_name. "%'";
+    if ($first_name !== '') {
+        $whereClause[] = "residence_information.first_name LIKE '%" . $con->real_escape_string($first_name) . "%'";
+    }
 
-if(!empty($last_name))  
-$whereClause[] = "last_name LIKE '%" .$last_name. "%'";
+    if ($middle_name !== '') {
+        $whereClause[] = "residence_information.middle_name LIKE '%" . $con->real_escape_string($middle_name) . "%'";
+    }
 
-if(!empty($status))  
-$whereClause[] = "residence_status.status='".$status."'";
+    if ($last_name !== '') {
+        $whereClause[] = "residence_information.last_name LIKE '%" . $con->real_escape_string($last_name) . "%'";
+    }
 
-if(!empty($age))
-$whereClause[] = "residence_information.age='".$age."'";
+    if ($status !== '') {
+        $whereClause[] = "residence_status.status = '" . $con->real_escape_string($status) . "'";
+    }
 
+    if ($age !== '') {
+        $whereClause[] = "residence_information.age = '" . $con->real_escape_string($age) . "'";
+    }
 
-if(!empty($resident_id))
-$whereClause[] = "residence_information.residence_id='$resident_id'";
+    if ($resident_id !== '') {
+        $whereClause[] = "residence_information.residence_id = '" . $con->real_escape_string($resident_id) . "'";
+    }
 
+    $where = '';
+    if (!empty($whereClause)) {
+        $where = " AND " . implode(" AND ", $whereClause);
+    }
 
-$where = '';
+    // ----------------------------
+    // BASE QUERY
+    // ----------------------------
+    $baseQuery = "
+        FROM residence_information
+        INNER JOIN residence_status
+            ON residence_information.residence_id = residence_status.residence_id
+        WHERE residence_information.archive = 'NO'
+        $where
+    ";
 
-if(count($whereClause) > 0){
-  $where .= ' AND ' .implode(' AND ', $whereClause);
+    // ----------------------------
+    // TOTAL RECORDS (WITHOUT FILTER)
+    // ----------------------------
+    $totalQuery = "
+        SELECT COUNT(*) as total
+        FROM residence_information
+        INNER JOIN residence_status
+            ON residence_information.residence_id = residence_status.residence_id
+        WHERE residence_information.archive = 'NO'
+    ";
+
+    $totalResult = $con->query($totalQuery);
+    $recordsTotal = $totalResult->fetch_assoc()['total'];
+
+    // ----------------------------
+    // FILTERED COUNT
+    // ----------------------------
+    $filteredQuery = "SELECT COUNT(*) as total " . $baseQuery;
+    $filteredResult = $con->query($filteredQuery);
+    $recordsFiltered = $filteredResult->fetch_assoc()['total'];
+
+    // ----------------------------
+    // COLUMN MAPPING (DataTables)
+    // ----------------------------
+    $columns = [
+        0 => 'residence_information.image',
+        1 => 'residence_information.residence_id',
+        2 => 'residence_information.first_name',
+        3 => 'residence_information.age',
+        4 => 'residence_status.status'
+    ];
+
+    // ----------------------------
+    // MAIN SELECT
+    // ----------------------------
+    $sql = "
+        SELECT 
+            residence_information.residence_id,
+            residence_information.first_name,
+            residence_information.middle_name,
+            residence_information.last_name,
+            residence_information.age,
+            residence_information.image,
+            residence_information.image_path,
+            residence_status.status
+        $baseQuery
+    ";
+
+    // ----------------------------
+    // ORDERING
+    // ----------------------------
+    if (isset($_REQUEST['order'][0]['column'])) {
+        $columnIndex = intval($_REQUEST['order'][0]['column']);
+        $columnDir   = $_REQUEST['order'][0]['dir'] === 'asc' ? 'ASC' : 'DESC';
+
+        if (array_key_exists($columnIndex, $columns)) {
+            $sql .= " ORDER BY " . $columns[$columnIndex] . " " . $columnDir;
+        }
+    } else {
+        $sql .= " ORDER BY residence_information.residence_id DESC";
+    }
+
+    // ----------------------------
+    // PAGINATION
+    // ----------------------------
+    if ($length != -1) {
+        $sql .= " LIMIT $start, $length";
+    }
+
+    $query = $con->query($sql);
+
+    if (!$query) {
+        die("SQL Error: " . $con->error);
+    }
+
+    $data = [];
+
+    while ($row = $query->fetch_assoc()) {
+
+        // IMAGE
+        if (!empty($row['image'])) {
+            $image = '<img src="' . $row['image_path'] . '" class="img-circle" width="40">';
+        } else {
+            $image = '<img src="../assets/dist/img/blank_image.png" class="img-circle" width="40">';
+        }
+
+        // MIDDLE INITIAL
+        $middle = '';
+        if (!empty($row['middle_name'])) {
+            $middle = strtoupper($row['middle_name'][0]) . '.';
+        }
+
+        // STATUS SWITCH
+        $checked = $row['status'] === 'ACTIVE' ? 'checked' : '';
+        $statusBtn = '
+            <label class="switch">
+                <input type="checkbox" class="editStatus"
+                       id="' . $row['residence_id'] . '" ' . $checked . '>
+                <div class="slider round"></div>
+            </label>';
+
+        $data[] = [
+            $image,
+            $row['residence_id'],
+            ucfirst($row['first_name']) . ' ' . $middle . ' ' . ucfirst($row['last_name']),
+            $row['age'],
+            $statusBtn,
+            '
+            <i class="fa fa-user-edit viewResidence"
+               id="' . $row['residence_id'] . '" style="color:gold;cursor:pointer;"></i>
+            <i class="fa fa-times deleteResidence"
+               id="' . $row['residence_id'] . '" style="color:red;cursor:pointer;"></i>
+            '
+        ];
+    }
+
+    // ----------------------------
+    // JSON RESPONSE
+    // ----------------------------
+    echo json_encode([
+        "draw" => $draw,
+        "recordsTotal" => intval($recordsTotal),
+        "recordsFiltered" => intval($recordsFiltered),
+        "data" => $data
+    ]);
+
+} catch (Exception $e) {
+    echo json_encode(["error" => $e->getMessage()]);
 }
-
-
-
-
-$sql = "SELECT 
-residence_information.residence_id, 
-residence_information.first_name,  
-residence_information.middle_name, 
-residence_information.last_name, 
-residence_information.age, 
-residence_information.image, 
-residence_information.image_path, 
-residence_status.residence_id,
-residence_status.status
-FROM residence_information
-INNER JOIN residence_status ON residence_information.residence_id = residence_status.residence_id
- WHERE archive = 'NO'" .$where;
-$query = $con->prepare($sql) or die ($con->error);
-$query->execute();
-$query->store_result();
-$totalData = $query->num_rows;
-$totalFiltered = $totalData;
-
-
-
-
-
-
-
-if(isset($_REQUEST['order'])){
-  $sql .= ' ORDER BY '.
-  $_REQUEST['order']['0']['column'].
-  ' '.
-  $_REQUEST['order']['0']['dir'].
-  ' ';
-}else{
-  $sql .= ' ORDER BY date_added DESC ';
-}
-
-if($_REQUEST['length'] != -1){
-  $sql .= ' LIMIT '.
-  $_REQUEST['start'].
-  ' ,'.
-  $_REQUEST['length'].
-  '';
-}
-
-$query = $con->prepare($sql) or die ($con->error);
-$query->execute();
-$result = $query->get_result();
-$data = [];
-while($row = $result->fetch_assoc()){
-  
-
-  if($row['image'] != '' || $row['image'] != null || !empty($row['image'])){
-    $image = '<span style="cursor: pointer;" class="pop"><img src="'.$row['image_path'].'" alt="residence_image" class="img-circle" width="40"></span>';
-  }else{
-    $image = '<span style="cursor: pointer;" class="pop"><img src="../assets/dist/img/blank_image.png" alt="residence_image" class="img-circle"  width="40"></span>';
-  }
-
-  if($row['middle_name'] != ''){
-    $middle_name = ucfirst($row['middle_name'])[0].'.';
-  }else{
-    $middle_name = '';
-  }
-
-  if($row['status'] == 'ACTIVE'){
-    $status = '<label class="switch">
-                    <input type="checkbox" class="editStatus" data-status="ACTIVE"  id="'.$row['residence_id'].'"  checked>
-                  <div class="slider round">
-                    <span class="on ">ACTIVE</span>
-                    <span class="off ">INACTIVE</span>
-                  </div>
-              </label>';
-}else{
-    $status = '<label class="switch">
-                    <input type="checkbox" class="editStatus" id="'.$row['residence_id'].'" data-status="INACTIVE">
-                  <div class="slider round">
-                    <span class="off ">INACTIVE</span>
-                    <span class="on ">ACTIVE</span>
-                  </div>
-              </label> ';
-}
-
-  $subdata = [];
-  $subdata[] = $image;
-  $subdata[] =  $row['residence_id'];
-  $subdata[] =  ucfirst($row['first_name']).' '. $middle_name .' '. ucfirst($row['last_name']); 
-  $subdata[] =  $row['age'];
-  $subdata[] = $status;
-  $subdata[] = '<i style="cursor: pointer;  color: yellow;  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" class="fa fa-user-edit text-lg px-3 viewResidence" id="'.$row['residence_id'].'"></i>
-  <i style="cursor: pointer;  color: red;  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" class="fa fa-times text-lg px-2 deleteResidence" id="'.$row['residence_id'].'"></i>';
-  $data[] = $subdata;
-}
-
-$json_data = [
-  'draw' => intval($_REQUEST['draw']),
-  'recordsTotal' => intval($totalData),
-  'recordsFiltered' => intval($totalFiltered),
-  'data' => $data,
-  'total'    => number_format($totalData),
-];
-
-echo json_encode($json_data);
-
-
-
-}catch(Exception $e){
-  echo $e->getMessage();
-}
-
-
-
-
-
 ?>
