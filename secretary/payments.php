@@ -145,15 +145,23 @@ $logoSrc = (!empty($image_path))
     : '../assets/logo/logo.png';
 ?>
 
-<div class="d-flex align-items-center justify-content-center mt-3 mb-3">
-  
+<a href="#" class="brand-link text-center">
   <img src="<?= htmlspecialchars($logoSrc) ?>"
-       class="img-circle elevation-3 mr-2"
-       style="width:45px; height:45px; object-fit:cover;">
+       id="logo_image"
+       class="img-circle elevation-5 img-bordered-sm"
+       style="width:70%;">
+  <span class="brand-text font-weight-light"></span>
+</a>
 
-  <i class="fas fa-cog text-info mr-1"></i>
-  <span class="text-white font-weight-bold">OFFICIAL</span>
-
+<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+  <div class="image">
+    <img src="<?= htmlspecialchars($logoSrc) ?>" 
+         class="img-circle elevation-5 img-bordered-sm" 
+         alt="Logo">
+  </div>
+  <div class="info text-center">
+    <a href="#" class="d-block text-bold">OFFICIAL</a>
+  </div>
 </div>
 
   <!-- Sidebar -->
