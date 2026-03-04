@@ -587,38 +587,7 @@ try{
 
                 </form>
 
-                <div class="form-group">
-                <a href="printReport.php?<?php 
-            
-            if(isset($_POST['submit'])){
-
-              $whereClauses = [];
-
-              $age = $con->real_escape_string($_POST['age']);
-              $status = $con->real_escape_string($_POST['status']);
-          
-      
-              if(!empty($age))
-                $whereClauses[] = "age=$age";
-      
-              if(!empty($status))
-                $whereClauses[] = "status=$status";
-   
-      
-              $wheres = '';
-      
-              if(count($whereClauses) > 0){
-                $wheres .= implode('&',$whereClauses);
-              }
-              echo $wheres;
-
-            }
-
-           
-            
-            ?>" target="_blank" class="btn btn-warning btn-flat elevation-5 px-3" ><i class="fas fa-print"></i> PRINT</a>
-       
-                </div>
+              
                 <table class="table table-striped table-hover table-sm" id="tableReport">             
                   <thead>
                     <tr>
