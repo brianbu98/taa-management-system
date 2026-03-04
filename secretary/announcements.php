@@ -179,11 +179,10 @@ $res = $con->query("
   <!-- /.navbar -->
 
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand">
 
   <!-- Brand Logo -->
-  <div class="text-center mt-3">
-    <a href="#" class="brand-link text-center">
+  <a href="#" class="brand-link text-center">
   <img src="<?= htmlspecialchars($logoSrc) ?>"
        id="logo_image"
        class="img-circle elevation-5 img-bordered-sm"
@@ -201,12 +200,6 @@ $res = $con->query("
     <a href="#" class="d-block text-bold text-white">OFFICIAL</a>
   </div>
 </div>
-
-  <!-- Role Label -->
-  <div class="text-center mt-2 mb-2">
-    <i class="fas fa-cog text-info"></i>
-    <span class="text-white font-weight-bold ml-1">OFFICIAL</span>
-  </div>
 
   <!-- Sidebar -->
   <div class="sidebar">
