@@ -83,7 +83,7 @@ $res = $con->query("
     SELECT p.*, 
            CONCAT(u.first_name,' ',u.last_name) AS name,
            SUM(pr.amount_paid) AS total_paid
-    FROM payments p
+    FROM payments p45
     LEFT JOIN users u ON p.user_id = u.id
     LEFT JOIN payment_records pr ON p.id = pr.payment_id
     GROUP BY p.id
@@ -106,7 +106,7 @@ $res = $con->query("
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
-<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed">
+<body class="hold-transition dark-mode sidebar-mini layout-footer-fixed">
 <div class="wrapper">
 
   <!-- Navbar -->
@@ -136,7 +136,7 @@ $res = $con->query("
   </nav>
 
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand">
 
   <!-- Brand Logo -->
  <?php 
@@ -337,7 +337,6 @@ $logoSrc = (!empty($image_path))
 <script src="../assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <script src="../assets/dist/js/adminlte.js"></script>
-
 <script src="../assets/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="../assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
