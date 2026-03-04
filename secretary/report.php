@@ -346,7 +346,7 @@ try{
             <!-- Message Start -->
             <div class="media">
               <?php 
-                if($user_image != '' || $user_image != null || !empty($user_image)){
+                if(!empty($user_image)){
                   echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle alt="User Image">';
                 }else{
                   echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle alt="User Image">';
@@ -459,9 +459,6 @@ try{
                 </a>
               </li>
             </ul>
-          </li>
-              </p>
-            </a>
           </li>
           <li class="nav-item ">
             <a href="#" class="nav-link">
@@ -644,14 +641,6 @@ try{
 <script src="../assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="../assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="../assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="../assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="../assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="../assets/plugins/jszip/jszip.min.js"></script>
-<script src="../assets/plugins/pdfmake/pdfmake.min.js"></script>
-<script src="../assets/plugins/pdfmake/vfs_fonts.js"></script>
-<script src="../assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="../assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="../assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <script src="../assets/plugins/sweetalert2/js/sweetalert2.all.min.js"></script>
 <script src="../assets/plugins/select2/js/select2.full.min.js"></script>
 <script src="../assets/plugins/moment/moment.min.js"></script>
