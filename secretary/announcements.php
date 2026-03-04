@@ -18,11 +18,18 @@ try {
   $user = $stmt_user->get_result()->fetch_assoc();
 
   
-  $stmt_taa = $con->query("SELECT * FROM taa_information");
-  $taa = $stmt_taa->fetch_assoc();
+  $sql_logo = "SELECT * FROM taa_information LIMIT 1";
+$stmt_logo = $con->prepare($sql_logo) or die($con->error);
+$stmt_logo->execute();
+$result_logo = $stmt_logo->get_result();
+$row_logo = $result_logo->fetch_assoc();
 
-  $taa_image = $taa['image'] ?? '../assets/dist/img/image.png';
-  $taa_image_path = $taa['image_path'] ?? $taa_image;
+$image_path = $row_logo['image_path'] ?? '';
+
+$logoSrc = (!empty($image_path))
+    ? '../' . ltrim($image_path, '/')
+    : '../assets/logo/logo.png';
+
   $first_name_user = $user['first_name'] ?? '';
   $last_name_user = $user['last_name'] ?? '';
   $user_type = $user['user_type'] ?? '';
@@ -176,11 +183,24 @@ $res = $con->query("
 
   <!-- Brand Logo -->
   <div class="text-center mt-3">
-    <img src="<?= htmlspecialchars($taa_image_path) ?>" 
-         alt="Sample Logo" 
-         class="brand-image img-circle elevation-3" 
-         style="width:100px; height:100px; object-fit:cover;">
+    <a href="#" class="brand-link text-center">
+  <img src="<?= htmlspecialchars($logoSrc) ?>"
+       id="logo_image"
+       class="img-circle elevation-5 img-bordered-sm"
+       style="width:70%;">
+  <span class="brand-text font-weight-light"></span>
+</a>
+
+<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+  <div class="image">
+    <img src="<?= htmlspecialchars($logoSrc) ?>" 
+         class="img-circle elevation-5 img-bordered-sm" 
+         alt="Logo">
   </div>
+  <div class="info text-center">
+    <a href="#" class="d-block text-bold text-white">OFFICIAL</a>
+  </div>
+</div>
 
   <!-- Role Label -->
   <div class="text-center mt-2 mb-2">
