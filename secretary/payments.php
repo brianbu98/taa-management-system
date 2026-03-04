@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // secretary/payments.php
 include_once '../connection.php';
 session_start();
@@ -33,12 +33,13 @@ $image_path = $row_logo['image_path'] ?? '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add_payment') {
 
     $user_id     = intval($_POST['user_id']);
-    $payment_name= trim($_POST['payment_name']);
     $amount_due  = floatval($_POST['amount_due']);
-    $due_date    = $_POST['due_date'];
-    $amount_paid = floatval($_POST['amount_paid']);
     $method      = trim($_POST['method']);
     $reference   = trim($_POST['reference']);
+
+    $payment_name = "Payment";
+    $due_date = date("Y-m-d");
+    $amount_paid = $amount_due;
 
     if (!$user_id || !$payment_name || $amount_due <= 0 || !$due_date) {
         $msg = "Please complete required fields.";
@@ -82,8 +83,8 @@ $resResidents = $con->query("SELECT id, CONCAT(first_name, ' ', last_name) AS na
 $res = $con->query("
     SELECT p.*, 
            CONCAT(u.first_name,' ',u.last_name) AS name,
-           SUM(pr.amount_paid) AS total_paid
-    FROM payments p45
+           COALESCE(SUM(pr.amount_paid),0) AS total_paid
+    FROM payments p
     LEFT JOIN users u ON p.user_id = u.id
     LEFT JOIN payment_records pr ON p.id = pr.payment_id
     GROUP BY p.id
@@ -268,7 +269,7 @@ $logoSrc = (!empty($image_path))
               </div>
               <div class="col-md-2">
                 <label>Amount (?)</label>
-                <input type="number" step="0.01" name="amount" class="form-control" required>
+                <input type="number" step="0.01" name="amount_due" class="form-control" required>
               </div>
               <div class="col-md-3">
                 <label>Reference No.</label>
@@ -311,9 +312,9 @@ $logoSrc = (!empty($image_path))
                 <?php while($rw = $res->fetch_assoc()): ?>
                   <tr>
                     <td><?= htmlspecialchars($rw['id']) ?></td>
-                    <td><?= htmlspecialchars($rw['name'] ?? '�') ?></td>
-                    <td>?<?= number_format($rw['amount_due'], 2) ?></td>
-                    <td><?= htmlspecialchars($rw['total_paid']) ?></td>
+                    <td><?= htmlspecialchars($rw['name'] ?? '—') ?></td>
+                    <td>₱<?= number_format($rw['amount_due'], 2) ?></td>
+                    <td><?= number_format($rw['total_paid'] ?? 0, 2) ?></td>
                     <td><?= htmlspecialchars($rw['status']) ?></td>
                     <td><?= htmlspecialchars(date('M d, Y h:i A', strtotime($rw['due_date']))) ?></td>
                   </tr>
