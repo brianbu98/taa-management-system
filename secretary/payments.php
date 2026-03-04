@@ -198,13 +198,6 @@ Homeowner Officials
 </a>
 </li>
 
-<li class="nav-item">
-<a href="officialEndTerm.php" class="nav-link <?= basename($_SERVER['PHP_SELF'])=='officialEndTerm.php'?'active bg-purple':'' ?>">
-<i class="fas fa-circle nav-icon text-red"></i>
-<p>Official End Term</p>
-</a>
-</li>
-
 </ul>
 </li>
 
