@@ -181,7 +181,7 @@ $logoSrc = (!empty($image_path))
 
 <!-- Homeowner Officials -->
 <li class="nav-item <?= in_array(basename($_SERVER['PHP_SELF']),['allOfficial.php','officialEndTerm.php'])?'menu-open':'' ?>">
-<a href="#" class="nav-link <?= in_array(basename($_SERVER['PHP_SELF']),['allOfficial.php','officialEndTerm.php'])?'active':'' ?>">
+<a href="#" class="nav-link <?= in_array(basename($_SERVER['PHP_SELF']),['allOfficial.php'])?'active':'' ?>">
 <i class="nav-icon fas fa-users-cog"></i>
 <p>
 Homeowner Officials
