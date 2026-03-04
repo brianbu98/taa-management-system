@@ -147,7 +147,7 @@ TEREMIL ASSISTANCE APPLICATION
 </li>
 <li class="nav-item">
 <a href="../logout.php" class="nav-link text-white">
-<i class="fas fa-sign-out-alt"></i> Logout
+<i class="fas fa-sign-out-alt"></i> LOGOUT
 </a>
 </li>
 </ul>
