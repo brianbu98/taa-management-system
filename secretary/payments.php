@@ -161,7 +161,7 @@ $logoSrc = (!empty($image_path))
          alt="Logo">
   </div>
   <div class="info text-center">
-    <a href="#" class="d-block text-bold">OFFICIAL</a>
+    <a href="#" class="d-block text-bold text-dark">OFFICIAL</a>
   </div>
 </div>
 
