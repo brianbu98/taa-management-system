@@ -142,7 +142,7 @@ TEREMIL ASSISTANCE APPLICATION
 <li class="nav-item">
 <a href="profile.php" class="nav-link text-white">
 <i class="fas fa-user"></i>
-<?= htmlspecialchars($last_name_user) ?>-<?= htmlspecialchars($user_id) ?>
+<?= strtoupper(htmlspecialchars($last_name_user)) ?>-<?= htmlspecialchars($user_id) ?>
 </a>
 </li>
 <li class="nav-item">
