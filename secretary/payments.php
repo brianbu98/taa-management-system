@@ -165,78 +165,146 @@ $logoSrc = (!empty($image_path))
   </div>
 </div>
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+ <!-- Sidebar -->
+<div class="sidebar">
+<nav class="mt-2">
 
-        <!-- Dashboard -->
-        <li class="nav-item">
-          <a href="dashboard.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active bg-purple' : '' ?>">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
-          </a>
-        </li>
+<ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
 
-        <!-- Homeowner Officials -->
-        <li class="nav-item">
-          <a href="allOfficial.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'allOfficial.php' ? 'active bg-purple' : '' ?>">
-            <i class="nav-icon fas fa-users-cog"></i>
-            <p>Homeowner Officials</p>
-          </a>
-        </li>
+<!-- Dashboard -->
+<li class="nav-item">
+<a href="dashboard.php" class="nav-link <?= basename($_SERVER['PHP_SELF'])=='dashboard.php'?'active bg-purple':'' ?>">
+<i class="nav-icon fas fa-tachometer-alt"></i>
+<p>Dashboard</p>
+</a>
+</li>
 
-        <!-- Residence -->
-        <li class="nav-item">
-          <a href="allResidence.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'allResidence.php' ? 'active bg-purple' : '' ?>">
-            <i class="nav-icon fas fa-users"></i>
-            <p>Residence</p>
-          </a>
-        </li>
+<!-- Homeowner Officials -->
+<li class="nav-item <?= in_array(basename($_SERVER['PHP_SELF']),['allOfficial.php','officialEndTerm.php'])?'menu-open':'' ?>">
+<a href="#" class="nav-link <?= in_array(basename($_SERVER['PHP_SELF']),['allOfficial.php','officialEndTerm.php'])?'active':'' ?>">
+<i class="nav-icon fas fa-users-cog"></i>
+<p>
+Homeowner Officials
+<i class="right fas fa-angle-left"></i>
+</p>
+</a>
 
-        <!-- Users -->
-        <li class="nav-item">
-          <a href="usersResident.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'usersResident.php' ? 'active bg-purple' : '' ?>">
-            <i class="nav-icon fas fa-user-shield"></i>
-            <p>Users</p>
-          </a>
-        </li>
+<ul class="nav nav-treeview">
 
-        <!-- Incident Management -->
-        <li class="nav-item">
-          <a href="incidentRecord.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'incidentRecord.php' ? 'active bg-purple' : '' ?>">
-            <i class="nav-icon fas fa-clipboard"></i>
-            <p>Incident Management</p>
-          </a>
-        </li>
+<li class="nav-item">
+<a href="allOfficial.php" class="nav-link <?= basename($_SERVER['PHP_SELF'])=='allOfficial.php'?'active bg-purple':'' ?>">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>List of Official</p>
+</a>
+</li>
 
-        <!-- Reports -->
-        <li class="nav-item">
-          <a href="report.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'report.php' ? 'active bg-purple' : '' ?>">
-            <i class="nav-icon fas fa-bookmark"></i>
-            <p>Reports</p>
-          </a>
-        </li>
+<li class="nav-item">
+<a href="officialEndTerm.php" class="nav-link <?= basename($_SERVER['PHP_SELF'])=='officialEndTerm.php'?'active bg-purple':'' ?>">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>Official End Term</p>
+</a>
+</li>
 
-        <!-- Announcements -->
-        <li class="nav-item">
-          <a href="announcements.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'announcements.php' ? 'active bg-purple' : '' ?>">
-            <i class="nav-icon fas fa-bullhorn"></i>
-            <p>Announcements</p>
-          </a>
-        </li>
+</ul>
+</li>
 
-        <!-- Payments -->
-        <li class="nav-item">
-          <a href="payments.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'payments.php' ? 'active bg-purple' : '' ?>">
-            <i class="nav-icon fas fa-money-bill-wave"></i>
-            <p>Payments</p>
-          </a>
-        </li>
+<!-- Residence -->
+<li class="nav-item <?= in_array(basename($_SERVER['PHP_SELF']),['newResidence.php','allResidence.php','archiveResidence.php'])?'menu-open':'' ?>">
 
-      </ul>
-    </nav>
-  </div>
+<a href="#" class="nav-link <?= in_array(basename($_SERVER['PHP_SELF']),['newResidence.php','allResidence.php','archiveResidence.php'])?'active':'' ?>">
+
+<i class="nav-icon fas fa-users"></i>
+<p>
+Residence
+<i class="right fas fa-angle-left"></i>
+</p>
+</a>
+
+<ul class="nav nav-treeview">
+
+<li class="nav-item">
+<a href="newResidence.php" class="nav-link <?= basename($_SERVER['PHP_SELF'])=='newResidence.php'?'active bg-purple':'' ?>">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>New Residence</p>
+</a>
+</li>
+
+<li class="nav-item">
+<a href="allResidence.php" class="nav-link <?= basename($_SERVER['PHP_SELF'])=='allResidence.php'?'active bg-purple':'' ?>">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>All Residence</p>
+</a>
+</li>
+
+<li class="nav-item">
+<a href="archiveResidence.php" class="nav-link <?= basename($_SERVER['PHP_SELF'])=='archiveResidence.php'?'active bg-purple':'' ?>">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>Archive Residence</p>
+</a>
+</li>
+
+</ul>
+</li>
+
+<!-- Users -->
+<li class="nav-item <?= basename($_SERVER['PHP_SELF'])=='usersResident.php'?'menu-open':'' ?>">
+
+<a href="#" class="nav-link <?= basename($_SERVER['PHP_SELF'])=='usersResident.php'?'active':'' ?>">
+
+<i class="nav-icon fas fa-user-shield"></i>
+<p>
+Users
+<i class="right fas fa-angle-left"></i>
+</p>
+</a>
+
+<ul class="nav nav-treeview">
+
+<li class="nav-item">
+<a href="usersResident.php" class="nav-link <?= basename($_SERVER['PHP_SELF'])=='usersResident.php'?'active bg-purple':'' ?>">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>Resident</p>
+</a>
+</li>
+
+</ul>
+</li>
+
+<!-- Incident -->
+<li class="nav-item">
+<a href="incidentRecord.php" class="nav-link <?= basename($_SERVER['PHP_SELF'])=='incidentRecord.php'?'active bg-purple':'' ?>">
+<i class="nav-icon fas fa-clipboard"></i>
+<p>Incident Management</p>
+</a>
+</li>
+
+<!-- Reports -->
+<li class="nav-item">
+<a href="report.php" class="nav-link <?= basename($_SERVER['PHP_SELF'])=='report.php'?'active bg-purple':'' ?>">
+<i class="nav-icon fas fa-bookmark"></i>
+<p>Reports</p>
+</a>
+</li>
+
+<!-- Announcements -->
+<li class="nav-item">
+<a href="announcements.php" class="nav-link <?= basename($_SERVER['PHP_SELF'])=='announcements.php'?'active bg-purple':'' ?>">
+<i class="nav-icon fas fa-bullhorn"></i>
+<p>Announcements</p>
+</a>
+</li>
+
+<!-- Payments -->
+<li class="nav-item">
+<a href="payments.php" class="nav-link <?= basename($_SERVER['PHP_SELF'])=='payments.php'?'active bg-purple':'' ?>">
+<i class="nav-icon fas fa-money-bill-wave"></i>
+<p>Payments</p>
+</a>
+</li>
+
+</ul>
+</nav>
+</div>
 </aside>
 
 
