@@ -58,7 +58,7 @@ try {
         FROM residence_information
         INNER JOIN residence_status
             ON residence_information.residence_id = residence_status.residence_id
-        WHERE residence_information.archive = 'NO'
+       WHERE residence_status.archive = 'NO'
         $where
     ";
 
