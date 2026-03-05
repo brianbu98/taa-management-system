@@ -114,11 +114,13 @@ $query_total_residence->execute();
       $totalIncident[] = ['100','200'];
     }
 
-    $sql_gender ="SELECT COUNT(CASE WHEN gender = 'Male' THEN residence_information.residence_id END) as male,
+    $sql_gender ="SELECT 
+    COUNT(CASE WHEN gender = 'Male' THEN residence_information.residence_id END) as male,
     COUNT(CASE WHEN gender = 'Female' THEN residence_information.residence_id END) as female
     FROM residence_information
-    INNER JOIN residence_status ON residence_information.residence_id = residence_status.residence_id
-    WHERE  archive = 'NO' ";
+    INNER JOIN residence_status 
+        ON residence_information.residence_id = residence_status.residence_id
+    WHERE residence_status.archive = 'NO'";
     $result_gender = $con->query($sql_gender) or die ($con->error);
     while ($row_gender = $result_gender->fetch_assoc()) { 
       $genderMale  = $row_gender['male'];
