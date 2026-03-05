@@ -98,7 +98,7 @@ $res = $con->query("
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Secretary - Payments</title>
 
-<link rel="stylesheet" href="../assets/plugins/fontawesome-free/css/all.min.css
+<link rel="stylesheet" href="../assets/plugins/fontawesome-free/css/all.min.css">
 <link rel="stylesheet" href="../assets/plugins/pace-progress/themes/black/pace-theme-flat-top.css">
 <link rel="stylesheet" href="../assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
 <link rel="stylesheet" href="../assets/dist/css/adminlte.min.css">
@@ -371,9 +371,9 @@ Users
                 <tr>
                   <th>ID</th>
                   <th>Resident</th>
-                  <th>Amount</th>
-                  <th>Method</th>
-                  <th>Reference</th>
+                  <th>Amount Due</th>
+                  <th>Total Paid</th>
+                  <th>Status</th>
                   <th>Date</th>
                 </tr>
               </thead>
