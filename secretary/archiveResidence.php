@@ -474,11 +474,10 @@ input:checked + .slider .off{
                   <p>Archive Residence</p>
                 </a>
               </li>
-            </ul>
-          </li>
-              </p>
-            </a>
-          </li>
+
+              </ul>
+              </li>
+
           <li class="nav-item ">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user-shield"></i>
@@ -598,9 +597,6 @@ input:checked + .slider .off{
                     <th>Resident Number</th>
                     <th>Name</th>
                     <th>Age</th>
-                    <th>Pwd</th>
-                    <th>Single Parent</th>
-                    <th>Voters</th>
                     <th>Status</th>
                     <th class="text-center">Action</th>
                   </tr>

@@ -54,7 +54,7 @@ $totalFiltered = $totalData;
 
 
 
-if(isset($_REQUEST['oder'])){
+if(isset($_REQUEST['order'])){
   $sql .= ' ORDER BY '.
   $_REQUEST['order']['0']['column'].
   ' '.
