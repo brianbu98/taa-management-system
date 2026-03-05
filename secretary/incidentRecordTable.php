@@ -3,6 +3,12 @@
 include_once '../connection.php';
 
 try {
+    // GET TOTAL RECORDS (NO SEARCH)
+  $sql_total = "SELECT COUNT(*) as total FROM incident_record";
+  $result_total = $con->query($sql_total);
+  $row_total = $result_total->fetch_assoc();
+  $recordsTotal = $row_total['total'];
+
 
   $sql_incident_check = "SELECT * FROM incident_record ";
 
@@ -96,7 +102,7 @@ if(isset($_REQUEST['order'])){
 
   $json_data = [
   'draw' => intval($_REQUEST['draw']),
-  'recordsTotal' => intval($totalData),
+  'recordsTotal' => intval($recordsTotal),
   'recordsFiltered' => intval($recordsFiltered),
   'data' => $data,
 ];
