@@ -73,8 +73,13 @@ $data = [];
 
 while($row = $result->fetch_assoc()){
 
-$date_incident = date("m/d/Y - h:i A", strtotime($row['date_incident']));
-$date_reported = date("m/d/Y - h:i A", strtotime($row['date_reported']));
+$date_incident = !empty($row['date_incident']) 
+    ? date("m/d/Y - h:i A", strtotime($row['date_incident'])) 
+    : '';
+
+$date_reported = !empty($row['date_reported']) 
+    ? date("m/d/Y - h:i A", strtotime($row['date_reported'])) 
+    : '';
 
 $status = ($row['status'] == 'NEW')
 ? '<span class="badge badge-primary">'.$row['status'].'</span>'
