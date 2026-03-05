@@ -112,12 +112,11 @@ $res = $con->query("
 
 <div class="preloader flex-column justify-content-center align-items-center">
   <img class="animation__shake"
-       src="<?= htmlspecialchars($logoSrc) ?>"
-       alt="Logo"
-       height="60"
-       width="60">
+       src="../assets/loading.gif"
+       alt="Loading"
+       height="80"
+       width="80">
 </div>
-
 
 <div class="wrapper">
 
