@@ -22,16 +22,17 @@ try{
     $user_type = $row_user['user_type'];
     $user_image = $row_user['image'];
   
-  
-    $sql = "SELECT * FROM `taa_information`";
-  $query = $con->prepare($sql) or die ($con->error);
-  $query->execute();
-  $result = $query->get_result();
-  while($row = $result->fetch_assoc()){
-      $image = $row['image'];
-      $image_path = $row['image_path'];
-      $id = $row['id'];
-  }
+  $sql_logo = "SELECT * FROM taa_information LIMIT 1";
+$stmt_logo = $con->prepare($sql_logo) or die($con->error);
+$stmt_logo->execute();
+$result_logo = $stmt_logo->get_result();
+$row_logo = $result_logo->fetch_assoc();
+
+$image_path = $row_logo['image_path'] ?? '';
+
+$logoSrc = (!empty($image_path))
+    ? '../' . ltrim($image_path, '/')
+    : '../assets/logo/logo.png';
 
   
   
@@ -142,14 +143,11 @@ try{
   <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand">
     <!-- Brand Logo -->
     <a href="#" class="brand-link text-center">
-    <?php 
-        if(!empty($user_image)){
-          echo '<img src="'.$image_path.'" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
-        }else{
-          echo ' <img src="../assets/logo/logo.png" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
-        }
-
-      ?>
+  <img src="<?= htmlspecialchars($logoSrc) ?>"
+     id="logo_image"
+     class="img-circle elevation-5 img-bordered-sm"
+     alt="logo"
+     style="width:70%;">
       <span class="brand-text font-weight-light"></span>
     </a>
 
@@ -159,7 +157,8 @@ try{
 
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="../assets/dist/img/logo.png" class="img-circle elevation-5 img-bordered-sm" alt="User Image">
+          <img src="<?= htmlspecialchars($logoSrc) ?>" 
+     class="img-circle elevation-5 img-bordered-sm">
         </div>
         <div class="info text-center">
           <a href="#" class="d-block text-bold">OFFICIAL</a>
