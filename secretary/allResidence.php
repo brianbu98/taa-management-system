@@ -376,10 +376,10 @@ input:checked + .slider .off{
             <!-- Message Start -->
             <div class="media">
               <?php 
-                if($user_image != '' || $user_image != null || !empty($user_image)){
-                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle alt="User Image">';
+                if(!empty($user_image)){
+                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle" alt"="User Image">';
                 }else{
-                  echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle alt="User Image">';
+                  echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle" alt="User Image">';
                 }
               ?>
             
@@ -480,10 +480,6 @@ input:checked + .slider .off{
                   <p>Archive Residence</p>
                 </a>
               </li>
-            </ul>
-          </li>
-              </p>
-            </a>
           </li>
           <li class="nav-item ">
             <a href="#" class="nav-link">
@@ -563,7 +559,6 @@ input:checked + .slider .off{
                       <span class="input-group-text bg-indigo">FIRST NAME</span>
                     </div>
                         <input type="search" name="first_name" id="first_name" class="form-control"> 
-                      </select>
                   </div>
                 </div>
                 <div class="col-sm-4">
@@ -907,29 +902,17 @@ input:checked + .slider .off{
           dom: "<'row'<'col-sm-12 col-md-6'><'col-sm-12 col-md-6'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'d-flex flex-sm-row-reverse flex-column border-top '<'px-2 'p><'px-2'i> <'px-2'l> >",
-          order:[],
-          columnDefs:[
-            {
-              orderable: false,
-              targets: "_all",
-            },
-            {
-              targets: 8,
-              className: "text-center",
-            },
-            {
-              targets: 7,
-              className: "text-center",
-            },
-            {
-              targets: 6,
-              className: "text-center",
-            },
-            {
-              targets: 5,
-              className: "text-center",
-            },
-          ],
+                order: [],
+        columnDefs:[
+          {
+            orderable: false,
+            targets: "_all"
+          },
+          {
+            targets: 5,
+            className: "text-center"
+          }
+        ],
           pagingType: "full_numbers",
             language: {
               paginate: {
