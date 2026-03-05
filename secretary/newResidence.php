@@ -312,7 +312,7 @@ $logoSrc = (!empty($image_path))
 
       <div class="row">
 
-        <div class="col-sm-12">
+        <div class="col-sm-4">
           <div class="form-group">
             <label>Gender</label>
             <select name="add_gender" id="add_gender" class="form-control">
@@ -322,14 +322,14 @@ $logoSrc = (!empty($image_path))
           </div>
         </div>
 
-        <div class="col-sm-12">
+        <div class="col-sm-4">
           <div class="form-group">
             <label>Date of Birth</label>
             <input type="date" class="form-control" id="add_birth_date" name="add_birth_date">
           </div>
         </div>
 
-        <div class="col-sm-12">
+        <div class="col-sm-4">
           <div class="form-group">
             <label>Place of Birth</label>
             <input type="text" class="form-control" id="add_birth_place" name="add_birth_place">
