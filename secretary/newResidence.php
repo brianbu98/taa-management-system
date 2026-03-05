@@ -286,233 +286,291 @@ $logoSrc = (!empty($image_path))
   <div class="content-wrapper">
    
 
-    <!-- Main content -->
-    <section class="content mt-3">
-      <div class="container-fluid">
+ <!-- Main content -->
+<section class="content mt-3">
+<div class="container-fluid">
 
-      <form id="newResidenceForm" method="POST" enctype="multipart/form-data" autocomplete="off">
-        <div class="row mb-3">
-        <div class="col-sm-4">
-  <div class="card card-indigo card-outline h-100">
-    <div class="card-body box-profile">
+<form id="newResidenceForm" method="POST" enctype="multipart/form-data" autocomplete="off">
 
-      <div class="text-center">
-        <img class="profile-user-img img-fluid img-thumbnail"
-             src="../assets/dist/img/blank_image.png"
-             alt="User profile picture"
-             style="cursor:pointer;"
-             id="image_residence">
-        <input type="file" name="add_image" id="add_image" style="display:none;">
-      </div>
+<div class="row mb-3">
 
-      <h3 class="profile-username text-center">
-        <span id="keyup_first_name"></span>
-        <span id="keyup_last_name"></span>
-      </h3>
+<!-- LEFT SIDE (PHOTO CARD) -->
+<div class="col-lg-3">
 
-      <div class="row">
+<div class="card card-indigo card-outline">
+<div class="card-body box-profile">
 
-        <div class="col-lg-3">
-          <div class="form-group">
-            <label>Gender</label>
-            <select name="add_gender" id="add_gender" class="form-control">
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
-          </div>
-        </div>
+<div class="text-center">
+<img class="profile-user-img img-fluid img-thumbnail"
+src="../assets/dist/img/blank_image.png"
+alt="User profile picture"
+style="cursor:pointer;"
+id="image_residence">
 
-        <div class="col-lg-3">
-          <div class="form-group">
-            <label>Date of Birth</label>
-            <input type="date" class="form-control" id="add_birth_date" name="add_birth_date">
-          </div>
-        </div>
+<input type="file" name="add_image" id="add_image" style="display:none;">
+</div>
 
-        <div class="col-lg-3">
-          <div class="form-group">
-            <label>Place of Birth</label>
-            <input type="text" class="form-control" id="add_birth_place" name="add_birth_place">
-          </div>
-        </div>
+<h3 class="profile-username text-center">
+<span id="keyup_first_name"></span>
+<span id="keyup_last_name"></span>
+</h3>
 
-              </div>
-            </div>
-          </div>
-     
-          <div class="col-lg-9">
-            <div class="card card-indigo card-tabs h-100">
-              <div class="card-header p-0 pt-1">
-                <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
-                  <li class="nav-item">
-                    <a class="nav-link active" id="basic-info-tab" data-toggle="pill" href="#basic-info" role="tab" aria-controls="basic-info" aria-selected="true">Basic Info</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="other-info-tab" data-toggle="pill" href="#other-info" role="tab" aria-controls="other-info" aria-selected="false">Other Info</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="guardian-tab" data-toggle="pill" href="#guardian" role="tab" aria-controls="guardian" aria-selected="false">Guardian</a>
-                  </li>
-                </ul>
-              </div>
-              <div class="card-body">
-                <div class="tab-content" id="custom-tabs-one-tabContent">
-                  <div class="tab-pane fade active show" id="basic-info" role="tabpanel" aria-labelledby="basic-info-tab">
-                      <p class="lead text-center">Personal Details</p>
-                      <div class="row">
-                        <div class="col-lg-3">
-                          <div class="form-group ">
-                            <label>First Name </label>
-                            <input type="text" class="form-control" id="add_first_name" name="add_first_name" >
-                          </div>
-                        </div>
-                        <div class="col-lg-3">
-                          <div class="form-group ">
-                            <label>Middle Name</label>
-                            <input type="text" class="form-control" id="add_middle_name" name="add_middle_name" >
-                          </div>
-                        </div>
-                        <div class="col-lg-3">
-                          <div class="form-group ">
-                            <label>Last Name </label>
-                            <input type="text" class="form-control" id="add_last_name" name="add_last_name" >
-                          </div>  
-                        </div>
-                      </div>
-                        <div class="row">
-                          <div class="col-lg-3">
-                            <div class="form-group ">
-                              <label >Suffix</label>
-                              <input type="text" class="form-control" id="add_suffix" name="add_suffix" >
-                            </div>
-                          </div>
-                          <div class="col-sm-6">
-                            <div class="form-group ">
-                              <label >Civil Status</label>
-                              <select name="add_civil_status" id="add_civil_status" class="form-control">
-                                <option value="Single">Single</option>
-                                <option value="Married">Married</option>
-                              </select>
-                            </div>
-                          </div>
-                          
-                          <div class="col-sm-6">
-                            <div class="form-group ">
-                              <label >Religion</label>
-                              <input type="text" class="form-control" id="add_religion" name="add_religion">
-                            </div>
-                          </div>
-                          <div class="col-sm-6">
-                            <div class="form-group ">
-                              <label >Nationality</label>
-                              <input type="text" class="form-control" id="add_nationality" name="add_nationality">
-                            </div>
-                          </div>                              
-                        </div>
-                  </div>
-                  <div class="tab-pane fade" id="other-info" role="tabpanel" aria-labelledby="other-info-tab">
-                        <p class="lead text-center">Address</p>
-                        <div class="row">
-                          <div class="col-sm-6">
-                            <div class="form-group">
-                              <label>City</label>
-                              <input type="text" class="form-control" id="add_city" name="add_city">
-                            </div>
-                          </div>
-                          <div class="col-sm-6">
-                            <div class="form-group">
-                              <label>Zip</label>
-                              <input type="text" class="form-control" id="add_zip" name="add_zip" >
-                            </div>
-                          </div>
-                          <div class="col-sm-6">
-                            <div class="form-group">
-                              <label>Province</label>
-                              <input type="text" class="form-control" id="add_province" name="add_province" >
-                            </div>
-                          </div>
-                          <div class="col-sm-6">
-                            <div class="form-group">
-                              <label>House Number</label>
-                              <input type="text" class="form-control" id="add_house_number" name="add_house_number" >
-                            </div>
-                          </div>
-                          <div class="col-sm-6">
-                            <div class="form-group">
-                            <label>Street</label>
-                            <input type="text" class="form-control" id="add_street" name="add_street" >
-                            </div>
-                          </div>
-                          <div class="col-sm-6">
-                            <div class="form-group">
-                              <label>Address</label>
-                              <input type="text" class="form-control" id="add_address" name="add_address" >
-                            </div>
-                          </div>
-                          <div class="col-sm-6">
-                            <div class="form-group">
-                              <label >Contact Number</label>
-                              <input type="text" class="form-control" maxlength="11" id="add_contact_number" name="add_contact_number" width="100%">
-                            </div>
-                          </div>
-                          <div class="col-sm-6">
-                            <div class="form-group">
-                              <label>Email Address</label>
-                              <input type="text" class="form-control" id="add_email_address" name="add_email_address" >
-                            </div>
-                          </div>
-                        </div>
-                  </div>
-                  <div class="tab-pane fade" id="guardian" role="tabpanel" aria-labelledby="guardian-tab">
-                   
-                      <p class="lead text-center">Guardian</p>
-                      <div class="row">
+<div class="form-group">
+<label>Gender</label>
+<select name="add_gender" id="add_gender" class="form-control">
+<option value="Male">Male</option>
+<option value="Female">Female</option>
+</select>
+</div>
 
-                        <div class="col-sm-6">
-                          <div class="form-group">
-                            <label>Father's Name</label>
-                            <input type="text" class="form-control" id="add_fathers_name" name="add_fathers_name" >
-                          </div>
-                        </div>
-                        <div class="col-sm-6">
-                          <div class="form-group">
-                            <label>Mother's Name</label>
-                            <input type="text" class="form-control" id="add_mothers_name" name="add_mothers_name" >
-                          </div>
-                        </div>
-                        <div class="col-sm-6">
-                          <div class="form-group">
-                            <label>Guardian</label>
-                            <input type="text" class="form-control" id="add_guardian" name="add_guardian" >
-                          </div>
-                        </div>
-                        <div class="col-sm-6">
-                          <div class="form-group">
-                            <label>Guardian Contact</label>
-                            <input type="text" class="form-control" maxlength="11" id="add_guardian_contact" name="add_guardian_contact" >
-                          </div>
-                        </div>
+<div class="form-group">
+<label>Date of Birth</label>
+<input type="date" class="form-control" id="add_birth_date" name="add_birth_date">
+</div>
 
-                      </div>
-                    
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer">
-                <button type="submit"  class="btn btn-success px-4 elevation-3"> <i class="fas fa-user-plus"></i> ADD NEW RESIDENT</button>
-              </div> 
-              <!-- /.card -->
-            </div>
+<div class="form-group">
+<label>Place of Birth</label>
+<input type="text" class="form-control" id="add_birth_place" name="add_birth_place">
+</div>
 
-          </div>
-        </div>
-        
-        </form>
-            
+</div>
+</div>
+
+</div>
 
 
-      </div><!--/. container-fluid -->
-    </section>
+<!-- RIGHT SIDE (FORM TABS) -->
+<div class="col-lg-9">
+
+<div class="card card-indigo card-tabs">
+
+<div class="card-header p-0 pt-1">
+<ul class="nav nav-tabs" role="tablist">
+
+<li class="nav-item">
+<a class="nav-link active" data-toggle="pill" href="#basic-info">Basic Info</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" data-toggle="pill" href="#other-info">Other Info</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" data-toggle="pill" href="#guardian">Guardian</a>
+</li>
+
+</ul>
+</div>
+
+<div class="card-body">
+<div class="tab-content">
+
+<!-- BASIC INFO -->
+<div class="tab-pane fade show active" id="basic-info">
+
+<p class="lead text-center">Personal Details</p>
+
+<div class="row">
+
+<div class="col-md-4">
+<div class="form-group">
+<label>First Name</label>
+<input type="text" class="form-control" id="add_first_name" name="add_first_name">
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="form-group">
+<label>Middle Name</label>
+<input type="text" class="form-control" id="add_middle_name" name="add_middle_name">
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="form-group">
+<label>Last Name</label>
+<input type="text" class="form-control" id="add_last_name" name="add_last_name">
+</div>
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="col-md-3">
+<div class="form-group">
+<label>Suffix</label>
+<input type="text" class="form-control" id="add_suffix" name="add_suffix">
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="form-group">
+<label>Civil Status</label>
+<select name="add_civil_status" id="add_civil_status" class="form-control">
+<option value="Single">Single</option>
+<option value="Married">Married</option>
+</select>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="form-group">
+<label>Religion</label>
+<input type="text" class="form-control" id="add_religion" name="add_religion">
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="form-group">
+<label>Nationality</label>
+<input type="text" class="form-control" id="add_nationality" name="add_nationality">
+</div>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- OTHER INFO -->
+<div class="tab-pane fade" id="other-info">
+
+<p class="lead text-center">Address</p>
+
+<div class="row">
+
+<div class="col-md-4">
+<div class="form-group">
+<label>City</label>
+<input type="text" class="form-control" id="add_city" name="add_city">
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="form-group">
+<label>Province</label>
+<input type="text" class="form-control" id="add_province" name="add_province">
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="form-group">
+<label>Zip</label>
+<input type="text" class="form-control" id="add_zip" name="add_zip">
+</div>
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="col-md-4">
+<div class="form-group">
+<label>House Number</label>
+<input type="text" class="form-control" id="add_house_number" name="add_house_number">
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="form-group">
+<label>Street</label>
+<input type="text" class="form-control" id="add_street" name="add_street">
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="form-group">
+<label>Address</label>
+<input type="text" class="form-control" id="add_address" name="add_address">
+</div>
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="col-md-6">
+<div class="form-group">
+<label>Contact Number</label>
+<input type="text" class="form-control" maxlength="11" id="add_contact_number" name="add_contact_number">
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="form-group">
+<label>Email Address</label>
+<input type="text" class="form-control" id="add_email_address" name="add_email_address">
+</div>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- GUARDIAN -->
+<div class="tab-pane fade" id="guardian">
+
+<p class="lead text-center">Guardian</p>
+
+<div class="row">
+
+<div class="col-md-6">
+<div class="form-group">
+<label>Father's Name</label>
+<input type="text" class="form-control" id="add_fathers_name" name="add_fathers_name">
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="form-group">
+<label>Mother's Name</label>
+<input type="text" class="form-control" id="add_mothers_name" name="add_mothers_name">
+</div>
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="col-md-6">
+<div class="form-group">
+<label>Guardian</label>
+<input type="text" class="form-control" id="add_guardian" name="add_guardian">
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="form-group">
+<label>Guardian Contact</label>
+<input type="text" class="form-control" maxlength="11" id="add_guardian_contact" name="add_guardian_contact">
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div class="card-footer">
+<button type="submit" class="btn btn-success px-4 elevation-3">
+<i class="fas fa-user-plus"></i> ADD NEW RESIDENT
+</button>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+</section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
