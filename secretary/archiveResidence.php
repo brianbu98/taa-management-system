@@ -681,7 +681,7 @@ input:checked + .slider .off{
       var first_name = $("#first_name").val();
       var middle_name = $("#middle_name").val();
       var last_name = $("#last_name").val();
-      var resident_id = $("#resident_id")
+      var resident_id = $("#resident_id").val()
       if(first_name != '' ||  middle_name != '' || last_name != '' || resident_id != ''){
         $("#archiveResidenceTable").DataTable().destroy();
         archiveResidence();
@@ -739,21 +739,10 @@ input:checked + .slider .off{
               targets: "_all",
             },
             {
-              targets: 8,
+              targets: [4,5],
               className: "text-center",
-            },
-            {
-              targets: 5,
-              className: "text-center",
-            },
-            {
-              targets: 6,
-              className: "text-center",
-            },
-            {
-              targets: 7,
-              className: "text-center",
-            },
+            }
+            
       ],
       dom: "<'row'<'col-sm-12 '>f>" +
                 "<'row'<'col-sm-12'tr>>" +
