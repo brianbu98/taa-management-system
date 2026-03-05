@@ -109,7 +109,6 @@ $res = $con->query("
 </head>
 
 <body class="hold-transition dark-mode sidebar-mini layout-footer-fixed">
-
 <div class="preloader flex-column justify-content-center align-items-center">
   <img class="animation__wobble"
        src="../assets/dist/img/loader.gif"
@@ -117,7 +116,6 @@ $res = $con->query("
        height="70"
        width="70">
 </div>
-
 <div class="wrapper">
 
   <!-- Navbar -->
