@@ -340,7 +340,6 @@ $logoSrc = (!empty($image_path))
             </div>
           </div>
      
-         </div>
           <div class="col-sm-8">
             <div class="card card-indigo card-tabs h-100">
               <div class="card-header p-0 pt-1">
