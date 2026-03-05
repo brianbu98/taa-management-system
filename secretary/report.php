@@ -100,8 +100,11 @@ try{
 
    
 
-      $sql_report = "SELECT residence_information.*, residence_status.* FROM residence_information 
-      INNER JOIN residence_status ON residence_information.residence_id =  residence_status.residence_id WHERE archive ='NO'" ;
+     $sql_report = "SELECT residence_information.*, residence_status.* 
+    FROM residence_information 
+    INNER JOIN residence_status 
+    ON residence_information.residence_id = residence_status.residence_id 
+    WHERE residence_information.archive = 'NO'";
       $query_report = $con->query($sql_report) or die ($con->error);
       while($row_report = $query_report->fetch_assoc()){
 
