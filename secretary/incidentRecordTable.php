@@ -67,7 +67,7 @@ $sql .= " ORDER BY date_reported DESC";
 /* LIMIT */
 $sql .= " LIMIT $start,$length";
 
-$result = $con->query($sql);
+$result = $con->query($sql) or die($con->error);
 
 $data = [];
 
