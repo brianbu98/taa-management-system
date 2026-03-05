@@ -111,11 +111,11 @@ $res = $con->query("
 <body class="hold-transition dark-mode sidebar-mini layout-footer-fixed">
 
 <div class="preloader flex-column justify-content-center align-items-center">
-  <img class="animation__shake"
-       src="../assets/loading.gif"
-       alt="Loading"
-       height="80"
-       width="80">
+  <img class="animation__wobble"
+       src="../assets/dist/img/loader.gif"
+       alt="AdminLTELogo"
+       height="70"
+       width="70">
 </div>
 
 <div class="wrapper">
