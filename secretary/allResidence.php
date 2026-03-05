@@ -23,16 +23,17 @@ try{
     $user_image = $row_user['image'];
   
   
-    $sql = "SELECT * FROM `taa_information`";
-  $query = $con->prepare($sql) or die ($con->error);
-  $query->execute();
-  $result = $query->get_result();
-  while($row = $result->fetch_assoc()){
-      $image = $row['image'];
-      $image_path = $row['image_path'];
-      $id = $row['id'];
-  }
-  
+$sql_logo = "SELECT * FROM taa_information LIMIT 1";
+$stmt_logo = $con->prepare($sql_logo) or die($con->error);
+$stmt_logo->execute();
+$result_logo = $stmt_logo->get_result();
+$row_logo = $result_logo->fetch_assoc();
+
+$image_path = $row_logo['image_path'] ?? '';
+
+$logoSrc = (!empty($image_path))
+    ? '../' . ltrim($image_path, '/')
+    : '../assets/logo/logo.png';
   
   }else{
    echo '<script>
@@ -402,14 +403,11 @@ input:checked + .slider .off{
   <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand">
     <!-- Brand Logo -->
     <a href="#" class="brand-link text-center">
-    <?php 
-        if($image != '' || $image != null || !empty($image)){
-          echo '<img src="'.$image_path.'" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
-        }else{
-          echo ' <img src="../assets//logo//logo.png" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
-        }
-
-      ?>
+   <img src="<?= htmlspecialchars($logoSrc) ?>"
+     id="logo_image"
+     class="img-circle elevation-5 img-bordered-sm"
+     alt="logo"
+     style="width:70%;">
       <span class="brand-text font-weight-light"></span>
     </a>
 
@@ -419,7 +417,8 @@ input:checked + .slider .off{
 
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="../assets/dist/img/logo.png" class="img-circle elevation-5 img-bordered-sm" alt="User Image">
+         <img src="<?= htmlspecialchars($logoSrc) ?>" 
+     class="img-circle elevation-5 img-bordered-sm">
         </div>
         <div class="info text-center">
           <a href="#" class="d-block text-bold">OFFICIAL</a>
@@ -450,12 +449,6 @@ input:checked + .slider .off{
                 <a href="allOfficial.php" class="nav-link ">
                   <i class="fas fa-circle nav-icon text-red"></i>
                   <p>List of Official</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="officialEndTerm.php" class="nav-link ">
-                  <i class="fas fa-circle nav-icon text-red"></i>
-                  <p>Official End Term</p>
                 </a>
               </li>
             </ul>
@@ -686,9 +679,6 @@ input:checked + .slider .off{
                   <th>Resident Number</th>
                   <th>Name</th>
                   <th>Age</th>
-                  <th>Pwd</th>
-                  <th>Single Parent</th>
-                  <th>Voters</th>
                   <th>Status</th>
                   <th class="text-center">Action</th>
                 </tr>
@@ -891,14 +881,10 @@ input:checked + .slider .off{
 
     function filterData(){
         var status = $("#status").val();
-        var voters = $("#voters").val();
         var age = $("#age").val();
-        var pwd = $("#pwd").val();
-        var senior = $("#senior").val();
         var first_name = $("#first_name").val();
         var middle_name = $("#middle_name").val();
         var last_name = $("#last_name").val();
-        var single_parent = $("#single_parent").val();
         var resident_id = $("#resident_id").val();
         var allResidenceTable = $("#allResidenceTable").DataTable({
           processing: true,
@@ -910,15 +896,11 @@ input:checked + .slider .off{
             url: 'allResidenceTable.php',
             type: 'POST',
             data:{
-              voters:voters,
               status:status,
               age:age,
-              pwd:pwd,
-              senior:senior,
               first_name:first_name,
               middle_name:middle_name,
               last_name:last_name,
-              single_parent:single_parent,
               resident_id:resident_id,
             },
           },
@@ -979,42 +961,30 @@ input:checked + .slider .off{
 
     $(document).on('click', '#search',function(){
       var status = $("#status").val();
-      var voters = $("#voters").val();
       var age = $("#age").val();
-      var pwd = $("#pwd").val();
-      var senior = $("#senior").val();
       var first_name = $("#first_name").val();
       var middle_name = $("#middle_name").val();
       var last_name = $("#last_name").val();
       var resident_id = $("#resident_id").val();
-      var single_parent = $("#single_parent").val();
-      if(status != '' || voters != '' || age != '' || first_name != '' ||  middle_name != '' || last_name != '' || pwd != '' || senior != '' || resident_id != '' || single_parent != ''){
+      if(status != '' || age != '' || first_name != '' ||  middle_name != '' || last_name != '' || resident_id != ''){
         $("#allResidenceTable").DataTable().destroy();
         filterData();
       }
     })
     $(document).on('click', '#reset',function(){
       var status = $("#status").val();
-      var voters = $("#voters").val();
       var age = $("#age").val();
-      var pwd = $("#pwd").val();
-      var senior = $("#senior").val();
       var first_name = $("#first_name").val()
       var middle_name = $("#middle_name").val()
       var last_name = $("#last_name").val()
       var resident_id = $("#resident_id").val();
-      var single_parent = $("#single_parent").val();
-      if(status != '' || voters != '' || age != '' || first_name != '' || middle_name != '' || last_name != '' || pwd != '' || senior != '' || resident_id != '' || single_parent != ''){
+      if(status != '' || age != '' || first_name != '' || middle_name != '' || last_name != '' || resident_id != ''){
         $("#status").val('');
-        $("#voters").val('');
         $("#age").val('');
-        $("#pwd").val('');
-        $("#senior").val('');
         $("#first_name").val('');
         $("#middle_name").val('');
         $("#last_name").val('');
         $("#resident_id").val('');
-        $("#single_parent").val('');
         $("#allResidenceTable").DataTable().destroy();
         filterData();
       }else{
