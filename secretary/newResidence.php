@@ -115,10 +115,10 @@ try{
             <!-- Message Start -->
             <div class="media">
               <?php 
-                if($user_image != '' || $user_image != null || !empty($user_image)){
-                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle alt="User Image">';
+                if(!empty($user_image)){
+                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle" alt="User Image">';
                 }else{
-                  echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle alt="User Image">';
+                  echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle" alt="User Image">';
                 }
               ?>
             
@@ -143,7 +143,7 @@ try{
     <!-- Brand Logo -->
     <a href="#" class="brand-link text-center">
     <?php 
-        if($image != '' || $image != null || !empty($image)){
+        if(!empty($user_image)){
           echo '<img src="'.$image_path.'" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
         }else{
           echo ' <img src="../assets/logo/logo.png" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
@@ -191,13 +191,7 @@ try{
                   <i class="fas fa-circle nav-icon text-red"></i>
                   <p>List of Official</p>
                 </a>
-              </li>
-              <li class="nav-item">
-                <a href="officialEndTerm.php" class="nav-link ">
-                  <i class="fas fa-circle nav-icon text-red"></i>
-                  <p>Official End Term</p>
-                </a>
-              </li>
+                </li>
             </ul>
           </li>
           <li class="nav-item menu-open">
@@ -228,9 +222,6 @@ try{
                 </a>
               </li>
             </ul>
-          </li>
-              </p>
-            </a>
           </li>
           <li class="nav-item ">
             <a href="#" class="nav-link">
@@ -313,16 +304,7 @@ try{
                 <h3 class="profile-username text-center "><span id="keyup_first_name"></span> <span id="keyup_last_name"></span></h3>
   
                 <div class="row">
-                  <div class="col-sm-12">
-                    <div class="form-group">
-                      <label>Voters</label>
-                      <select name="add_voters" id="add_voters" class="form-control">
-                      <option value=""></option>
-                        <option value="NO">NO</option>
-                        <option value="YES">YES</option>
-                      </select>
-                    </div>
-                  </div>
+                    
                   <div class="col-sm-12">
                     <div class="form-group ">
                       <label >Gender</label>
@@ -344,33 +326,6 @@ try{
                       <input type="text" class="form-control" id="add_birth_place" name="add_birth_place">
                     </div>
                   </div>
-                  <div class="col-sm-12">
-                    <div class="form-group ">
-                      <label >PWD</label>
-                      <select name="add_pwd" id="add_pwd" class="form-control">
-                      <option value=""></option>
-                        <option value="NO">NO</option>
-                        <option value="YES">YES</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-sm-12" id="pwd_check" style="display: none;">
-                    <div class="form-group ">
-                      <label >TYPE OF PWD</label>
-                        <input type="text" class="form-control" id="add_pwd_info" name="add_pwd_info" disabled>
-                    </div>
-                  </div>
-                  <div class="col-sm-12">
-                    <div class="form-group ">
-                      <label >Single Parent</label>
-                      <select name="add_single_parent" id="add_single_parent" class="form-control">
-                        <option value=""></option>
-                        <option value="NO">NO</option>
-                        <option value="YES">YES</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
 
 
 
@@ -670,18 +625,6 @@ try{
             minlength: 11
           },
           add_address:{
-            required: true,
-          },
-          add_single_parent:{
-            required: true,
-          },
-          add_pwd_info:{
-            required: true,
-          },
-          add_pwd:{
-            required: true,
-          },
-          add_voters:{
             required: true,
           },
           add_email_address:{
