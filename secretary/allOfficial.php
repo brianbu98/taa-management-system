@@ -585,9 +585,6 @@ input:checked + .slider .off{
                     <th>Official Number</th>
                     <th>Name</th>
                     
-                    <th>PWD</th>
-                    <th>SINGLE PARENT</th>
-                    <th>Voters</th>
                     <th>
                       Status
                     </th>
