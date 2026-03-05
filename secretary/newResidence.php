@@ -312,7 +312,7 @@ $logoSrc = (!empty($image_path))
 
       <div class="row">
 
-        <div class="col-sm-4">
+        <div class="col-lg-3">
           <div class="form-group">
             <label>Gender</label>
             <select name="add_gender" id="add_gender" class="form-control">
@@ -322,14 +322,14 @@ $logoSrc = (!empty($image_path))
           </div>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-lg-3">
           <div class="form-group">
             <label>Date of Birth</label>
             <input type="date" class="form-control" id="add_birth_date" name="add_birth_date">
           </div>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-lg-3">
           <div class="form-group">
             <label>Place of Birth</label>
             <input type="text" class="form-control" id="add_birth_place" name="add_birth_place">
@@ -340,7 +340,7 @@ $logoSrc = (!empty($image_path))
             </div>
           </div>
      
-          <div class="col-sm-8">
+          <div class="col-lg-9">
             <div class="card card-indigo card-tabs h-100">
               <div class="card-header p-0 pt-1">
                 <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
@@ -360,19 +360,19 @@ $logoSrc = (!empty($image_path))
                   <div class="tab-pane fade active show" id="basic-info" role="tabpanel" aria-labelledby="basic-info-tab">
                       <p class="lead text-center">Personal Details</p>
                       <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-lg-3">
                           <div class="form-group ">
                             <label>First Name </label>
                             <input type="text" class="form-control" id="add_first_name" name="add_first_name" >
                           </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-lg-3">
                           <div class="form-group ">
                             <label>Middle Name</label>
                             <input type="text" class="form-control" id="add_middle_name" name="add_middle_name" >
                           </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-lg-3">
                           <div class="form-group ">
                             <label>Last Name </label>
                             <input type="text" class="form-control" id="add_last_name" name="add_last_name" >
@@ -380,7 +380,7 @@ $logoSrc = (!empty($image_path))
                         </div>
                       </div>
                         <div class="row">
-                          <div class="col-sm-6">
+                          <div class="col-lg-3">
                             <div class="form-group ">
                               <label >Suffix</label>
                               <input type="text" class="form-control" id="add_suffix" name="add_suffix" >

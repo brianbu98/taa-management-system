@@ -20,12 +20,23 @@ try {
   $result_incident_check = $query_incident_check->get_result(); 
   $totalData = $result_incident_check->num_rows;
 
-  if(isset($_REQUEST['order'])){
-    $sql_incident_check .= ' ORDER BY '.
-    $_REQUEST['order']['0']['column'].
-    ' '.
-    $_REQUEST['order']['0']['dir'].
-    ' ';
+ $columns = [
+  0 => 'incidentlog_id',
+  1 => 'incidentlog_id',
+  2 => 'status',
+  3 => 'remarks',
+  4 => 'type_of_incident',
+  5 => 'location_incident',
+  6 => 'date_incident',
+  7 => 'date_reported'
+];
+
+if(isset($_REQUEST['order'])){
+  $columnIndex = $_REQUEST['order'][0]['column'];
+  $columnName = $columns[$columnIndex];
+  $columnSortOrder = $_REQUEST['order'][0]['dir'];
+
+  $sql_incident_check .= " ORDER BY $columnName $columnSortOrder ";
   } else {
     $sql_incident_check .= ' ORDER BY date_reported DESC ';
   }
