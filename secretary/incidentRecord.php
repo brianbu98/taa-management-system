@@ -259,10 +259,10 @@ $logoSrc = (!empty($image_path))
             <!-- Message Start -->
             <div class="media">
               <?php 
-                if($user_image != '' || $user_image != null || !empty($user_image)){
-                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle alt="User Image">';
+                if(!empty($user_image)){
+                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle" alt="User Image">';
                 }else{
-                  echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle alt="User Image">';
+                  echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle" alt="User Image">';
                 }
               ?>
             
@@ -699,6 +699,14 @@ $logoSrc = (!empty($image_path))
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
 <script src="../assets/plugins/jquery/jquery.min.js"></script>
+
+<script>
+$(window).on('load', function(){
+  $('.preloader').fadeOut();
+});
+</script>
+
+
 <!-- Bootstrap -->
 <script src="../assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- overlayScrollbars -->
