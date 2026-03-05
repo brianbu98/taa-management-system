@@ -58,8 +58,11 @@ try{
         }
 
       
-        $sql_report = "SELECT residence_information.*, residence_status.* FROM residence_information 
-        INNER JOIN residence_status ON residence_information.residence_id =  residence_status.residence_id WHERE residence_information.archive = 'NO'".$where;
+       $sql_report = "SELECT residence_information.*, residence_status.* 
+        FROM residence_information 
+        INNER JOIN residence_status 
+        ON residence_information.residence_id = residence_status.residence_id 
+        WHERE residence_information.archive = 'NO'".$where;
         $query_report = $con->query($sql_report) or die ($con->error);
         $count_report = $query_report->num_rows;
         if($count_report > 0){
