@@ -149,6 +149,16 @@ $res = $con->query("
   </style>
 </head>
 <body class="hold-transition dark-mode sidebar-mini layout-footer-fixed">
+
+<div class="preloader flex-column justify-content-center align-items-center">
+  <img class="animation__shake"
+       src="<?= htmlspecialchars($logoSrc) ?>"
+       alt="Logo"
+       height="60"
+       width="60">
+</div>
+
+
 <div class="wrapper">
 
   <!-- Navbar -->
