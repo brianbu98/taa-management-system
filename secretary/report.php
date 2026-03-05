@@ -46,7 +46,7 @@ try{
 
 
         if(!empty($age))
-          $whereClause[] = "residence_information.age='$age'";
+          $whereClause[] = "residence_information.age = '$age'";
 
         if(!empty($status))
           $whereClause[] = "residence_status.status='$status'";
@@ -347,9 +347,9 @@ try{
             <div class="media">
               <?php 
                 if(!empty($user_image)){
-                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle alt="User Image">';
+                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle" alt="User Image">';
                 }else{
-                  echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle alt="User Image">';
+                  echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle" alt="User Image">';
                 }
               ?>
             
@@ -421,12 +421,6 @@ try{
                 <a href="allOfficial.php" class="nav-link">
                   <i class="fas fa-circle nav-icon text-red"></i>
                   <p>List of Official</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="officialEndTerm.php" class="nav-link ">
-                  <i class="fas fa-circle nav-icon text-red"></i>
-                  <p>Official End Term</p>
                 </a>
               </li>
             </ul>
