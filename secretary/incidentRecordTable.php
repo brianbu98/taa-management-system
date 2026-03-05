@@ -5,20 +5,28 @@ include_once '../connection.php';
 try {
 
   $sql_incident_check = "SELECT * FROM incident_record ";
-  if(isset($_REQUEST['search']['value'])){
-    $sql_incident_check .= " WHERE status LIKE '%" . $_REQUEST['search']['value'] . "%' ";
-    $sql_incident_check .= " OR incidentlog_id LIKE '%" . $_REQUEST['search']['value'] . "%' ";
-    $sql_incident_check .= " OR remarks LIKE '%" . $_REQUEST['search']['value'] . "%' ";
-    $sql_incident_check .= " OR type_of_incident LIKE '%" . $_REQUEST['search']['value'] . "%' ";
-    $sql_incident_check .= " OR location_incident LIKE '%" . $_REQUEST['search']['value'] . "%' ";
-    $sql_incident_check .= " OR date_incident LIKE '%" . $_REQUEST['search']['value'] . "%' ";
-    $sql_incident_check .= " OR date_reported LIKE '%" . $_REQUEST['search']['value'] . "%' ";
-  }
+
+$search = $_REQUEST['search']['value'] ?? '';
+
+if(!empty($search)){
+  $search = $con->real_escape_string($search);
+
+  $sql_incident_check .= " WHERE 
+    status LIKE '%$search%' OR
+    incidentlog_id LIKE '%$search%' OR
+    remarks LIKE '%$search%' OR
+    type_of_incident LIKE '%$search%' OR
+    location_incident LIKE '%$search%' OR
+    date_incident LIKE '%$search%' OR
+    date_reported LIKE '%$search%'
+  ";
+}
 
   $query_incident_check = $con->prepare($sql_incident_check) or die ($con->error);
   $query_incident_check->execute();
   $result_incident_check = $query_incident_check->get_result(); 
   $totalData = $result_incident_check->num_rows;
+ $recordsFiltered = $totalData;
 
  $columns = [
   0 => 'incidentlog_id',
@@ -87,12 +95,11 @@ if(isset($_REQUEST['order'])){
   }
 
   $json_data = [
-    'draw' => intval($_REQUEST['draw']),
-    'recordsTotal' => intval($totalData),
-    'recordsFiltered' => intval($totalData),
-    'data' => $data,
-  ];
-
+  'draw' => intval($_REQUEST['draw']),
+  'recordsTotal' => intval($totalData),
+  'recordsFiltered' => intval($recordsFiltered),
+  'data' => $data,
+];
   echo json_encode($json_data);
 
 } catch(Exception $e) {
