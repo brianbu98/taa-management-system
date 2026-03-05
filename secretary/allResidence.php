@@ -377,7 +377,7 @@ input:checked + .slider .off{
             <div class="media">
               <?php 
                 if(!empty($user_image)){
-                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle" alt"="User Image">';
+                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle" alt="User Image">';
                 }else{
                   echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle" alt="User Image">';
                 }
@@ -480,7 +480,8 @@ input:checked + .slider .off{
                   <p>Archive Residence</p>
                 </a>
               </li>
-          </li>
+            </ul>
+            </li>
           <li class="nav-item ">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user-shield"></i>
@@ -567,7 +568,6 @@ input:checked + .slider .off{
                       <span class="input-group-text bg-indigo">MIDDLE NAME</span>
                     </div>
                         <input type="search" name="middle_name" id="middle_name" class="form-control"> 
-                      </select>
                   </div>
                 </div>
                 <div class="col-sm-4">
@@ -576,19 +576,6 @@ input:checked + .slider .off{
                       <span class="input-group-text bg-indigo">LAST NAME</span>
                     </div>
                         <input type="search" name="last_name" id="last_name" class="form-control"> 
-                      </select>
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-indigo">VOTERS</span>
-                    </div>
-                      <select name="voters" id="voters" class="form-control">
-                        <option value="">--SELECT VOTERS--</option>
-                        <option value="YES">YES</option>
-                        <option value="NO">NO</option>
-                      </select>
                   </div>
                 </div>
                 
@@ -598,7 +585,6 @@ input:checked + .slider .off{
                       <span class="input-group-text bg-indigo">AGE</span>
                     </div>
                         <input type="number" name="age" id="age" class="form-control"> 
-                      </select>
                   </div>
                 </div>
                 <div class="col-sm-4">
@@ -616,46 +602,9 @@ input:checked + .slider .off{
                 <div class="col-sm-4">
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
-                      <span class="input-group-text bg-indigo">PWD</span>
-                    </div>
-                      <select name="pwd" id="pwd" class="form-control">
-                        <option value="">--SELECT PWD--</option>
-                        <option value="YES">YES</option>
-                        <option value="NO">NO</option>
-                      </select>
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-indigo">SINGLE PARENT</span>
-                    </div>
-                      <select name="single_parent" id="single_parent" class="form-control">
-                        <option value="">--SELECT PARENT STATUS--</option>
-                        <option value="YES">YES</option>
-                        <option value="NO">NO</option>
-                      </select>
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text bg-indigo">SENIOR</span>
-                    </div>
-                      <select name="senior" id="senior" class="form-control">
-                        <option value="">--SELECT SENIOR--</option>
-                        <option value="YES">YES</option>
-                        <option value="NO">NO</option>
-                      </select>
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
                       <span class="input-group-text bg-indigo">RESIDENT NUMBER</span>
                     </div>
                         <input type="text" name="resident_id" id="resident_id" class="form-control"> 
-                      </select>
                   </div>
                 </div>
                 <div class="col-sm-4 text-center mb-4">
