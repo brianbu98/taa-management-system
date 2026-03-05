@@ -292,47 +292,55 @@ $logoSrc = (!empty($image_path))
 
       <form id="newResidenceForm" method="POST" enctype="multipart/form-data" autocomplete="off">
         <div class="row mb-3">
-          <div class="col-sm-4">
-            <div class="card card-indigo card-outline h-100">
-              <div class="card-body box-profile">
-                <div class="text-center">
-                  <img class="profile-user-img img-fluid img-thumbnail" src="../assets/dist/img/blank_image.png" alt="User profile picture" style="cursor: pointer;" id="image_residence">
-                  <input type="file" name="add_image" id="add_image" style="display: none;">
-                </div>
+        <div class="col-sm-4">
+  <div class="card card-indigo card-outline h-100">
+    <div class="card-body box-profile">
 
-                <h3 class="profile-username text-center "><span id="keyup_first_name"></span> <span id="keyup_last_name"></span></h3>
-  
-                <div class="row">
-                    
-                  <div class="col-sm-12">
-                    <div class="form-group ">
-                      <label >Gender</label>
-                      <select name="add_gender" id="add_gender" class="form-control">
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-sm-12">
-                    <div class="form-group ">
-                      <label >Date of Birth</label>
-                      <input type="date" class="form-control" id="add_birth_date" name="add_birth_date">
-                    </div>
-                  </div>
-                  <div class="col-sm-12">
-                    <div class="form-group ">
-                      <label >Place of Birth</label>
-                      <input type="text" class="form-control" id="add_birth_place" name="add_birth_place">
-                    </div>
-                  </div>
+      <div class="text-center">
+        <img class="profile-user-img img-fluid img-thumbnail"
+             src="../assets/dist/img/blank_image.png"
+             alt="User profile picture"
+             style="cursor:pointer;"
+             id="image_residence">
+        <input type="file" name="add_image" id="add_image" style="display:none;">
+      </div>
 
+      <h3 class="profile-username text-center">
+        <span id="keyup_first_name"></span>
+        <span id="keyup_last_name"></span>
+      </h3>
 
+      <div class="row">
 
-               
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label>Gender</label>
+            <select name="add_gender" id="add_gender" class="form-control">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label>Date of Birth</label>
+            <input type="date" class="form-control" id="add_birth_date" name="add_birth_date">
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label>Place of Birth</label>
+            <input type="text" class="form-control" id="add_birth_place" name="add_birth_place">
+          </div>
+        </div>
+
               </div>
-              <!-- /.card-body -->
             </div>
           </div>
+     
+         </div>
           <div class="col-sm-8">
             <div class="card card-indigo card-tabs h-100">
               <div class="card-header p-0 pt-1">
@@ -555,18 +563,6 @@ $logoSrc = (!empty($image_path))
 <script>
   $(document).ready(function(){
 
-    $("#add_pwd").change(function(){
-      var pwd_check = $(this).val();
-
-      if(pwd_check == 'YES'){
-        $("#pwd_check").css('display', 'block');
-        $("#add_pwd_info").prop('disabled', false);
-      }else{
-        $("#pwd_check").css('display', 'none');
-        $("#add_pwd_info").prop('disabled', true);
-      }
-
-    })
 
 
 
