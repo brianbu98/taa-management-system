@@ -360,19 +360,19 @@ $logoSrc = (!empty($image_path))
                   <div class="tab-pane fade active show" id="basic-info" role="tabpanel" aria-labelledby="basic-info-tab">
                       <p class="lead text-center">Personal Details</p>
                       <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-4">
                           <div class="form-group ">
                             <label>First Name </label>
                             <input type="text" class="form-control" id="add_first_name" name="add_first_name" >
                           </div>
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-sm-4">
                           <div class="form-group ">
                             <label>Middle Name</label>
                             <input type="text" class="form-control" id="add_middle_name" name="add_middle_name" >
                           </div>
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-sm-4">
                           <div class="form-group ">
                             <label>Last Name </label>
                             <input type="text" class="form-control" id="add_last_name" name="add_last_name" >
@@ -468,25 +468,25 @@ $logoSrc = (!empty($image_path))
                       <p class="lead text-center">Guardian</p>
                       <div class="row">
 
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                           <div class="form-group">
                             <label>Father's Name</label>
                             <input type="text" class="form-control" id="add_fathers_name" name="add_fathers_name" >
                           </div>
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                           <div class="form-group">
                             <label>Mother's Name</label>
                             <input type="text" class="form-control" id="add_mothers_name" name="add_mothers_name" >
                           </div>
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                           <div class="form-group">
                             <label>Guardian</label>
                             <input type="text" class="form-control" id="add_guardian" name="add_guardian" >
                           </div>
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                           <div class="form-group">
                             <label>Guardian Contact</label>
                             <input type="text" class="form-control" maxlength="11" id="add_guardian_contact" name="add_guardian_contact" >
