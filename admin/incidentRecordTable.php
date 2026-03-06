@@ -25,7 +25,6 @@ $totalData = $query_total->fetch_assoc()['total'];
   $query_incident_check = $con->prepare($sql_incident_check) or die ($con->error);
   $query_incident_check->execute();
   $result_incident_check = $query_incident_check->get_result(); 
-  $totalData = $result_incident_check->num_rows;
 
 
   $columns = [
@@ -58,7 +57,9 @@ $query_filtered->execute();
 $result_filtered = $query_filtered->get_result();
 $recordsFiltered = $result_filtered->num_rows;
 
-  while($row_incident_check = $result_incident_check->fetch_assoc()){
+$data = [];   
+
+  while($row_incident_check = $result_filtered->fetch_assoc())
 
     date_default_timezone_set('Asia/Manila');
     $date_incident = date("m/d/Y - h:i A", strtotime($row_incident_check['date_incident']));
