@@ -59,7 +59,7 @@ $recordsFiltered = $result_filtered->num_rows;
 
 $data = [];   
 
-  while($row_incident_check = $result_filtered->fetch_assoc())
+  while($row_incident_check = $result_filtered->fetch_assoc()) {
 
     date_default_timezone_set('Asia/Manila');
     $date_incident = date("m/d/Y - h:i A", strtotime($row_incident_check['date_incident']));
@@ -86,12 +86,13 @@ $data = [];
     $subdata[] = $row_incident_check['location_incident'];
     $subdata[] = $date_incident;
     $subdata[] = $date_reported;
-    $subdata[] = '<i style="cursor: pointer; color: yellow; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" class="fa fa-book-open text-lg px-2 viewRecords" id="'.$row_incident_check['incidentlog_id'].'"></i>';
+    $subdata[] = '<i style="cursor:pointer;color:yellow;text-shadow:-1px 0 black,0 1px black,1px 0 black,0 -1px black;" class="fa fa-book-open text-lg px-2 viewRecords" id="'.$row_incident_check['incidentlog_id'].'"></i>';
 
     $data[] = $subdata;
-  }
 
-  $recordsFiltered = $result_incident_check->num_rows;
+}
+
+  $recordsFiltered = $result_filtered->num_rows;
 
  $json_data = [
   'draw' => intval($_REQUEST['draw'] ?? 0),
