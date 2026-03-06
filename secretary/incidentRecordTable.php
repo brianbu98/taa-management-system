@@ -109,7 +109,7 @@ $output = [
 "draw" => $draw,
 "recordsTotal" => $recordsTotal,
 "recordsFiltered" => $recordsFiltered,
-"data" => $data
+"data" => $data ?? []
 ];
 
 header('Content-Type: application/json');

@@ -701,10 +701,8 @@ $logoSrc = (!empty($image_path))
 <script src="../assets/plugins/jquery/jquery.min.js"></script>
 
 <script>
-$(document).ready(function(){
-  setTimeout(function(){
-    $('.preloader').fadeOut('slow');
-  },500);
+$$(window).on('load', function(){
+  $('.preloader').fadeOut('slow');
 });
 </script>
 
@@ -738,10 +736,29 @@ $(document).ready(function(){
 <div id="show_records"></div>
 
 <script>
-  $(document).ready(function(){
+$(document).ready(function(){
 
-    incidentRecordTable();
-
+    $("#incidentRecordTable").DataTable({
+        processing: true,
+        serverSide: true,
+        order: [],
+        autoWidth: false,
+        responsive: true,
+        ajax:{
+            url: 'incidentRecordTable.php',
+            type: 'POST'
+        },
+        columnDefs:[
+            {
+                targets: 0,
+                orderable: false
+            },
+            {
+                targets: 8,
+                orderable: false
+            }
+        ]
+    });
     $(document).on('show.bs.modal', '.modal', function () {
         var zIndex = 1040 + (10 * $('.modal:visible').length);
         $(this).css('z-index', zIndex);
@@ -779,32 +796,6 @@ $(document).ready(function(){
         })
     })
 
-    function incidentRecordTable(){
-      var incidentRecordTable = $("#incidentRecordTable").DataTable({
-
-        processing: true,
-        serverSide: true,
-        order:[],
-        autoWidth: false,
-        responsive: true,
-        ajax:{
-          url: 'incidentRecordTable.php',
-          type: 'POST',
-        },
-        columnDefs:[
-          {
-            targets: 0,
-            orderable: false,
-          },
-          {
-            targets: 8,
-            orderable: false,
-          },
-
-        ]
-
-      })
-    }
 
     $("#complainant_residence, #person_involed").on('select2:select', function(e){
       var residence_id = e.params.data.id;
