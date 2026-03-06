@@ -283,7 +283,7 @@ $logoSrc = (!empty($image_path))
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand">
+  <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand"></aside>
     <!-- Brand Logo -->
     <a href="#" class="brand-link text-center">
     <img src="<?= htmlspecialchars($logoSrc) ?>"
@@ -429,8 +429,6 @@ $logoSrc = (!empty($image_path))
       <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
-  </aside>
-
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -445,7 +443,6 @@ $logoSrc = (!empty($image_path))
             <ol class="breadcrumb float-sm-right">
               
             </ol>
-          </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
@@ -765,7 +762,7 @@ $(window).on('load', function () {
 <script>
 $(document).ready(function(){
 
-var table = $('#incidentRecordTable').DataTable({
+$('#incidentRecordTable').DataTable({
     processing: true,
     serverSide: true,
     responsive: true,
@@ -773,18 +770,15 @@ var table = $('#incidentRecordTable').DataTable({
     order: [],
     ajax:{
         url:"/dev/secretary/incidentRecordTable.php",
-        type:"POST",
-        beforeSend:function(){
-            $("#tableOverlay").show();
-        },
-        complete:function(){
-            $("#tableOverlay").hide();
-        }
+        type:"POST"
     },
     columnDefs:[
         { targets:0, orderable:false },
         { targets:8, orderable:false }
-    ]
+    ],
+    language:{
+        processing: "<i class='fas fa-spinner fa-spin fa-2x'></i>"
+    }
 });
 
 });
@@ -1112,7 +1106,7 @@ $(document).ready(function() {
             $.ajax({
               type: "POST",
               url: "deleteIncidentRecord.php",
-              cache:false,
+              cache:false<aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand">
               data: 'incidentlog_id='+selected_values,
               success: function(data) {
 
