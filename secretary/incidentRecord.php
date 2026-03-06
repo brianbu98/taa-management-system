@@ -701,7 +701,7 @@ $logoSrc = (!empty($image_path))
 <script src="../assets/plugins/jquery/jquery.min.js"></script>
 
 <script>
-$$(window).on('load', function(){
+$(window).on('load', function(){
   $('.preloader').fadeOut('slow');
 });
 </script>
