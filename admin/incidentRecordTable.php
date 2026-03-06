@@ -4,6 +4,10 @@ include_once '../connection.php';
 
 try {
 
+$sql_total = "SELECT COUNT(*) as total FROM incident_record";
+$query_total = $con->query($sql_total);
+$totalData = $query_total->fetch_assoc()['total'];
+
   $sql_incident_check = "SELECT * FROM incident_record ";
   $search = $con->real_escape_string($_REQUEST['search']['value'] ?? '');
 
@@ -46,18 +50,14 @@ try {
 }
 
   if($_REQUEST['length'] != -1){
-    $sql_incident_check .= ' LIMIT '.
-    $_REQUEST['start'].
-    ' ,' .
-    $_REQUEST['length'] .
-    ' ';
-  }
+  $sql_incident_check .= ' LIMIT '.$_REQUEST['start'].' , '.$_REQUEST['length'];
+}
 
-  $query_incident_check = $con->prepare($sql_incident_check) or die ($con->error);
-  $query_incident_check->execute();
-  $result_incident_check = $query_incident_check->get_result(); 
-  $data = [];
-  
+$query_filtered = $con->prepare($sql_incident_check) or die ($con->error);
+$query_filtered->execute();
+$result_filtered = $query_filtered->get_result();
+$recordsFiltered = $result_filtered->num_rows;
+
   while($row_incident_check = $result_incident_check->fetch_assoc()){
 
     date_default_timezone_set('Asia/Manila');

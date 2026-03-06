@@ -581,7 +581,7 @@ $logoSrc = (!empty($image_path))
                   <div class="col-sm-12 ">
                     <div class="form-group form-group-sm">
                       <label>Respondent</label>
-                        <input name="respodent" id="respodent"  class=" form-control">
+                        <input name="respondent" id="respodent"  class=" form-control">
                     </div>
                   </div>
                   <div class="col-sm-12">
@@ -610,7 +610,7 @@ $logoSrc = (!empty($image_path))
                             }
                             ?>
                               <option value="<?= $row_person_add['residence_id'] ?>" <?php 
-                              if($row_person_add['image_path'] != '' || $row_person_add['image_path'] != null || !empty($row_person_add['image_path'])){
+                              if(!empty($row_person_add['image_path'])){
                                   echo 'data-image="'.$row_person_add['image_path'].'"';
                               }else{
                                 echo 'data-image="../assets/dist/img/blank_image.png"';
