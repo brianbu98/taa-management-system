@@ -283,7 +283,7 @@ $logoSrc = (!empty($image_path))
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand"></aside>
+  <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand">
     <!-- Brand Logo -->
     <a href="#" class="brand-link text-center">
     <img src="<?= htmlspecialchars($logoSrc) ?>"
@@ -429,6 +429,7 @@ $logoSrc = (!empty($image_path))
       <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
+    </aside>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -455,9 +456,6 @@ $logoSrc = (!empty($image_path))
            
             <div class="card">
 
-            <div class="overlay dark" id="tableOverlay" style="display:none; pointer-events:none;">
-          <i class="fas fa-2x fa-sync-alt fa-spin"></i>
-        </div>
 
               <div class="card-header border-transparent">
                 <h3 class="card-title">List of Records</h3>
@@ -1103,11 +1101,11 @@ $(document).ready(function() {
         if(result.value){
           var selected_values = subject.join(",");
 
-            $.ajax({
-              type: "POST",
-              url: "deleteIncidentRecord.php",
-              cache:false<aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand">
-              data: 'incidentlog_id='+selected_values,
+           $.ajax({
+          type: "POST",
+          url: "deleteIncidentRecord.php",
+          cache:false,
+          data: 'incidentlog_id='+selected_values,
               success: function(data) {
 
                   Swal.fire({
