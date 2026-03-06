@@ -704,8 +704,8 @@ $logoSrc = (!empty($image_path))
 <script src="../assets/plugins/jquery/jquery.min.js"></script>
 
 <script>
-$(window).on('load', function(){
-  $('.preloader').fadeOut('slow');
+$(document).ready(function(){
+  $('.preloader').fadeOut();
 });
 </script>
 
@@ -771,7 +771,10 @@ $('#incidentRecordTable').DataTable({
     columnDefs:[
         { targets:0, orderable:false },
         { targets:8, orderable:false }
-    ]
+    ],
+    language: {
+        processing: "Loading records..."
+    }
 });
 
 });
