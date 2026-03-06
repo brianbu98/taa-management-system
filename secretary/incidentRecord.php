@@ -694,6 +694,8 @@ $logoSrc = (!empty($image_path))
   </div>
 </div>
 
+<div id="show_residence"></div>
+<div id="show_records"></div>
 
 
 <!-- REQUIRED SCRIPTS -->
@@ -706,59 +708,88 @@ $(window).on('load', function(){
 });
 </script>
 
-
 <!-- Bootstrap -->
 <script src="../assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 <!-- overlayScrollbars -->
 <script src="../assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="../assets/dist/js/adminlte.js"></script>
-<script src="../assets/plugins/popper/umd/popper.min.js"></script>
+
+
+<!-- DataTables -->
 <script src="../assets/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="../assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="../assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+<!-- DataTables Buttons -->
 <script src="../assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
 <script src="../assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+
+<!-- Utilities -->
 <script src="../assets/plugins/jszip/jszip.min.js"></script>
 <script src="../assets/plugins/pdfmake/pdfmake.min.js"></script>
 <script src="../assets/plugins/pdfmake/vfs_fonts.js"></script>
+
 <script src="../assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="../assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="../assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+<!-- SweetAlert -->
 <script src="../assets/plugins/sweetalert2/js/sweetalert2.all.min.js"></script>
+
+<!-- Select2 -->
 <script src="../assets/plugins/select2/js/select2.full.min.js"></script>
+
+<!-- Moment -->
 <script src="../assets/plugins/moment/moment.min.js"></script>
+
+<!-- Chart -->
 <script src="../assets/plugins/chart.js/Chart.min.js"></script>
+
+<!-- Validation -->
 <script src="../assets/plugins/jquery-validation/jquery.validate.min.js"></script>
 <script src="../assets/plugins/jquery-validation/additional-methods.min.js"></script>
-<div id="show_residence"></div>
-<div id="show_records"></div>
+
+<!-- AdminLTE -->
+<script src="../assets/dist/js/adminlte.js"></script>
+
 
 <script>
 $(document).ready(function(){
 
-    $("#incidentRecordTable").DataTable({
-        processing: true,
-        serverSide: true,
-        order: [],
-        autoWidth: false,
-        responsive: true,
+    if (!$.fn.DataTable.isDataTable('#incidentRecordTable')) {
+
+        var table = $('#incidentRecordTable').DataTable({
+
+            processing: true,
+            serverSide: true,
+            responsive: true,
+            autoWidth: false,
+            order: [],
         ajax:{
-            url: 'incidentRecordTable.php',
-            type: 'POST'
-        },
-        columnDefs:[
-            {
-                targets: 0,
-                orderable: false
+            url:"incidentRecordTable.php",
+            type:"POST",
+            dataSrc:function(json){
+                console.log(json); // shows server response
+                return json.data;
             },
-            {
-                targets: 8,
-                orderable: false
+            error:function(xhr){
+                console.error("AJAX ERROR:");
+                console.error(xhr.responseText);
             }
-        ]
-    });
+        },
+
+                columnDefs:[
+                { targets:0, orderable:false },
+                { targets:8, orderable:false }
+            ]
+
+        });
+
+    }
+
+});
+
     $(document).on('show.bs.modal', '.modal', function () {
         var zIndex = 1040 + (10 * $('.modal:visible').length);
         $(this).css('z-index', zIndex);
@@ -966,9 +997,8 @@ $(document).ready(function(){
     $("#addRecord").on('click',function(){
       $("#addNewRecordForm")[0].reset();
       $(".select2-selection__choice").css('display', 'none')
-    })
+    });
 
-  })
 </script>
 <script>
   $(document).ready(function(){
