@@ -9,7 +9,7 @@ $query_total = $con->query($sql_total);
 $totalData = $query_total->fetch_assoc()['total'];
 
   $sql_incident_check = "SELECT * FROM incident_record ";
-  $search = $con->real_escape_string($_REQUEST['search']['value'] ?? '');
+  $search = $_POST['search']['value'] ?? '';
 
 
    if(!empty($search)){
@@ -22,9 +22,6 @@ $totalData = $query_total->fetch_assoc()['total'];
   $sql_incident_check .= " OR date_reported LIKE '%$search%' ";
 }
 
-  $query_incident_check = $con->prepare($sql_incident_check) or die ($con->error);
-  $query_incident_check->execute();
-  $result_incident_check = $query_incident_check->get_result(); 
 
 
   $columns = [
@@ -48,14 +45,20 @@ $totalData = $query_total->fetch_assoc()['total'];
   $sql_incident_check .= " ORDER BY date_reported DESC ";
 }
 
-  if($_REQUEST['length'] != -1){
+// Count filtered records BEFORE LIMIT
+$query_total_filtered = $con->prepare($sql_incident_check) or die ($con->error);
+$query_total_filtered->execute();
+$result_total_filtered = $query_total_filtered->get_result();
+$recordsFiltered = $result_total_filtered->num_rows;
+
+// Apply LIMIT after counting
+if($_REQUEST['length'] != -1){
   $sql_incident_check .= ' LIMIT '.$_REQUEST['start'].' , '.$_REQUEST['length'];
 }
 
 $query_filtered = $con->prepare($sql_incident_check) or die ($con->error);
 $query_filtered->execute();
 $result_filtered = $query_filtered->get_result();
-$recordsFiltered = $result_filtered->num_rows;
 
 $data = [];   
 
@@ -92,7 +95,6 @@ $data = [];
 
 }
 
-  $recordsFiltered = $result_filtered->num_rows;
 
  $json_data = [
   'draw' => intval($_REQUEST['draw'] ?? 0),
