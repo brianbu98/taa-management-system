@@ -310,7 +310,10 @@ $logoSrc = (!empty($image_path))
       </div>
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+      <ul class="nav nav-pills nav-sidebar flex-column"
+    data-widget="treeview"
+    role="menu"
+    data-accordion="false">
           <li class="nav-item">
             <a href="dashboard.php" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -455,6 +458,11 @@ $logoSrc = (!empty($image_path))
 
            
             <div class="card">
+
+            <div class="overlay" id="tableOverlay" style="display:none;">
+          <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
+
               <div class="card-header border-transparent">
                 <h3 class="card-title">List of Records</h3>
                 <div class="card-tools">
@@ -758,7 +766,7 @@ $(document).ready(function(){
 <script>
 $(document).ready(function(){
 
-$('#incidentRecordTable').DataTable({
+var table = $('#incidentRecordTable').DataTable({
     processing: true,
     serverSide: true,
     responsive: true,
@@ -766,15 +774,18 @@ $('#incidentRecordTable').DataTable({
     order: [],
     ajax:{
         url:"/dev/secretary/incidentRecordTable.php",
-        type:"POST"
+        type:"POST",
+        beforeSend:function(){
+            $("#tableOverlay").show();
+        },
+        complete:function(){
+            $("#tableOverlay").hide();
+        }
     },
     columnDefs:[
         { targets:0, orderable:false },
         { targets:8, orderable:false }
-    ],
-    language: {
-        processing: "Loading records..."
-    }
+    ]
 });
 
 });
