@@ -444,7 +444,9 @@ $logoSrc = (!empty($image_path))
             <ol class="breadcrumb float-sm-right">
               
             </ol>
-        </div><!-- /.row -->
+        </div>
+
+        </div>
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
