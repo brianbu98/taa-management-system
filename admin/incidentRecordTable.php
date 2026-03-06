@@ -5,30 +5,45 @@ include_once '../connection.php';
 try {
 
   $sql_incident_check = "SELECT * FROM incident_record ";
-  if(isset($_REQUEST['search']['value'])){
-    $sql_incident_check .= " WHERE status LIKE '%" . $_REQUEST['search']['value'] . "%' ";
-    $sql_incident_check .= " OR incidentlog_id LIKE '%" . $_REQUEST['search']['value'] . "%' ";
-    $sql_incident_check .= " OR remarks LIKE '%" . $_REQUEST['search']['value'] . "%' ";
-    $sql_incident_check .= " OR type_of_incident LIKE '%" . $_REQUEST['search']['value'] . "%' ";
-    $sql_incident_check .= " OR location_incident LIKE '%" . $_REQUEST['search']['value'] . "%' ";
-    $sql_incident_check .= " OR date_incident LIKE '%" . $_REQUEST['search']['value'] . "%' ";
-    $sql_incident_check .= " OR date_reported LIKE '%" . $_REQUEST['search']['value'] . "%' ";
-  }
+  $search = $con->real_escape_string($_REQUEST['search']['value'] ?? '');
+
+
+   if(!empty($search)){
+  $sql_incident_check .= " WHERE status LIKE '%$search%' ";
+  $sql_incident_check .= " OR incidentlog_id LIKE '%$search%' ";
+  $sql_incident_check .= " OR remarks LIKE '%$search%' ";
+  $sql_incident_check .= " OR type_of_incident LIKE '%$search%' ";
+  $sql_incident_check .= " OR location_incident LIKE '%$search%' ";
+  $sql_incident_check .= " OR date_incident LIKE '%$search%' ";
+  $sql_incident_check .= " OR date_reported LIKE '%$search%' ";
+}
 
   $query_incident_check = $con->prepare($sql_incident_check) or die ($con->error);
   $query_incident_check->execute();
   $result_incident_check = $query_incident_check->get_result(); 
   $totalData = $result_incident_check->num_rows;
 
+
+  $columns = [
+  0 => 'incidentlog_id',
+  1 => 'incidentlog_id',
+  2 => 'status',
+  3 => 'remarks',
+  4 => 'type_of_incident',
+  5 => 'location_incident',
+  6 => 'date_incident',
+  7 => 'date_reported'
+];
+
   if(isset($_REQUEST['order'])){
-    $sql_incident_check .= ' ORDER BY '.
-    $_REQUEST['order']['0']['column'].
-    ' '.
-    $_REQUEST['order']['0']['dir'].
-    ' ';
-  }else{
-    $sql_incident_check .= ' ORDER BY date_reported DESC ';
-  }
+  $column_index = $_REQUEST['order'][0]['column'];
+  $column_name = $columns[$column_index];
+  $column_dir = $_REQUEST['order'][0]['dir'];
+
+  $sql_incident_check .= " ORDER BY $column_name $column_dir ";
+}else{
+  $sql_incident_check .= " ORDER BY date_reported DESC ";
+}
 
   if($_REQUEST['length'] != -1){
     $sql_incident_check .= ' LIMIT '.
@@ -75,13 +90,14 @@ try {
     $data[] = $subdata;
   }
 
-  $json_data = [
-    'draw' => intval($_REQUEST['draw']),
-    'recordsTotal' => intval($totalData),
-    'recordsFiltered' => intval($totalData),
-    'data' => $data,
-  ];
+  $recordsFiltered = $result_incident_check->num_rows;
 
+ $json_data = [
+  'draw' => intval($_REQUEST['draw'] ?? 0),
+  'recordsTotal' => intval($totalData),
+  'recordsFiltered' => intval($recordsFiltered),
+  'data' => $data,
+];
   echo json_encode($json_data);
 
 }catch(Exception $e){

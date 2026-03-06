@@ -552,7 +552,7 @@ $logoSrc = (!empty($image_path))
                             }
                             ?>
                               <option value="<?= $row_residence_id['residence_id'] ?>" <?php 
-                              if($row_residence_id['image_path'] != '' || $row_residence_id['image_path'] != null || !empty($row_residence_id['image_path'])){
+                              if(!empty($row_residence_id['image_path'])){
                                   echo 'data-image="'.$row_residence_id['image_path'].'"';
                               }else{
                                 echo 'data-image="../assets/dist/img/blank_image.png"';
