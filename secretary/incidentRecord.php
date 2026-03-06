@@ -757,36 +757,21 @@ $(window).on('load', function(){
 <script>
 $(document).ready(function(){
 
-    if (!$.fn.DataTable.isDataTable('#incidentRecordTable')) {
-
-        var table = $('#incidentRecordTable').DataTable({
-
-            processing: true,
-            serverSide: true,
-            responsive: true,
-            autoWidth: false,
-            order: [],
-        ajax:{
-            url:"incidentRecordTable.php",
-            type:"POST",
-            dataSrc:function(json){
-                console.log(json); // shows server response
-                return json.data;
-            },
-            error:function(xhr){
-                console.error("AJAX ERROR:");
-                console.error(xhr.responseText);
-            }
-        },
-
-                columnDefs:[
-                { targets:0, orderable:false },
-                { targets:8, orderable:false }
-            ]
-
-        });
-
-    }
+$('#incidentRecordTable').DataTable({
+    processing: true,
+    serverSide: true,
+    responsive: true,
+    autoWidth: false,
+    order: [],
+    ajax:{
+        url:"/dev/secretary/incidentRecordTable.php",
+        type:"POST"
+    },
+    columnDefs:[
+        { targets:0, orderable:false },
+        { targets:8, orderable:false }
+    ]
+});
 
 });
 
