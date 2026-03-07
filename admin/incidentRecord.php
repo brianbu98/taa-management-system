@@ -507,7 +507,7 @@ try{
               </div>
               <!-- /.card-header -->
               <div class="card-body ">
-                <table class="table table-striped table-hover " id="incidentRecordTable">             
+                <table class="table table-striped table-hover data-table" id="incidentRecordTable">           
                   <thead>
                     <tr>
                       <th><input type="checkbox" id="select_all"></th>
@@ -821,33 +821,25 @@ try{
         })
     })
 
-    function incidentRecordTable(){
-      var incidentRecordTable = $("#incidentRecordTable").DataTable({
+    $(document).ready(function(){
 
-        processing: true,
-        serverSide: true,
-        order:[],
-        autoWidth: false,
-        responsive: true,
-       ajax:{
-          url: '/dev/secretary/incidentRecordTable.php',
-          type: 'POST'
-        }
-        columnDefs:[
-          {
-            targets: 0,
-            orderable: false,
-          },
-          {
-            targets: 8,
-            orderable: false,
-          },
-         
-        ]
+$(".preloader").fadeOut();
 
+$('#incidentRecordTable').DataTable({
+    processing: true,
+    serverSide: true,
+    ajax:{
+        url: 'incidentRecordTable.php',
+        type: 'POST'
+    },
+    order:[],
+    columnDefs:[
+        { targets:0, orderable:false },
+        { targets:8, orderable:false }
+    ]
+});
 
-      })
-    }
+});
 
   
    
