@@ -817,21 +817,23 @@ try{
 
 
 
-$('#incidentRecordTable').DataTable({
-    processing: true,
-    serverSide: true,
-    ajax:{
-        url: 'incidentRecordTable.php',
-        type: 'POST'
-    },
-    order:[],
-    columnDefs:[
-        { targets:0, orderable:false },
-        { targets:8, orderable:false }
-    ]
+$(document).ready(function(){
+
+    $('#incidentRecordTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax:{
+            url: 'incidentRecordTable.php',
+            type: 'POST'
+        },
+        order:[],
+        columnDefs:[
+            { targets:0, orderable:false },
+            { targets:8, orderable:false }
+        ]
+    });
+
 });
-
-
   
    
     $("#complainant_residence, #person_involed").on('select2:select', function(e){
@@ -1240,7 +1242,7 @@ $(document).on('click', '.sub_checkbox', function() {
   return /^[a-z, ]*$/i.test(value); 
   });
   
-  $("#complainant_statement, #respodent,#incident,#location_incident,#person_statement").inputFilter(function(value) {
+  $("#complainant_statement, #respondent,#incident,#location_incident,#person_statement").inputFilter(function(value) {
   return /^[0-9a-z, ,-]*$/i.test(value); 
   });
 
