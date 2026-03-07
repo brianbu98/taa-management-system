@@ -280,7 +280,7 @@ try{
     <!-- Brand Logo -->
     <a href="#" class="brand-link text-center">
     <?php 
-        if($image != '' || $image != null || !empty($image)){
+        if(!empty($image)){
           echo '<img src="'.$image_path.'" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
         }else{
           echo ' <img src="../assets//logo//logo.png" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
@@ -773,7 +773,7 @@ try{
 
 
 <script>
-
+   $(document).ready(function(){
 
     $(document).on('show.bs.modal', '.modal', function () {
         var zIndex = 1040 + (10 * $('.modal:visible').length);
@@ -783,6 +783,7 @@ try{
         }, 0);
     });
   
+    });
 
     $(document).on('click','.viewRecords', function(){
 
@@ -814,7 +815,6 @@ try{
         })
     })
 
-    $(document).ready(function(){
 
 
 $('#incidentRecordTable').DataTable({
