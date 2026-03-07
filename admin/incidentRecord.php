@@ -829,10 +829,10 @@ try{
         order:[],
         autoWidth: false,
         responsive: true,
-        ajax:{
-          url: 'incidentRecordTable.php',
-          type: 'POST',
-        },
+       ajax:{
+          url: '/dev/secretary/incidentRecordTable.php',
+          type: 'POST'
+        }
         columnDefs:[
           {
             targets: 0,
