@@ -3,7 +3,7 @@ include_once '../connection.php';
 
 date_default_timezone_set('Asia/Manila');
 
-$draw   = isset($_POST['draw']) ? intval($_POST['draw']) : 0;
+$draw = intval($_POST['draw']);
 $start  = isset($_POST['start']) ? intval($_POST['start']) : 0;
 $length = isset($_POST['length']) ? intval($_POST['length']) : 10;
 $search = isset($_POST['search']['value']) ? $_POST['search']['value'] : '';
@@ -38,9 +38,12 @@ date_incident LIKE '%$search%' OR
 date_reported LIKE '%$search%'";
 }
 
-/* FILTERED COUNT */
-$filteredQuery = $con->query($sql);
-$recordsFiltered = $filteredQuery->num_rows;
+if(!empty($search)){
+    $filteredQuery = $con->query($sql);
+    $recordsFiltered = $filteredQuery->num_rows;
+}else{
+    $recordsFiltered = $recordsTotal;
+}
 
 /* ORDER */
 $columns = [
