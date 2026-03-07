@@ -252,10 +252,10 @@ try{
             <!-- Message Start -->
             <div class="media">
               <?php 
-                if($user_image != '' || $user_image != null || !empty($user_image)){
-                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle alt="User Image">';
+                if(!empty($user_image)){
+                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle" alt="User Image">';
                 }else{
-                  echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle alt="User Image">';
+                  echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle" alt="User Image">';
                 }
               ?>
             
@@ -773,9 +773,6 @@ try{
 
 
 <script>
-  $(document).ready(function(){
-
-    incidentRecordTable();
 
 
     $(document).on('show.bs.modal', '.modal', function () {
@@ -819,7 +816,6 @@ try{
 
     $(document).ready(function(){
 
-$(".preloader").fadeOut();
 
 $('#incidentRecordTable').DataTable({
     processing: true,
@@ -835,7 +831,6 @@ $('#incidentRecordTable').DataTable({
     ]
 });
 
-});
 
   
    
