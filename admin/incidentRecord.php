@@ -817,7 +817,7 @@ try{
 
 
 
-$(document).ready(function(){
+    $(document).ready(function(){
 
     $('#incidentRecordTable').DataTable({
         processing: true,
