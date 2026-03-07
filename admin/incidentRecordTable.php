@@ -9,7 +9,7 @@ $query_total = $con->query($sql_total);
 $totalData = $query_total->fetch_assoc()['total'];
 
   $sql_incident_check = "SELECT * FROM incident_record ";
-  $search = $_POST['search']['value'] ?? '';
+ $search = isset($_POST['search']['value']) ? $con->real_escape_string($_POST['search']['value']) : '';
 
 
    if(!empty($search)){
