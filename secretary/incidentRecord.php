@@ -760,7 +760,7 @@ $(window).on('load', function () {
 
 
 <script>
-$(document).ready(function(){
+$$(document).ready(function(){
 
 $('#incidentRecordTable').DataTable({
     processing: true,
@@ -769,7 +769,7 @@ $('#incidentRecordTable').DataTable({
     autoWidth: false,
     order: [],
     ajax:{
-        url:"/dev/secretary/incidentRecordTable.php",
+        url:"incidentRecordTable.php",
         type:"POST"
     },
     columnDefs:[
