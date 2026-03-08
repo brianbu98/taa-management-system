@@ -49,7 +49,7 @@ $columns = [
 0 => 'incidentlog_id',
 1 => 'incidentlog_id',
 2 => 'status',
-3 => 'remarks',if(isset($_POST['order']) && $_POST['order'][0]['column'] != 8){
+3 => 'remarks',
 4 => 'type_of_incident',
 5 => 'location_incident',
 6 => 'date_incident',
