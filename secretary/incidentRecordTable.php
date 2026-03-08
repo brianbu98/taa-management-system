@@ -45,26 +45,26 @@ if(!empty($search)){
     $recordsFiltered = $recordsTotal;
 }
 
-/* ORDER */
 $columns = [
 0 => 'incidentlog_id',
 1 => 'incidentlog_id',
 2 => 'status',
-3 => 'remarks',
+3 => 'remarks',if(isset($_POST['order']) && $_POST['order'][0]['column'] != 8){
 4 => 'type_of_incident',
 5 => 'location_incident',
 6 => 'date_incident',
-7 => 'date_reported'
+7 => 'date_reported',
+8 => 'incidentlog_id' // dummy for action column
 ];
 
-if(isset($_POST['order'])){
-$columnIndex = $_POST['order'][0]['column'];
-$columnSortOrder = $_POST['order'][0]['dir'];
-$columnName = $columns[$columnIndex];
+if(isset($_POST['order']) && $_POST['order'][0]['column'] != 8){
+    $columnIndex = $_POST['order'][0]['column'];
+    $columnSortOrder = $_POST['order'][0]['dir'];
+    $columnName = $columns[$columnIndex];
 
-$sql .= " ORDER BY $columnName $columnSortOrder";
+    $sql .= " ORDER BY $columnName $columnSortOrder";
 }else{
-$sql .= " ORDER BY date_reported DESC";
+    $sql .= " ORDER BY date_reported DESC";
 }
 
 /* LIMIT */
