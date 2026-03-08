@@ -620,7 +620,7 @@ try{
                   <div class="col-sm-12 ">
                     <div class="form-group form-group-sm">
                       <label>Respondent</label>
-                        <input name="respodent" id="respodent"  class=" form-control">
+                        <input name="respondent" id="respondent"  class=" form-control">
                     </div>
                   </div>
                   <div class="col-sm-12">
@@ -773,6 +773,7 @@ try{
 
 
 <script>
+
    $(document).ready(function(){
 
     $(document).on('show.bs.modal', '.modal', function () {
@@ -783,7 +784,6 @@ try{
         }, 0);
     });
   
-    });
 
     $(document).on('click','.viewRecords', function(){
 
@@ -812,12 +812,8 @@ try{
               width: '400px',
               confirmButtonColor: '#6610f2',
             })
-        })
-    })
-
-
-
-    $(document).ready(function(){
+        });
+    });
 
     $('#incidentRecordTable').DataTable({
         processing: true,
@@ -832,44 +828,39 @@ try{
             { targets:8, orderable:false }
         ]
     });
-
-});
   
    
     $("#complainant_residence, #person_involed").on('select2:select', function(e){
-      var residence_id = e.params.data.id;
-      $("#show_residence").html('');
 
+  var residence_id = e.params.data.id;
+  $("#show_residence").html('');
 
-      if(residence_id != ''){
+  if(residence_id != ''){
 
-        $.ajax({
-          url: 'showResidenceInfo.php',
-          type: 'POST',
-          data:{
-            residence_id:residence_id,
-          },
-          cache: false,
-          success:function(data){
-            $("#show_residence").html(data);
-            $("#viewResidenceModal").modal('show');
-          }
-      }).fail(function(){
-          Swal.fire({
-            title: '<strong class="text-danger">Ooppss..</strong>',
-            type: 'error',
-            html: '<b>Something went wrong with ajax !<b>',
-            width: '400px',
-            confirmButtonColor: '#6610f2',
-          })
-      })
-
+    $.ajax({
+      url: 'showResidenceInfo.php',
+      type: 'POST',
+      data:{
+        residence_id: residence_id
+      },
+      cache: false,
+      success:function(data){
+        $("#show_residence").html(data);
+        $("#viewResidenceModal").modal('show');
       }
+    }).fail(function(){
+      Swal.fire({
+        title: '<strong class="text-danger">Ooppss..</strong>',
+        type: 'error',
+        html: '<b>Something went wrong with ajax !<b>',
+        width: '400px',
+        confirmButtonColor: '#6610f2'
+      });
+    });
 
-     
-      
-    })
+  }
 
+});
 
     $(function () {
         $.validator.setDefaults({
@@ -1013,19 +1004,19 @@ try{
           $(element).removeClass('is-invalid');
         }
       });
-    })
+    });
 
 
     $("#addRecord").on('click',function(){
       $("#addNewRecordForm")[0].reset();
       $(".select2-selection__choice").css('display', 'none')
       
-    })
+    });
 
  
 
     
-  })
+  });
 </script>
 <script>
   $(document).ready(function(){
