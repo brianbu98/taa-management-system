@@ -752,7 +752,7 @@ $(document).ready(function(){
 
 $('#incidentRecordTable').DataTable({
     processing: true,
-    serverSide: true,
+    serverSide: false,
     responsive: true,
     autoWidth: false,
     order: [],
