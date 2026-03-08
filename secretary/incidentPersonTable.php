@@ -58,12 +58,13 @@ try {
     if ($row_incident_check['complainant_id'] == $edit_residence_id) {
       $color = 1;
       $delete_record = '
-        <i$(document).on('click','.viewRecords', function(){          style="cursor: pointer; color: red; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" 
-          class="fa fa-times text-lg px-2 deleteRecordComplainant" 
-          data-id="' . $row_incident_check['complainant_id'] . '" 
-          id="' . $row_incident_check['incident_main'] . '">
-        </i>
-      ';
+    <i 
+      style="cursor: pointer; color: red; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" 
+      class="fa fa-times text-lg px-2 deleteRecordComplainant" 
+      data-id="' . $row_incident_check['complainant_id'] . '" 
+      id="' . $row_incident_check['incident_main'] . '">
+    </i>
+';
     } else {
       $color = 2;
       $delete_record = '
@@ -92,7 +93,7 @@ try {
   }
 
   $json_data = [
-    'draw' => intval($_REQUEST['draw']),
+    'draw' => isset($_POST['draw']) ? intval($_POST['draw']) : 0,
     'recordsTotal' => intval($totalDataIncident),
     'recordsFiltered' => intval($totalFilteredIncident),
     'data' => $data,
