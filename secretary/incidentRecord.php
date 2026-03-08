@@ -232,6 +232,9 @@ $logoSrc = (!empty($image_path))
 <body class="hold-transition dark-mode sidebar-mini   layout-footer-fixed">
 <div class="wrapper">
    
+   <div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__wobble " src="../assets/dist/img/loader.gif" alt="AdminLTELogo" height="70" width="70">
+  </div>
   
 
   <!-- Navbar -->
@@ -705,6 +708,9 @@ $logoSrc = (!empty($image_path))
 <script src="../assets/plugins/jquery/jquery.min.js"></script>
 
 <script>
+$(window).on('load', function () {
+  $('.preloader').fadeOut('slow');
+});
 </script>
 
 <!-- Bootstrap -->
