@@ -458,9 +458,6 @@ $logoSrc = (!empty($image_path))
               <div class="card-header border-transparent">
                 <h3 class="card-title">List of Records</h3>
                 <div class="card-tools">
-                  <button type="button" class="btn btn-tool bg-black btn-flat" id="addRecord" data-toggle="modal" data-target="#incidentRecordModal">
-                    <i class="fas fa-plus"></i> New Record
-                  </button>
                 </div>
               </div>
               <!-- /.card-header -->
@@ -519,7 +516,7 @@ $logoSrc = (!empty($image_path))
 
 
 <!-- Modal -->
-<div class="modal hide fade" id="incidentRecordModal" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+<div class="modal fade" id="incidentRecordModal" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <form id="addNewRecordForm" method="post">
