@@ -4,7 +4,7 @@ include_once '../connection.php';
 
 try {
 
-  $edit_residence_id = $con->real_escape_string($_REQUEST['edit_residence_id']);
+  $edit_residence_id = $con->real_escape_string($_POST['edit_residence_id']);
 
   $sql_incident_check = "
     SELECT 
@@ -58,8 +58,7 @@ try {
     if ($row_incident_check['complainant_id'] == $edit_residence_id) {
       $color = 1;
       $delete_record = '
-        <i 
-          style="cursor: pointer; color: red; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" 
+        <i$(document).on('click','.viewRecords', function(){          style="cursor: pointer; color: red; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" 
           class="fa fa-times text-lg px-2 deleteRecordComplainant" 
           data-id="' . $row_incident_check['complainant_id'] . '" 
           id="' . $row_incident_check['incident_main'] . '">
@@ -79,7 +78,7 @@ try {
 
     $subdata = [];
 
-    $subdata[] = $color;
+   $subdata[] = '<input type="checkbox" class="sub_checkbox" id="'.$row_incident_check['incidentlog_id'].'">';
     $subdata[] = $row_incident_check['incidentlog_id'];
     $subdata[] = $status_incident;
     $subdata[] = $remarks_incident;
@@ -87,7 +86,7 @@ try {
     $subdata[] = $row_incident_check['location_incident'];
     $subdata[] = $date_incident;
     $subdata[] = $date_reported;
-    // $subdata[] = '<i style="cursor: pointer; color: yellow; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" class="fa fa-book-open text-lg px-2 viewRecord" id="' . $row_incident_check['incidentlog_id'] . '"></i>' . $delete_record;
+    $subdata[] = '<i style="cursor: pointer; color: yellow; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" class="fa fa-book-open text-lg px-2 viewRecords" id="' . $row_incident_check['incidentlog_id'] . '"></i>' . $delete_record;
 
     $data[] = $subdata;
   }

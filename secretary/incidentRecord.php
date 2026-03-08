@@ -364,9 +364,6 @@ $logoSrc = (!empty($image_path))
               </li>
             </ul>
           </li>
-              </p>
-            </a>
-          </li>
           <li class="nav-item ">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user-shield"></i>
@@ -462,6 +459,7 @@ $logoSrc = (!empty($image_path))
               </div>
               <!-- /.card-header -->
               <div class="card-body ">
+              <input type="hidden" id="edit_residence_id" value="<?= $user_id ?>">
                 <table class="table table-striped table-hover " id="incidentRecordTable">             
                   <thead>
                     <tr>
@@ -760,8 +758,12 @@ $('#incidentRecordTable').DataTable({
     order: [],
     ajax:{
         url:"incidentRecordTable.php",
-        type:"POST"
-    },
+        type:"POST",
+        data:function(d){
+        d.edit_residence_id = $("#edit_residence_id").val();
+    }
+},
+   
     columnDefs:[
         { targets:0, orderable:false },
         { targets:8, orderable:false }
