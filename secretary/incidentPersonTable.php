@@ -1,10 +1,11 @@
-<?php 
+<?php
 
 include_once '../connection.php';
+header('Content-Type: application/json');
 
 try {
 
-  $edit_residence_id = $con->real_escape_string($_POST['edit_residence_id']);
+  $edit_residence_id = isset($_POST['edit_residence_id']) ? $con->real_escape_string($_POST['edit_residence_id']) : '';
 
   $sql_incident_check = "
     SELECT 
@@ -37,9 +38,9 @@ try {
 
   $data = [];
 
-  while ($row_incident_check = $result_incident_check->fetch_assoc()) {
+ date_default_timezone_set('Asia/Manila');
 
-    date_default_timezone_set('Asia/Manila');
+    while ($row_incident_check = $result_incident_check->fetch_assoc()) {
     $date_incident = date("m/d/Y - h:i A", strtotime($row_incident_check['date_incident']));
     $date_reported = date("m/d/Y - h:i A", strtotime($row_incident_check['date_reported']));
 
