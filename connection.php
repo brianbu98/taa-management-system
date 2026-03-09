@@ -4,7 +4,7 @@
    🔌 DATABASE CONFIG
    ====================================================== */
 $host = "localhost";
-$path = $_SERVER['REQUEST_URI'];
+$path = $_SERVER['REQUEST_URI'] ?? '';
 
 // DEFAULT = MAIN
 $db   = "u286236256_u123456_taaapp";
