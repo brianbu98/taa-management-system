@@ -400,6 +400,7 @@ try{
   </div>
 
 </div>
+</form>
 
 
       </div><!--/. container-fluid -->
@@ -448,9 +449,9 @@ try{
 <script src="../assets/plugins/chart.js/Chart.min.js"></script>
 
 <script>
-  $(document).ready(function(){
+ $(document).ready(function(){
 
-   $("#taaInformationForm").submit(function(e){
+  $("#taaInformationForm").submit(function(e){
     e.preventDefault();
 
     $.ajax({
@@ -469,71 +470,30 @@ try{
                 timer: 2000
             }).then(()=>{
                 window.location.reload();
-            })
+            });
+        },
+        error:function(){
+            Swal.fire({
+              title: '<strong class="text-danger">Ooppss..</strong>',
+              icon: 'error',
+              html: '<b>Something went wrong with ajax !</b>',
+              width: '400px',
+              confirmButtonColor: '#6610f2',
+            });
         }
     });
 
+  });
+
+  $("#display_image").click(function(){
+    $("#add_image").click();
+  });
+
+  $("#add_image").change(function(){
+    displayImage(this);
+  });
+
 });
-          }).fail(function(){
-            Swal.fire({
-              title: '<strong class="text-danger">Ooppss..</strong>',
-              type: 'error',
-              html: '<b>Something went wrong with ajax !<b>',
-              width: '400px',
-              confirmButtonColor: '#6610f2',
-            })
-          })
-      }
-
-    })
-
-    $("#display_image").click(function(){
-          $("#add_image").click();
-      });
-      
-
-    function displayImage(input){
-      if(input.files && input.files[0]){
-        var reader = new FileReader();
-        var add_image = $("#add_image").val().split('.').pop().toLowerCase();
-
-        if(add_image != ''){
-          if(jQuery.inArray(add_image,['gif','png','jpg','jpeg']) == -1){
-            Swal.fire({
-              title: '<strong class="text-danger">ERROR</strong>',
-              type: 'error',
-              html: '<b>Invalid Image File<b>',
-              width: '400px',
-              confirmButtonColor: '#6610f2',
-            })
-            $("#add_image").val('');
-            return false;
-          }
-        }
-        
-        reader.onload = function(e){
-          $("#display_image").attr('src', e.target.result);
-          $("#logo_image").attr('src', e.target.result);
-          $("#display_image").hide();
-          $("#logo_image").hide();
-          $("#display_image").fadeIn(650);
-          $("#logo_image").fadeIn(650);
-          
-        }
-
-        reader.readAsDataURL(input.files[0]);
-
-
-      }
-
-     
-    }  
-    $("#add_image").change(function(){
-        displayImage(this);
-      })
-  })
-     
-
 
 </script>
 
