@@ -1,12 +1,8 @@
 
 <?php 
 
-echo "PHP WORKING";
-
-
 include_once '../connection.php';
 session_start();
-
 
 try{
 
@@ -15,54 +11,35 @@ try{
   if(isset($_SESSION['user_id']) && isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'admin'){
   
     $user_id = $_SESSION['user_id'];
- $sql_user = "SELECT id, first_name, last_name, user_type, image 
-             FROM users 
-             WHERE id = ? 
-             LIMIT 1";
-
-$stmt_user = $con->prepare($sql_user);
-
-$stmt_user->bind_param('i', $user_id);
-$stmt_user->execute();
-
-$stmt_user->bind_result($uid,$first_name_user,$last_name_user,$user_type,$user_image);
-$stmt_user->fetch();
-$stmt_user->close();
+    $sql_user = "SELECT * FROM `users` WHERE `id` = ? ";
+    $stmt_user = $con->prepare($sql_user) or die ($con->error);
+    $stmt_user->bind_param('s',$user_id);
+    $stmt_user->execute();
+    $result_user = $stmt_user->get_result();
+    $row_user = $result_user->fetch_assoc();
+    $first_name_user = $row_user['first_name'] ?? '';
+    $last_name_user = $row_user['last_name'] ?? '';
+    $user_type = $row_user['user_type'] ?? '';
+    $user_image = $row_user['image'] ?? '';
   
-$sql = "SELECT id,address,postal_address,image,image_path FROM taa_information LIMIT 1";
-
-$query = $con->prepare($sql);
-
-if(!$query){
-    die("SQL Error: " . $con->error);
-}
-
-$query->execute();
-
-$query->bind_result($id,$address,$postal_address,$image,$image_path);
-if(!$query->fetch()){
-    $id = 0;
-    $address = '';
-    $postal_address = '';
-    $image = '';
-    $image_path = '';
-}
-$query->close();
-
-$id = $id ?? 0;
-$address = $address ?? '';
-$postal_address = $postal_address ?? '';
-$image = $image ?? '';
-$image_path = $image_path ?? '';
-
-$logoSrc = (!empty($image_path))
-    ? $image_path
-    : '../assets/logo/logo.png';
+  
+    $sql = "SELECT * FROM `taa_information`";
+  $query = $con->prepare($sql) or die ($con->error);
+  $query->execute();
+  $result = $query->get_result();
+  while($row = $result->fetch_assoc()){
+      $image = $row['image'];
+      $image_path = $row['image_path'];
+      $id = $row['id'];
+      $address = $row['address'];
+      $postal_address = $row['postal_address'];
+  }
   
   
   }else{
-  header("Location: ../login.php");
-exit;
+   echo '<script>
+          window.location.href = "../login.php";
+        </script>';
   }
   
   }catch(Exception $e){
@@ -134,10 +111,10 @@ exit;
             <!-- Message Start -->
             <div class="media">
               <?php 
-               if (!empty($user_image)) {
-                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle" alt="User Image">';
+                if($user_image != '' || $user_image != null || !empty($user_image)){
+                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle alt="User Image">';
                 }else{
-                  echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle" alt="User Image">';
+                  echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle alt="User Image">';
                 }
               ?>
             
@@ -161,24 +138,25 @@ exit;
   <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand">
     <!-- Brand Logo -->
     <a href="#" class="brand-link text-center">
- <img src="<?= htmlspecialchars($logoSrc) ?>"
-     id="logo_image"
-     class="img-circle elevation-5 img-bordered-sm"
-     alt="logo"
-     style="width:70%;">
+    <?php 
+                    
+        if($image != '' || $image != null || !empty($image)){
+          echo '<img src="'.$image_path.'" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
+        }else{
+          echo ' <img src="../assets//logo//logo.png" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
+        }
 
-<span class="brand-text font-weight-light"></span>
-</a>
-    
+      ?>
+      <span class="brand-text font-weight-light"></span>
+    </a>
+
     <!-- Sidebar -->
     <div class="sidebar">
     
 
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-         <img src="<?= htmlspecialchars($logoSrc) ?>"
-     class="img-circle elevation-5 img-bordered-sm"
-     alt="Admin Logo">
+          <img src="../assets/dist/img/logo.png" class="img-circle elevation-5 img-bordered-sm" alt="User Image">
         </div>
         <div class="info text-center">
           <a href="#" class="d-block text-bold"><?= strtoupper($user_type) ?></a>
@@ -214,6 +192,12 @@ exit;
                 <a href="allOfficial.php" class="nav-link">
                   <i class="fas fa-circle nav-icon text-red"></i>
                   <p>List of Official</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="officialEndTerm.php" class="nav-link ">
+                  <i class="fas fa-circle nav-icon text-red"></i>
+                  <p>Official End Term</p>
                 </a>
               </li>
             </ul>
@@ -375,18 +359,20 @@ exit;
                   <div class="col-sm-12 text-center">
                     <?php 
                     
-                   <img src="<?= htmlspecialchars($logoSrc) ?>"
-                 class="img-circle text-center"
-                 alt="logo"
-                 id="display_image"
-                 style="cursor:pointer;">
+                      if($image != '' || $image != null || !empty($image)){
+                        echo '<img src="'.$image_path.'" class="img-circle text-center" alt="logo"  id="display_image" style="cursor: pointer;">';
+                      }else{
+                        echo ' <img src="../assets/logo/blank.png" class="img-circle text-center" alt="logo"  id="display_image" style="cursor: pointer;">';
+                      }
+
                     ?>
                    
                     <input type="file" id="add_image" name="add_image" style="display: none;">
                   </div>
                   <div class="col-sm-2" style="display:none;">
                     <input type="hidden" id="id" name="id" value="<?= $id ?>">
-                 </div>
+                  </div>
+                  </div>
                   <div class="col-sm-2">
                     <div class="form-group">
                       <label>Postal Address</label>
@@ -463,10 +449,9 @@ exit;
     $("#taaInformationForm").submit(function(e){
       e.preventDefault();
 
-      var postal_address = $("#postal_address").val();
-var address = $("#address").val();
+      var address = $("#address").val();
 
-if(postal_address == '' || address == ''){
+      if(subdivision == '' || address == ''){
             Swal.fire({
               title: '<strong class="text-danger">WARNING</strong>',
               type: 'warning',
@@ -581,7 +566,7 @@ if(postal_address == '' || address == ''){
 
 
 
-  $("#postal_address, #address").inputFilter(function(value) {
+  $("#subdivision,#postal_address, #address").inputFilter(function(value) {
   return /^[0-9a-z, ., ]*$/i.test(value); 
   });
 
