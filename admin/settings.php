@@ -75,17 +75,47 @@ try{
 
   <style>
     
-    #display_image{
-      height: 200px;
-      width:auto;
-      max-width:500px;
-    }
+   <style>
 
-    .user-panel .info a {
+#display_image{
+    max-height:200px;
+    max-width:350px;
+    width:auto;
+    height:auto;
+    object-fit:contain;
+    border-radius:10px;
+    padding:10px;
+    background:#fff;
+    box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+
+.user-panel .info a {
   color: #c2c7d0 !important;
-} 
-    
-  </style>
+}
+
+/* Logo container */
+.logo-container{
+    padding:15px;
+}
+
+/* Main sidebar logo */
+.logo-img{
+    max-width:160px;
+    max-height:90px;
+    width:auto;
+    height:auto;
+    object-fit:contain;
+}
+
+/* Small sidebar icon */
+.sidebar-logo{
+    width:45px;
+    height:45px;
+    object-fit:contain;
+    border-radius:8px;
+}
+
+</style>
 
 </head>
 <body class="hold-transition <?= $dark_mode ? 'dark-mode':'' ?> sidebar-mini">
@@ -145,13 +175,12 @@ try{
   <aside class="main-sidebar elevation-4 sidebar-no-expand"
        style="background-color: <?= $bg_color ?>">
     <!-- Brand Logo -->
-    <a href="#" class="brand-link text-center">
-   <img src="<?= htmlspecialchars($logoSrc) ?>"
-     id="logo_image"
-     class="img-circle elevation-5 img-bordered-sm"
-     style="width:70%;">
-      <span class="brand-text font-weight-light"></span>
-    </a>
+   <a href="#" class="brand-link text-center logo-container">
+  <img src="<?= htmlspecialchars($logoSrc) ?>"
+       id="logo_image"
+       class="logo-img"
+       alt="System Logo">
+</a>
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -159,9 +188,9 @@ try{
 
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-         <img src="<?= htmlspecialchars($logoSrc) ?>"
-     class="img-circle elevation-5 img-bordered-sm"
-     alt="Admin Logo">
+       <img src="<?= htmlspecialchars($logoSrc) ?>"
+class="sidebar-logo"
+alt="Admin Logo">
         </div>
         <div class="info text-center">
           <a href="#" class="d-block text-bold"><?= strtoupper($user_type) ?></a>
