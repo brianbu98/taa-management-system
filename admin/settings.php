@@ -18,13 +18,10 @@ try{
     $sql_user = "SELECT * FROM `users` WHERE `id` = ? ";
     $stmt_user = $con->prepare($sql_user) or die ($con->error);
     $stmt_user->bind_param('i',$user_id);
-    $stmt_user->execute();
-    $result_user = $stmt_user->get_result();
-    $row_user = $result_user->fetch_assoc() ?? [];
-    $first_name_user = $row_user['first_name'] ?? '';
-    $last_name_user = $row_user['last_name'] ?? '';
-    $user_type = $row_user['user_type'] ?? '';
-    $user_image = $row_user['image'] ?? '';
+   $stmt_user->execute();
+
+$stmt_user->bind_result($uid,$first_name_user,$last_name_user,$user_type,$user_image);
+$stmt_user->fetch();
   
   
 $sql = "SELECT * FROM taa_information LIMIT 1";
@@ -35,23 +32,14 @@ if(!$query){
     die("SQL Error: " . $con->error);
 }
 $query->execute();
-$result = $query->get_result();
 
-$row = $result->fetch_assoc();
+$query->bind_result($id,$address,$postal_address,$image,$image_path);
+$query->fetch();
 
-if($row){
-    $image = $row['image'];
-    $image_path = $row['image_path'];
-    $id = $row['id'];
-    $address = $row['address'];
-    $postal_address = $row['postal_address'];
-}else{
-    $image = '';
-    $image_path = '';
-    $id = '';
-    $address = '';
-    $postal_address = '';
-}
+$image = $image ?? '';
+$image_path = $image_path ?? '';
+$address = $address ?? '';
+$postal_address = $postal_address ?? '';
 
   $logoSrc = (!empty($image_path))
     ? '../' . ltrim($image_path, '/')
