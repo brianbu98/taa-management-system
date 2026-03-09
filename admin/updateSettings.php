@@ -7,9 +7,9 @@ $address = $con->real_escape_string($_POST['address']);
 $postal_address = $con->real_escape_string($_POST['postal_address']);
 $image = $con->real_escape_string($_FILES['add_image']['name']);
 
-if (isset($image)) {
+if (isset($_FILES['add_image']) && $_FILES['add_image']['error'] == 0) {
 
-    $sql = "SELECT `id`, `image`, `image_path` FROM `barangay_information` WHERE `id` = ?";
+    $sql = "SELECT `id`, `image`, `image_path` FROM `taa_information` WHERE `id` = ?";
     $stmt = $con->prepare($sql) or die($con->error);
     $stmt->bind_param('s', $id);
     $stmt->execute();
@@ -20,7 +20,9 @@ if (isset($image)) {
 
     if (!empty($image)) {
         if (!empty($old_image)) {
-            unlink($old_image_path);
+            if (!empty($old_image_path) && file_exists($old_image_path)) {
+        unlink($old_image_path);
+}
         }
 
         $type = pathinfo($image, PATHINFO_EXTENSION);
@@ -32,7 +34,7 @@ if (isset($image)) {
         $new_image_path = $old_image_path;
     }
 
-    $sql_update = "UPDATE `barangay_information` 
+    $sql_update = "UPDATE `taa_information` 
                    SET `image` = ?, `image_path` = ?, `address` = ?, `postal_address` = ? 
                    WHERE `id` = ?";
     $stmt_update = $con->prepare($sql_update) or die($con->error);

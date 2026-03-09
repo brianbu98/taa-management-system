@@ -5,6 +5,8 @@ ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
 
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
 
 include_once '../connection.php';
 session_start();
@@ -17,10 +19,17 @@ try{
   if(isset($_SESSION['user_id']) && isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'admin'){
   
     $user_id = $_SESSION['user_id'];
-   $sql_user = "SELECT id,first_name,last_name,user_type,image FROM users WHERE id = ?";
-    $stmt_user = $con->prepare($sql_user) or die ($con->error);
-    $stmt_user->bind_param('i',$user_id);
-   $stmt_user->execute();
+ $sql_user = "SELECT id, first_name, last_name, user_type, image 
+             FROM users 
+             WHERE id = ? 
+             LIMIT 1";
+
+$stmt_user = $con->prepare($sql_user) or die($con->error);
+
+$stmt_user->bind_param('i', $user_id);
+$stmt_user->execute();
+
+$stmt_user->store_result();   
 
 $stmt_user->bind_result($uid,$first_name_user,$last_name_user,$user_type,$user_image);
 $stmt_user->fetch();
@@ -33,15 +42,18 @@ $query = $con->prepare($sql);
 if(!$query){
     die("SQL Error: " . $con->error);
 }
+
 $query->execute();
+$query->store_result();
 
 $query->bind_result($id,$address,$postal_address,$image,$image_path);
 $query->fetch();
 
-$image = $image ?? '';
-$image_path = $image_path ?? '';
+$id = $id ?? 0;
 $address = $address ?? '';
 $postal_address = $postal_address ?? '';
+$image = $image ?? '';
+$image_path = $image_path ?? '';
 
   $logoSrc = (!empty($image_path))
     ? '../' . ltrim($image_path, '/')
@@ -49,9 +61,8 @@ $postal_address = $postal_address ?? '';
   
   
   }else{
-   echo '<script>
-          window.location.href = "../login.php";
-        </script>';
+  header("Location: ../login.php");
+exit;
   }
   
   }catch(Exception $e){
