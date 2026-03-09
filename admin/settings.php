@@ -31,9 +31,9 @@ try{
       $image = $row['image'];
       $image_path = $row['image_path'];
       $id = $row['id'];
-      $address = $row['address'];
-      $postal_address = $row['postal_address'];
-  }
+      $bg_color = $row['bg_color'];
+    $dark_mode = $row['dark_mode'];
+}
   
   $logoSrc = (!empty($image_path))
     ? '../' . ltrim($image_path, '/')
@@ -84,7 +84,7 @@ try{
   </style>
 
 </head>
-<body class="hold-transition dark-mode sidebar-mini ">
+<body class="hold-transition <?= $dark_mode ? 'dark-mode':'' ?> sidebar-mini">
 <div class="wrapper">
 
   <!-- Preloader -->
@@ -138,7 +138,8 @@ try{
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand">
+  <aside class="main-sidebar elevation-4 sidebar-no-expand"
+       style="background-color: <?= $bg_color ?>">
     <!-- Brand Logo -->
     <a href="#" class="brand-link text-center">
     <img src="<?= htmlspecialchars($logoSrc) ?>"
@@ -349,48 +350,56 @@ try{
            <div class="card">
              <div class="card-body">
                 <form id="taaInformationForm" method="POST" enctype="multipart/form-data">
-                <div class="row">
-                  
-                  <div class="col-sm-12 text-center">
-                    <?php 
-                    
-                      if($image != '' || $image != null || !empty($image)){
-                        echo '<img src="'.$image_path.'" class="img-circle text-center" alt="logo"  id="display_image" style="cursor: pointer;">';
-                      }else{
-                        echo ' <img src="../assets/logo/blank.png" class="img-circle text-center" alt="logo"  id="display_image" style="cursor: pointer;">';
-                      }
+              <div class="row">
 
-                    ?>
-                   
-                    <input type="file" id="add_image" name="add_image" style="display: none;">
-                  </div>
-                  <div class="col-sm-2" style="display:none;">
-                    <input type="hidden" id="id" name="id" value="<?= $id ?>">
-                  </div>
-                  </div>
-                  <div class="col-sm-2">
-                    <div class="form-group">
-                      <label>Postal Address</label>
-                      <input type="text" name="postal_address" value="<?= $postal_address ?>" id="postal_address" class="form-control">
-                    </div>
-                  </div>
-                  <div class="col-sm-2">
-                    <div class="form-group">
-                      <label>City</label>
-                      <input type="text" name="address" value="<?= $address ?>" id="address" class="form-control">
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <button type="submit" class="btn btn-success btn-block">SAVE</button>
-                    </div>
-                  </div>
+  <!-- LOGO -->
+  <div class="col-sm-12 text-center">
+    <?php 
+      if($image != '' || $image != null || !empty($image)){
+        echo '<img src="'.$image_path.'" class="img-circle text-center" alt="logo" id="display_image" style="cursor: pointer;">';
+      }else{
+        echo '<img src="../assets/logo/blank.png" class="img-circle text-center" alt="logo" id="display_image" style="cursor: pointer;">';
+      }
+    ?>
+    <input type="file" id="add_image" name="add_image" style="display:none;">
+  </div>
 
-                    
-                </div>
-                </form> 
-             </div>
-           </div>     
+  <div class="col-sm-2" style="display:none;">
+    <input type="hidden" id="id" name="id" value="<?= $id ?>">
+  </div>
+
+
+  <!-- SIDEBAR COLOR -->
+  <div class="col-sm-3">
+    <div class="form-group">
+      <label>Sidebar Color</label>
+      <input type="color" name="bg_color" id="bg_color"
+             value="<?= $bg_color ?? '#343a40' ?>"
+             class="form-control">
+    </div>
+  </div>
+
+
+  <!-- DARK MODE -->
+  <div class="col-sm-3">
+    <div class="form-group">
+      <label>Dark Mode</label>
+      <select name="dark_mode" id="dark_mode" class="form-control">
+        <option value="1" <?= $dark_mode == 1 ? 'selected':'' ?>>Dark</option>
+        <option value="0" <?= $dark_mode == 0 ? 'selected':'' ?>>Light</option>
+      </select>
+    </div>
+  </div>
+
+
+  <!-- SAVE BUTTON -->
+  <div class="col-sm-4">
+    <div class="form-group">
+      <button type="submit" class="btn btn-success btn-block">SAVE</button>
+    </div>
+  </div>
+
+</div>
 
 
       </div><!--/. container-fluid -->
@@ -441,40 +450,30 @@ try{
 <script>
   $(document).ready(function(){
 
-    $("#taaInformationForm").submit(function(e){
-      e.preventDefault();
+   $("#taaInformationForm").submit(function(e){
+    e.preventDefault();
 
-      var address = $("#address").val();
-
-      if(postal_address == '' || address == ''){
+    $.ajax({
+        url: 'updateSettings.php',
+        type: 'POST',
+        data: new FormData(this),
+        contentType: false,
+        processData: false,
+        success:function(data){
             Swal.fire({
-              title: '<strong class="text-danger">WARNING</strong>',
-              type: 'warning',
-              html: '<b>Please Fill-up The Blank<b>',
-              width: '400px',
-              confirmButtonColor: '#6610f2',
+                title: '<strong class="text-success">SUCCESS</strong>',
+                icon: 'success',
+                html: '<b>Settings Updated Successfully</b>',
+                width: '400px',
+                confirmButtonColor: '#6610f2',
+                timer: 2000
+            }).then(()=>{
+                window.location.reload();
             })
-      }else{
-          $.ajax({
-              url: 'updateSettings.php',
-              type: 'POST',
-              data: new FormData(this),
-              contentType: false,
-              processData: false,
-              success:function(data){
-                Swal.fire({
-                  title: '<strong class="text-success">SUCCESS</strong>',
-                  type: 'success',
-                  html: '<b>Updated has Successfully<b>',
-                  width: '400px',
-                  confirmButtonColor: '#6610f2',
-                  allowOutsideClick: false,
-                  showConfirmButton: false,
-                  timer: 2000,
-                }).then(()=>{
-                  window.location.reload();
-                })
-              }
+        }
+    });
+
+});
           }).fail(function(){
             Swal.fire({
               title: '<strong class="text-danger">Ooppss..</strong>',
