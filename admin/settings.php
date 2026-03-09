@@ -80,6 +80,10 @@ try{
       width:auto;
       max-width:500px;
     }
+
+    .user-panel .info a {
+  color: #c2c7d0 !important;
+} 
     
   </style>
 
@@ -142,10 +146,9 @@ try{
        style="background-color: <?= $bg_color ?>">
     <!-- Brand Logo -->
     <a href="#" class="brand-link text-center">
-    <img src="<?= htmlspecialchars($logoSrc) ?>"
+   <img src="<?= htmlspecialchars($logoSrc) ?>"
      id="logo_image"
      class="img-circle elevation-5 img-bordered-sm"
-     alt="logo"
      style="width:70%;">
       <span class="brand-text font-weight-light"></span>
     </a>
@@ -355,7 +358,7 @@ try{
   <!-- LOGO -->
   <div class="col-sm-12 text-center">
     <?php 
-      if($image != '' || $image != null || !empty($image)){
+      if(!empty($image)){
         echo '<img src="'.$image_path.'" class="img-circle text-center" alt="logo" id="display_image" style="cursor: pointer;">';
       }else{
         echo '<img src="../assets/logo/blank.png" class="img-circle text-center" alt="logo" id="display_image" style="cursor: pointer;">';
