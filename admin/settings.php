@@ -27,12 +27,18 @@ try{
     $user_image = $row_user['image'] ?? '';
   
   
-   $sql = "SELECT * FROM `taa_information` LIMIT 1";
-$query = $con->prepare($sql) or die($con->error);
+$sql = "SELECT * FROM taa_information LIMIT 1";
+
+$query = $con->prepare($sql);
+
+if(!$query){
+    die("SQL Error: " . $con->error);
+}
+
 $query->execute();
 $result = $query->get_result();
 
-$row = $result->fetch_assoc();
+$row_user = $result_user->fetch_assoc() ?? [];
 
 if($row){
     $image = $row['image'];
