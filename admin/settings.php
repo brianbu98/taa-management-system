@@ -116,7 +116,7 @@ try{
             <div class="media">
               <?php 
                if (!empty($user_image)) {
-                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle alt="User Image">';
+                  echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle" alt="User Image">';
                 }else{
                   echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle" alt="User Image">';
                 }
@@ -150,9 +150,7 @@ try{
 
 <span class="brand-text font-weight-light"></span>
 </a>
-      <span class="brand-text font-weight-light"></span>
-    </a>
-
+    
     <!-- Sidebar -->
     <div class="sidebar">
     
@@ -369,8 +367,7 @@ try{
                   </div>
                   <div class="col-sm-2" style="display:none;">
                     <input type="hidden" id="id" name="id" value="<?= $id ?>">
-                  </div>
-                  </div>
+                 </div>
                   <div class="col-sm-2">
                     <div class="form-group">
                       <label>Postal Address</label>
@@ -447,9 +444,10 @@ try{
     $("#taaInformationForm").submit(function(e){
       e.preventDefault();
 
-      var address = $("#address").val();
+      var postal_address = $("#postal_address").val();
+var address = $("#address").val();
 
-      if(subdivision == '' || address == ''){
+if(postal_address == '' || address == ''){
             Swal.fire({
               title: '<strong class="text-danger">WARNING</strong>',
               type: 'warning',
@@ -564,7 +562,7 @@ try{
 
 
 
-  $("#subdivision,#postal_address, #address").inputFilter(function(value) {
+  $("#postal_address, #address").inputFilter(function(value) {
   return /^[0-9a-z, ., ]*$/i.test(value); 
   });
 
