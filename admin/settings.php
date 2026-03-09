@@ -23,17 +23,18 @@ try{
     $user_image = $row_user['image'] ?? '';
   
   
-    $sql = "SELECT * FROM `taa_information`";
-  $query = $con->prepare($sql) or die ($con->error);
-  $query->execute();
-  $result = $query->get_result();
-  while($row = $result->fetch_assoc()){
-      $image = $row['image'];
-      $image_path = $row['image_path'];
-      $id = $row['id'];
-      $address = $row['address'];
-      $postal_address = $row['postal_address'];
-  }
+   $sql = "SELECT * FROM `taa_information` LIMIT 1";
+$query = $con->prepare($sql) or die($con->error);
+$query->execute();
+$result = $query->get_result();
+
+$row = $result->fetch_assoc();
+
+$image = $row['image'] ?? '';
+$image_path = $row['image_path'] ?? '';
+$id = $row['id'] ?? '';
+$address = $row['address'] ?? '';
+$postal_address = $row['postal_address'] ?? '';
 
   $logoSrc = (!empty($image_path))
     ? '../' . ltrim($image_path, '/')
