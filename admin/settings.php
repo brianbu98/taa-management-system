@@ -5,7 +5,7 @@ ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
 
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+//mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 
 include_once '../connection.php';
@@ -29,9 +29,15 @@ $stmt_user = $con->prepare($sql_user) or die($con->error);
 $stmt_user->bind_param('i', $user_id);
 $stmt_user->execute();
 
-$stmt_user->bind_result($uid,$first_name_user,$last_name_user,$user_type,$user_image);
-$stmt_user->fetch();
-$stmt_user->close();
+$query->bind_result($id,$address,$postal_address,$image,$image_path);
+
+if($query->fetch() === null){
+    $id = 0;
+    $address = '';
+    $postal_address = '';
+    $image = '';
+    $image_path = '';
+}
   
   
 $sql = "SELECT id,address,postal_address,image,image_path FROM taa_information LIMIT 1";
@@ -60,8 +66,8 @@ $postal_address = $postal_address ?? '';
 $image = $image ?? '';
 $image_path = $image_path ?? '';
 
-  $logoSrc = (!empty($image_path))
-    ? '../' . ltrim($image_path, '/')
+$logoSrc = (!empty($image_path))
+    ? $image_path
     : '../assets/logo/logo.png';
   
   
