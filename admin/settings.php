@@ -29,10 +29,9 @@ $stmt_user = $con->prepare($sql_user) or die($con->error);
 $stmt_user->bind_param('i', $user_id);
 $stmt_user->execute();
 
-$stmt_user->store_result();   
-
 $stmt_user->bind_result($uid,$first_name_user,$last_name_user,$user_type,$user_image);
 $stmt_user->fetch();
+$stmt_user->close();
   
   
 $sql = "SELECT id,address,postal_address,image,image_path FROM taa_information LIMIT 1";
@@ -44,10 +43,16 @@ if(!$query){
 }
 
 $query->execute();
-$query->store_result();
 
 $query->bind_result($id,$address,$postal_address,$image,$image_path);
-$query->fetch();
+if(!$query->fetch()){
+    $id = 0;
+    $address = '';
+    $postal_address = '';
+    $image = '';
+    $image_path = '';
+}
+$query->close();
 
 $id = $id ?? 0;
 $address = $address ?? '';
