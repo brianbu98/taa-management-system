@@ -12,7 +12,7 @@ try{
   if(isset($_SESSION['user_id']) && isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'admin'){
   
     $user_id = $_SESSION['user_id'];
-    $sql_user = "SELECT * FROM `users` WHERE `id` = ? ";
+   $sql_user = "SELECT id,first_name,last_name,user_type,image FROM users WHERE id = ?";
     $stmt_user = $con->prepare($sql_user) or die ($con->error);
     $stmt_user->bind_param('i',$user_id);
    $stmt_user->execute();
@@ -21,7 +21,7 @@ $stmt_user->bind_result($uid,$first_name_user,$last_name_user,$user_type,$user_i
 $stmt_user->fetch();
   
   
-$sql = "SELECT * FROM taa_information LIMIT 1";
+$sql = "SELECT id,address,postal_address,image,image_path FROM taa_information LIMIT 1";
 
 $query = $con->prepare($sql);
 
