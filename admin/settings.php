@@ -358,7 +358,7 @@ try{
   <!-- LOGO -->
   <div class="col-sm-12 text-center">
     <?php 
-      if(!empty($image)){}
+      if($image != '' || $image != null || !empty($image)){
         echo '<img src="'.$image_path.'" class="img-circle text-center" alt="logo" id="display_image" style="cursor: pointer;">';
       }else{
         echo '<img src="../assets/logo/blank.png" class="img-circle text-center" alt="logo" id="display_image" style="cursor: pointer;">';
