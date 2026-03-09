@@ -29,6 +29,10 @@ try{
         $image = $row['image'];
         $image_path = $row['image_path'];
         $id = $row['id'];
+
+        $logoSrc = (!empty($image_path))
+    ? '../' . ltrim($image_path, '/')
+    : '../assets/logo/logo.png';
     }
 
     $yes= 'YES';
@@ -438,7 +442,7 @@ try{
             <!-- Message Start -->
             <div class="media">
               <?php 
-                if($user_image != '' || $user_image != null || !empty($user_image)){
+                if (!empty($user_image)) {
                   echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle alt="User Image">';
                 }else{
                   echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle alt="User Image">';
@@ -465,14 +469,14 @@ try{
   <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand">
     <!-- Brand Logo -->
     <a href="#" class="brand-link text-center">
-    <?php 
-        if($image != '' || $image != null || !empty($image)){
-          echo '<img src="'.$image_path.'" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
-        }else{
-          echo ' <img src="../assets//logo//logo.png" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
-        }
+    <img src="<?= htmlspecialchars($logoSrc) ?>"
+     id="logo_image"
+     class="img-circle elevation-5 img-bordered-sm"
+     alt="logo"
+     style="width:70%;">
 
-      ?>
+<span class="brand-text font-weight-light"></span>
+</a>
       <span class="brand-text font-weight-light"></span>
     </a>
 
@@ -482,7 +486,9 @@ try{
 
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="../assets/dist/img/logo.png" class="img-circle elevation-5 img-bordered-sm" alt="User Image">
+          <img src="<?= htmlspecialchars($logoSrc) ?>"
+     class="img-circle elevation-5 img-bordered-sm"
+     alt="Admin Logo">
         </div>
         <div class="info text-center">
           <a href="#" class="d-block text-bold"><?= strtoupper($user_type) ?></a>
@@ -518,12 +524,6 @@ try{
                 <a href="allOfficial.php" class="nav-link">
                   <i class="fas fa-circle nav-icon text-red"></i>
                   <p>List of Official</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="officialEndTerm.php" class="nav-link ">
-                  <i class="fas fa-circle nav-icon text-red"></i>
-                  <p>Official End Term</p>
                 </a>
               </li>
             </ul>
