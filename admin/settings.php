@@ -20,7 +20,7 @@ try{
     $stmt_user->bind_param('s',$user_id);
     $stmt_user->execute();
     $result_user = $stmt_user->get_result();
-    $row_user = $result_user->fetch_assoc();
+    $row_user = $result_user->fetch_assoc() ?? [];
     $first_name_user = $row_user['first_name'] ?? '';
     $last_name_user = $row_user['last_name'] ?? '';
     $user_type = $row_user['user_type'] ?? '';
@@ -34,11 +34,10 @@ $query = $con->prepare($sql);
 if(!$query){
     die("SQL Error: " . $con->error);
 }
-
 $query->execute();
 $result = $query->get_result();
 
-$row_user = $result_user->fetch_assoc() ?? [];
+$row = $result->fetch_assoc();
 
 if($row){
     $image = $row['image'];
