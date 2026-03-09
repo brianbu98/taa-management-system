@@ -17,7 +17,7 @@ try{
     $user_id = $_SESSION['user_id'];
     $sql_user = "SELECT * FROM `users` WHERE `id` = ? ";
     $stmt_user = $con->prepare($sql_user) or die ($con->error);
-    $stmt_user->bind_param('s',$user_id);
+    $stmt_user->bind_param('i',$user_id);
     $stmt_user->execute();
     $result_user = $stmt_user->get_result();
     $row_user = $result_user->fetch_assoc() ?? [];
