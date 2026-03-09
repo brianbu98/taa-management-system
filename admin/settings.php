@@ -4,6 +4,10 @@
 include_once '../connection.php';
 session_start();
 
+
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 try{
 
 
@@ -30,11 +34,19 @@ $result = $query->get_result();
 
 $row = $result->fetch_assoc();
 
-$image = $row['image'] ?? '';
-$image_path = $row['image_path'] ?? '';
-$id = $row['id'] ?? '';
-$address = $row['address'] ?? '';
-$postal_address = $row['postal_address'] ?? '';
+if($row){
+    $image = $row['image'];
+    $image_path = $row['image_path'];
+    $id = $row['id'];
+    $address = $row['address'];
+    $postal_address = $row['postal_address'];
+}else{
+    $image = '';
+    $image_path = '';
+    $id = '';
+    $address = '';
+    $postal_address = '';
+}
 
   $logoSrc = (!empty($image_path))
     ? '../' . ltrim($image_path, '/')
