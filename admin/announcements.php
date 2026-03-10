@@ -20,7 +20,7 @@ $first_name = $user['first_name'] ?? '';
 $last_name  = $user['last_name'] ?? '';
 $user_image = $user['image'] ?? '';
 
-/* SYSTEM LOGO FROM SETTINGS */
+/* SYSTEM LOGO */
 
 $sql = "SELECT image_path FROM taa_information LIMIT 1";
 $result = $con->query($sql);
@@ -32,7 +32,7 @@ $logoSrc = (!empty($row['image_path']))
 
 $msg = "";
 
-/* HANDLE ANNOUNCEMENT FORM */
+/* HANDLE ANNOUNCEMENTS */
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -65,8 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $msg = "Announcement deleted.";
     }
 }
-
-/* FETCH ANNOUNCEMENTS */
 
 $result = $con->query("
 SELECT a.*, CONCAT(u.first_name,' ',u.last_name) AS author
@@ -230,6 +228,127 @@ data-accordion="false">
 
 
 <li class="nav-item">
+<a href="#" class="nav-link">
+<i class="nav-icon fas fa-users-cog"></i>
+<p>
+Homeowner Officials
+<i class="right fas fa-angle-left"></i>
+</p>
+</a>
+
+<ul class="nav nav-treeview">
+
+<li class="nav-item">
+<a href="newOfficial.php" class="nav-link">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>New Official</p>
+</a>
+</li>
+
+<li class="nav-item">
+<a href="allOfficial.php" class="nav-link">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>List of Official</p>
+</a>
+</li>
+
+</ul>
+
+</li>
+
+
+<li class="nav-item">
+<a href="#" class="nav-link">
+<i class="nav-icon fas fa-home"></i>
+<p>
+Residence
+<i class="right fas fa-angle-left"></i>
+</p>
+</a>
+
+<ul class="nav nav-treeview">
+
+<li class="nav-item">
+<a href="newResidence.php" class="nav-link">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>New Residence</p>
+</a>
+</li>
+
+<li class="nav-item">
+<a href="allResidence.php" class="nav-link">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>All Residence</p>
+</a>
+</li>
+
+<li class="nav-item">
+<a href="archiveResidence.php" class="nav-link">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>Archive Residence</p>
+</a>
+</li>
+
+</ul>
+
+</li>
+
+
+<li class="nav-item">
+<a href="#" class="nav-link">
+<i class="nav-icon fas fa-user-shield"></i>
+<p>
+Users
+<i class="right fas fa-angle-left"></i>
+</p>
+</a>
+
+<ul class="nav nav-treeview">
+
+<li class="nav-item">
+<a href="usersResident.php" class="nav-link">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>Resident</p>
+</a>
+</li>
+
+<li class="nav-item">
+<a href="userAdministrator.php" class="nav-link">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>Administrator</p>
+</a>
+</li>
+
+</ul>
+
+</li>
+
+
+<li class="nav-item">
+<a href="position.php" class="nav-link">
+<i class="nav-icon fas fa-user-tie"></i>
+<p>Position</p>
+</a>
+</li>
+
+
+<li class="nav-item">
+<a href="incidentRecord.php" class="nav-link">
+<i class="nav-icon fas fa-clipboard"></i>
+<p>Incident Record</p>
+</a>
+</li>
+
+
+<li class="nav-item">
+<a href="report.php" class="nav-link">
+<i class="nav-icon fas fa-bookmark"></i>
+<p>Reports</p>
+</a>
+</li>
+
+
+<li class="nav-item">
 <a href="announcements.php" class="nav-link active">
 <i class="nav-icon fas fa-bullhorn"></i>
 <p>Announcements</p>
@@ -241,14 +360,6 @@ data-accordion="false">
 <a href="payments.php" class="nav-link">
 <i class="nav-icon fas fa-money-bill-wave"></i>
 <p>Payments</p>
-</a>
-</li>
-
-
-<li class="nav-item">
-<a href="payment_records.php" class="nav-link">
-<i class="nav-icon fas fa-receipt"></i>
-<p>Payment Records</p>
 </a>
 </li>
 
@@ -382,19 +493,14 @@ Publish
 <tr>
 
 <td><?= $row['id'] ?></td>
-
 <td><?= htmlspecialchars($row['title']) ?></td>
-
 <td><?= ucfirst($row['status']) ?></td>
-
 <td><?= htmlspecialchars($row['author']) ?></td>
-
 <td><?= date('M d, Y h:i A', strtotime($row['created_at'])) ?></td>
 
 <td>
 
-<form method="POST"
-onsubmit="return confirm('Delete this announcement?');">
+<form method="POST" onsubmit="return confirm('Delete this announcement?');">
 
 <input type="hidden" name="action" value="delete">
 <input type="hidden" name="id" value="<?= $row['id'] ?>">
