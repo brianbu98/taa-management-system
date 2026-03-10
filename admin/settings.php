@@ -360,23 +360,10 @@ try{
                 <form id="taaInformationForm" method="POST" enctype="multipart/form-data">
               <div class="row">
 
-  <!-- LOGO -->
-<div class="col-sm-12 text-center">
+<!-- CHOOSE LOGO -->
+<div class="col-sm-12 text-center mb-4">
 
-<label for="add_image" style="cursor:pointer;">
-
-<?php 
-if(!empty($image_path)){
-echo '<img src="'.$image_path.'" id="display_image" class="img-circle" style="height:200px;">';
-}else{
-echo '<img src="../assets/logo/blank.png" id="display_image" class="img-circle" style="height:200px;">';
-}
-?>
-
-</label>
-
-<br>
-<button type="button" class="btn btn-sm btn-primary mt-2" onclick="$('#add_image').click()">
+<button type="button" class="btn btn-sm btn-primary" onclick="$('#add_image').click()">
 Choose Logo
 </button>
 
