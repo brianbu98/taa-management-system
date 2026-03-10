@@ -367,7 +367,7 @@ width: 100%;
 </li>
 
 <li class="mx-5">
-<a href="officials.php" class="round green">
+<a href="MyOfficials.php" class="round green">
 <i class="fas fa-user-tie" style="font-size: 50px;"></i>
 <span class="round"><br> OFFICIALS</span>
 </a>
