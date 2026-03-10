@@ -9,6 +9,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'admin') {
 
 $user_id = $_SESSION['user_id'];
 
+/* ADMIN INFO */
+
 $stmt_user = $con->prepare("SELECT first_name,last_name,image FROM users WHERE id=?");
 $stmt_user->bind_param("i",$user_id);
 $stmt_user->execute();
@@ -18,9 +20,19 @@ $first_name = $user['first_name'] ?? '';
 $last_name  = $user['last_name'] ?? '';
 $user_image = $user['image'] ?? '';
 
+/* SYSTEM LOGO */
+
+$sql = "SELECT image_path FROM taa_information LIMIT 1";
+$result = $con->query($sql);
+$row = $result->fetch_assoc();
+
+$logoSrc = (!empty($row['image_path']))
+    ? '../' . ltrim($row['image_path'], '/')
+    : '../assets/logo/logo.png';
+
 $msg = "";
 
-/* ================= CREATE BILL ================= */
+/* CREATE BILL */
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -40,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $msg = "Bill created successfully.";
 }
 
-/* ================= FETCH DATA ================= */
+/* FETCH DATA */
 
 $residents = $con->query("
 SELECT id, CONCAT(first_name,' ',last_name) AS name
@@ -58,6 +70,7 @@ ORDER BY p.created_at DESC
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="utf-8">
@@ -75,6 +88,19 @@ ORDER BY p.created_at DESC
 
 <div class="wrapper">
 
+<!-- PRELOADER -->
+
+<div class="preloader flex-column justify-content-center align-items-center">
+
+<img class="animation__wobble"
+src="../assets/dist/img/loader.gif"
+alt="Loader"
+height="70"
+width="70">
+
+</div>
+
+
 <!-- NAVBAR -->
 
 <nav class="main-header navbar navbar-expand navbar-dark">
@@ -86,6 +112,7 @@ ORDER BY p.created_at DESC
 </a>
 </li>
 </ul>
+
 
 <ul class="navbar-nav ml-auto">
 
@@ -117,7 +144,7 @@ class="img-size-50 img-circle mr-3">
 
 <h3 class="dropdown-item-title py-3">
 
-<?= ucfirst($first_name) . ' ' . ucfirst($last_name) ?>
+<?= ucfirst($first_name).' '.ucfirst($last_name) ?>
 
 </h3>
 
@@ -130,7 +157,9 @@ class="img-size-50 img-circle mr-3">
 <div class="dropdown-divider"></div>
 
 <a href="../logout.php" class="dropdown-item dropdown-footer">
+
 LOGOUT
+
 </a>
 
 </div>
@@ -148,19 +177,21 @@ LOGOUT
 
 <a href="dashboard.php" class="brand-link text-center">
 
-<img src="../assets/logo/logo.png"
+<img src="<?= htmlspecialchars($logoSrc) ?>"
 class="img-circle elevation-3"
 style="width:70%;">
 
 </a>
 
+
 <div class="sidebar">
+
 
 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
 <div class="image">
 
-<img src="../assets/logo/logo.png"
+<img src="<?= htmlspecialchars($logoSrc) ?>"
 class="img-circle elevation-2">
 
 </div>
@@ -176,38 +207,137 @@ class="img-circle elevation-2">
 
 <nav class="mt-2">
 
-<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview">
+<ul class="nav nav-pills nav-sidebar flex-column nav-child-indent"
+data-widget="treeview"
+role="menu"
+data-accordion="false">
 
 
 <li class="nav-item">
+
 <a href="dashboard.php" class="nav-link">
+
 <i class="nav-icon fas fa-tachometer-alt"></i>
+
 <p>Dashboard</p>
+
 </a>
+
 </li>
 
 
+<!-- HOMEOWNER OFFICIALS -->
+
 <li class="nav-item">
-<a href="homeowner_officials.php" class="nav-link">
-<i class="nav-icon fas fa-users"></i>
-<p>Homeowner Officials</p>
+
+<a href="#" class="nav-link">
+
+<i class="nav-icon fas fa-users-cog"></i>
+
+<p>
+Homeowner Officials
+<i class="right fas fa-angle-left"></i>
+</p>
+
+</a>
+
+<ul class="nav nav-treeview">
+
+<li class="nav-item">
+<a href="newOfficial.php" class="nav-link">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>New Official</p>
 </a>
 </li>
 
+<li class="nav-item">
+<a href="allOfficial.php" class="nav-link">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>List of Official</p>
+</a>
+</li>
+
+</ul>
+
+</li>
+
+
+<!-- RESIDENCE -->
 
 <li class="nav-item">
-<a href="residence.php" class="nav-link">
+
+<a href="#" class="nav-link">
+
 <i class="nav-icon fas fa-home"></i>
-<p>Residence</p>
+
+<p>
+Residence
+<i class="right fas fa-angle-left"></i>
+</p>
+
+</a>
+
+<ul class="nav nav-treeview">
+
+<li class="nav-item">
+<a href="newResidence.php" class="nav-link">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>New Residence</p>
 </a>
 </li>
 
+<li class="nav-item">
+<a href="allResidence.php" class="nav-link">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>All Residence</p>
+</a>
+</li>
 
 <li class="nav-item">
-<a href="users.php" class="nav-link">
-<i class="nav-icon fas fa-user"></i>
-<p>Users</p>
+<a href="archiveResidence.php" class="nav-link">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>Archive Residence</p>
 </a>
+</li>
+
+</ul>
+
+</li>
+
+
+<!-- USERS -->
+
+<li class="nav-item">
+
+<a href="#" class="nav-link">
+
+<i class="nav-icon fas fa-user-shield"></i>
+
+<p>
+Users
+<i class="right fas fa-angle-left"></i>
+</p>
+
+</a>
+
+<ul class="nav nav-treeview">
+
+<li class="nav-item">
+<a href="usersResident.php" class="nav-link">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>Resident</p>
+</a>
+</li>
+
+<li class="nav-item">
+<a href="userAdministrator.php" class="nav-link">
+<i class="fas fa-circle nav-icon text-red"></i>
+<p>Administrator</p>
+</a>
+</li>
+
+</ul>
+
 </li>
 
 
@@ -306,9 +436,7 @@ class="img-circle elevation-2">
 <?php if ($msg): ?>
 
 <div class="alert alert-success">
-
 <?= htmlspecialchars($msg) ?>
-
 </div>
 
 <?php endif; ?>
@@ -326,9 +454,7 @@ class="img-circle elevation-2">
 <?php while ($r = $residents->fetch_assoc()): ?>
 
 <option value="<?= $r['id'] ?>">
-
 <?= htmlspecialchars($r['name']) ?>
-
 </option>
 
 <?php endwhile; ?>
@@ -340,7 +466,8 @@ class="img-circle elevation-2">
 
 <div class="col-md-3">
 
-<input type="number" step="0.01"
+<input type="number"
+step="0.01"
 name="amount_due"
 class="form-control"
 placeholder="Amount Due"
@@ -362,9 +489,7 @@ placeholder="Description">
 <div class="col-md-2">
 
 <button class="btn btn-primary w-100">
-
 Create
-
 </button>
 
 </div>
@@ -384,13 +509,11 @@ Create
 <thead>
 
 <tr>
-
 <th>ID</th>
 <th>Resident</th>
 <th>Amount</th>
 <th>Status</th>
 <th>Date</th>
-
 </tr>
 
 </thead>
@@ -474,4 +597,5 @@ Copyright © <?= date('Y') ?> - <?= date('Y',strtotime('+1 year')) ?>
 <script src="../assets/dist/js/adminlte.js"></script>
 
 </body>
+
 </html>
