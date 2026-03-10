@@ -73,19 +73,24 @@ try{
   <link rel="stylesheet" href="../assets/plugins/select2/css/select2.min.css">
   <link rel="stylesheet" href="../assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 
-  <style>
-    
-    #display_image{
-      height: 200px;
-      width:auto;
-      max-width:500px;
-    }
+ <style>
 
-    .user-panel .info a {
-  color: #c2c7d0 !important;
-} 
-    
-  </style>
+#display_image{
+  height:200px;
+  width:auto;
+  max-width:500px;
+}
+
+.user-panel .info a{
+  color:#c2c7d0 !important;
+}
+
+.nav-sidebar .nav-link:hover{
+  background-color: transparent !important;
+  color:#c2c7d0 !important;
+}
+
+</style>
 
 </head>
 <body class="hold-transition <?= $dark_mode ? 'dark-mode':'' ?> sidebar-mini">
@@ -356,20 +361,28 @@ try{
               <div class="row">
 
   <!-- LOGO -->
-  <div class="col-sm-12 text-center">
-    <?php 
-      if($image != '' || $image != null || !empty($image)){
-        echo '<img src="'.$image_path.'" class="img-circle text-center" alt="logo" id="display_image" style="cursor: pointer;">';
-      }else{
-        echo '<img src="../assets/logo/blank.png" class="img-circle text-center" alt="logo" id="display_image" style="cursor: pointer;">';
-      }
-    ?>
-    <input type="file" id="add_image" name="add_image" style="display:none;">
-  </div>
+<div class="col-sm-12 text-center">
 
-  <div class="col-sm-2" style="display:none;">
-    <input type="hidden" id="id" name="id" value="<?= $id ?>">
-  </div>
+<label for="add_image" style="cursor:pointer;">
+
+<?php 
+if(!empty($image_path)){
+echo '<img src="'.$image_path.'" id="display_image" class="img-circle" style="height:200px;">';
+}else{
+echo '<img src="../assets/logo/blank.png" id="display_image" class="img-circle" style="height:200px;">';
+}
+?>
+
+</label>
+
+<br>
+<button type="button" class="btn btn-sm btn-primary mt-2" onclick="$('#add_image').click()">
+Choose Logo
+</button>
+
+<input type="file" id="add_image" name="add_image" style="display:none;">
+
+</div>
 
 
   <!-- SIDEBAR COLOR -->
@@ -521,11 +534,24 @@ try{
   };
 }(jQuery));
 
-
-
-  $("#postal_address, #address").inputFilter(function(value) {
+$("#postal_address, #address").inputFilter(function(value) {
   return /^[0-9a-z, ., ]*$/i.test(value); 
-  });
+});
+
+function displayImage(input){
+
+  if(input.files && input.files[0]){
+
+    var reader = new FileReader();
+
+    reader.onload = function(e){
+      $('#display_image').attr('src', e.target.result);
+    }
+
+    reader.readAsDataURL(input.files[0]);
+  }
+
+}
 
 </script>
 </body>
