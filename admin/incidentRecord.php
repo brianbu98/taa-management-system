@@ -234,15 +234,6 @@ try{
 <body class="hold-transition dark-mode sidebar-mini   layout-footer-fixed">
 <div class="wrapper">
 
-<!-- Preloader -->
-<div class="preloader flex-column justify-content-center align-items-center">
-  <img class="animation__wobble"
-       src="../assets/dist/img/loader.gif"
-       alt="Loader"
-       height="70"
-       width="70">
-</div>
-
  
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-dark">
@@ -1249,25 +1240,7 @@ $(document).on('click', '.sub_checkbox', function() {
 
 <script>
 $(document).on("click","#logoutBtn",function(){
-
-  $(".preloader").show(); // show spinner
-
-  setTimeout(function(){
-      window.location.href="../logout.php";
-  },300);
-
-});
-</script>
-
-<script>
-$(document).on("click","a",function(){
-
-  var link = $(this).attr("href");
-
-  if(link && link !== "#" && !link.startsWith("javascript") && !link.includes("logout")){
-      $(".preloader").show();
-  }
-
+  window.location.href="../logout.php";
 });
 </script>
 

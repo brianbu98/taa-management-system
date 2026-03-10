@@ -31,7 +31,7 @@ try{
 
 
 
-    $sql = "SELECT * FROM `barangay_information`";
+    $sql = "SELECT * FROM `taa_information`";
     $query = $con->prepare($sql) or die ($con->error);
     $query->execute();
     $result = $query->get_result();
