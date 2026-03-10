@@ -57,7 +57,7 @@ try{
 
       
         $sql_report = "SELECT residence_information.*, residence_status.* FROM residence_information 
-        INNER JOIN residence_status ON residence_information.residence_id =  residence_status.residence_id WHERE archive = 'NO'".$where;
+        INNER JOIN residence_status ON residence_information.residence_id =  residence_status.residence_id WHERE residence_information.archive = 'NO'".$where;
         $query_report = $con->query($sql_report) or die ($con->error);
         $count_report = $query_report->num_rows;
         if($count_report > 0){
@@ -385,14 +385,25 @@ try{
     <div class="sidebar">
     
 
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="../assets/dist/img/logo.png" class="img-circle elevation-5 img-bordered-sm" alt="User Image">
-        </div>
-        <div class="info text-center">
-          <a href="#" class="d-block text-bold"><?= strtoupper($user_type) ?></a>
-        </div>
-      </div>
+  <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+
+<div class="image">
+
+<?php 
+if(!empty($image_path)){
+    echo '<img src="'.$image_path.'" class="img-circle elevation-5 img-bordered-sm" alt="Admin Logo">';
+}else{
+    echo '<img src="../assets/logo/logo.png" class="img-circle elevation-5 img-bordered-sm" alt="Admin Logo">';
+}
+?>
+
+</div>
+
+<div class="info text-center">
+<a href="#" class="d-block text-bold"><?= strtoupper($user_type) ?></a>
+</div>
+
+</div>
       <!-- Sidebar Menu -->
       <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
