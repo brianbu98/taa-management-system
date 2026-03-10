@@ -375,8 +375,8 @@ $logoSrc = (!empty($image_path))
                       <input type="text" class="form-control" id="add_birth_place" name="add_birth_place">
                     </div>
                   </div>
-
-
+               
+                </div>
 
                
               </div>
