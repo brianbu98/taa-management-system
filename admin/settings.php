@@ -396,11 +396,13 @@ Choose Logo
 
 
   <!-- SAVE BUTTON -->
-  <div class="col-sm-4">
-    <div class="form-group">
-      <button type="submit" class="btn btn-success btn-block">SAVE</button>
-    </div>
+  <div class="col-sm-2">
+  <div class="form-group mt-4">
+    <button type="submit" class="btn btn-success">
+      SAVE
+    </button>
   </div>
+</div>
 
 </div>
 </form>
