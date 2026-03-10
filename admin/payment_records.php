@@ -46,8 +46,16 @@ ORDER BY pr.created_at DESC
 
 <div class="wrapper">
 
-<!-- NAVBAR -->
+<!-- PRELOADER -->
+<div class="preloader flex-column justify-content-center align-items-center">
+  <img class="animation__wobble"
+       src="../assets/dist/img/loader.gif"
+       alt="Loader"
+       height="70"
+       width="70">
+</div>
 
+<!-- NAVBAR -->
 <nav class="main-header navbar navbar-expand navbar-dark">
 
 <ul class="navbar-nav">
@@ -138,11 +146,12 @@ class="img-circle elevation-2">
 
 </div>
 
-
 <nav class="mt-2">
 
-<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview">
-
+<ul class="nav nav-pills nav-sidebar flex-column nav-child-indent"
+data-widget="treeview"
+role="menu"
+data-accordion="false">
 
 <li class="nav-item">
 <a href="dashboard.php" class="nav-link">
@@ -151,62 +160,12 @@ class="img-circle elevation-2">
 </a>
 </li>
 
-
-<li class="nav-item">
-<a href="homeowner_officials.php" class="nav-link">
-<i class="nav-icon fas fa-users"></i>
-<p>Homeowner Officials</p>
-</a>
-</li>
-
-
-<li class="nav-item">
-<a href="residence.php" class="nav-link">
-<i class="nav-icon fas fa-home"></i>
-<p>Residence</p>
-</a>
-</li>
-
-
-<li class="nav-item">
-<a href="users.php" class="nav-link">
-<i class="nav-icon fas fa-user"></i>
-<p>Users</p>
-</a>
-</li>
-
-
-<li class="nav-item">
-<a href="position.php" class="nav-link">
-<i class="nav-icon fas fa-user-tie"></i>
-<p>Position</p>
-</a>
-</li>
-
-
-<li class="nav-item">
-<a href="incidentRecord.php" class="nav-link">
-<i class="nav-icon fas fa-clipboard"></i>
-<p>Incident Record</p>
-</a>
-</li>
-
-
-<li class="nav-item">
-<a href="report.php" class="nav-link">
-<i class="nav-icon fas fa-bookmark"></i>
-<p>Reports</p>
-</a>
-</li>
-
-
 <li class="nav-item">
 <a href="announcements.php" class="nav-link">
 <i class="nav-icon fas fa-bullhorn"></i>
 <p>Announcements</p>
 </a>
 </li>
-
 
 <li class="nav-item">
 <a href="payments.php" class="nav-link">
@@ -215,14 +174,12 @@ class="img-circle elevation-2">
 </a>
 </li>
 
-
 <li class="nav-item">
 <a href="payment_records.php" class="nav-link active">
 <i class="nav-icon fas fa-receipt"></i>
 <p>Payment Records</p>
 </a>
 </li>
-
 
 <li class="nav-item">
 <a href="settings.php" class="nav-link">
@@ -231,7 +188,6 @@ class="img-circle elevation-2">
 </a>
 </li>
 
-
 <li class="nav-item">
 <a href="systemLog.php" class="nav-link">
 <i class="nav-icon fas fa-history"></i>
@@ -239,14 +195,12 @@ class="img-circle elevation-2">
 </a>
 </li>
 
-
 <li class="nav-item">
 <a href="backupRestore.php" class="nav-link">
 <i class="nav-icon fas fa-database"></i>
 <p>Backup / Restore</p>
 </a>
 </li>
-
 
 </ul>
 
@@ -265,13 +219,11 @@ class="img-circle elevation-2">
 
 <div class="container-fluid">
 
-
 <div class="card card-outline card-indigo">
 
 <div class="card-header">
 <h3 class="card-title">Payment Records</h3>
 </div>
-
 
 <div class="card-body">
 
@@ -289,7 +241,6 @@ class="img-circle elevation-2">
 </tr>
 
 </thead>
-
 
 <tbody>
 
