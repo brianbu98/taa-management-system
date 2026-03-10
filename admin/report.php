@@ -497,7 +497,7 @@ try{
             </a>
           </li>
           <li class="nav-item">
-            <a href="blotterRecord.php" class="nav-link">
+            <a href="incidentRecord.php" class="nav-link">
               <i class="nav-icon fas fa-clipboard"></i>
               <p>
                 Incident Record
