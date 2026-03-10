@@ -20,18 +20,10 @@ try{
            window.location.href = "../login.php";
          </script>';
    }
-   if(isset($_POST['add_pwd_info'])){
-    $add_pwd_check = $con->real_escape_string($_POST['add_pwd_info']);
-  }else{
-    $add_pwd_check = '';
+ 
   }
   
-  $add_single_parent = $con->real_escape_string($_POST['add_single_parent']);
-$add_pwd = $con->real_escape_string($_POST['add_pwd']);
-$add_term_from = $con->real_escape_string($_POST['add_term_from']);
-$add_term_to = $con->real_escape_string($_POST['add_term_to']);
 $add_position = $con->real_escape_string($_POST['add_position']);
-$add_voters = $con->real_escape_string($_POST['add_voters']);
 $add_first_name = $con->real_escape_string($_POST['add_first_name']);
 $add_middle_name = $con->real_escape_string($_POST['add_middle_name']);
 $add_last_name = $con->real_escape_string($_POST['add_last_name']);
@@ -177,9 +169,9 @@ if($add_age_date >= '60'){
   $stmt->execute();
   $stmt->close();
   
-  $sql_official_status = "INSERT INTO `official_status` (`official_id`, `status`, `senior`,`voters`, `position`,`date_added`, `term_from`, `term_to`, `pwd`,`pwd_info`,`single_parent`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+  $sql_official_status = "INSERT INTO `official_status` (`official_id`, `status`, `position`,`date_added`) VALUES (?,?,?,?)";
   $stmt_official_status = $con->prepare($sql_official_status) or die ($con->error);
-  $stmt_official_status->bind_param('sssssssssss',$official_id,$add_status,$senior,$add_voters,$add_position,$date_added,$add_term_from,$add_term_to,$add_pwd,$add_pwd_check,$add_single_parent);
+  $stmt_official_status->bind_param('ssss',$official_id,$add_status,$add_position,$date_added);
   $stmt_official_status->execute();
   $stmt_official_status->close();
 
@@ -188,7 +180,7 @@ if($add_age_date >= '60'){
   
   $date_activity = $now = date("j-n-Y g:i A");  
   $activity_log_position = strtoupper($row_position_limit['position']);
-  $admin = strtoupper('ADMIN').':' .' '. 'ADDED OFFICIAL -'.' ' .$official_id.' |' .' '.$activity_log_position .' '.$add_first_name .' '. $add_last_name .' '. $add_suffix .' | START ' .$add_term_from .' END ' .$add_term_to;
+  $admin = strtoupper('ADMIN').':' .' '. 'ADDED OFFICIAL -'.' ' .$official_id.' |' .' '.$activity_log_position .' '.$add_first_name .' '. $add_last_name .' '. $add_suffix .' ;
   $status_activity_log = 'create';
 
 
