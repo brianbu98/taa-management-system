@@ -577,12 +577,10 @@ if ($b['status'] === 'partial') $statusClass = 'badge badge-warning';
 </div>
 
 
-<footer class="main-footer text-center">
+<footer class="main-footer">
 
 <strong>
-
-Copyright © <?= date('Y') ?> - <?= date('Y',strtotime('+1 year')) ?>
-
+Copyright &copy; <?php echo date("Y"); ?> - <?php echo date('Y', strtotime('+1 year'));?>
 </strong>
 
 </footer>
