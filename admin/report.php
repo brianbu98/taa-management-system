@@ -39,30 +39,15 @@ try{
 
         $whereClause = [];
 
-        $voters = $con->real_escape_string($_POST['voters']);
         $age = $con->real_escape_string($_POST['age']);
         $status = $con->real_escape_string($_POST['status']);
-        $pwd = $con->real_escape_string($_POST['pwd']);
-        $senior = $con->real_escape_string($_POST['senior']);
-        $single_parent = $con->real_escape_string($_POST['single_parent']);
 
-        if(!empty($voters))
-            $whereClause[] = "residence_status.voters='$voters'";
 
         if(!empty($age))
           $whereClause[] = "residence_information.age='$age'";
 
         if(!empty($status))
           $whereClause[] = "residence_status.status='$status'";
-
-        if(!empty($pwd))
-          $whereClause[] = "residence_status.pwd='$pwd'";
-
-          if(!empty($single_parent))
-          $whereClause[] = "residence_status.single_parent='$single_parent'";
-
-        if(!empty($senior))
-          $whereClause[] = "residence_status.senior='$senior'"; 
 
         $where = '';
 
@@ -91,21 +76,13 @@ try{
             $table .= '<tr>
                     <td>'.ucfirst($row_report['last_name']).' '.ucfirst($row_report['first_name']).'  '.$middle_name.' </td>
                     <td>'.$row_report['age'].'</td>
-                    <td>'.$row_report['pwd_info'].'</td>
-                    <td>'.$row_report['single_parent'].'</td>
-                    <td>'.$row_report['voters'].'</td>
                     <td>'.$row_report['status'].'</td>
-                    <td>'.$row_report['senior'].'</td>
                 </tr>';
             }
 
         }else{
 
           $table .= '<tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -119,7 +96,7 @@ try{
    
 
       $sql_report = "SELECT residence_information.*, residence_status.* FROM residence_information 
-      INNER JOIN residence_status ON residence_information.residence_id =  residence_status.residence_id WHERE archive ='NO'" ;
+      INNER JOIN residence_status ON residence_information.residence_id =  residence_status.residence_id WHERE residence_information.archive = 'NO'" ;
       $query_report = $con->query($sql_report) or die ($con->error);
       while($row_report = $query_report->fetch_assoc()){
 
@@ -132,11 +109,7 @@ try{
       $table .= '<tr>
       <td>'.ucfirst($row_report['last_name']?? '').' '.ucfirst($row_report['first_name']?? '').'  '.$middle_name.' </td>
               <td>'.$row_report['age']?? ''.'</td>
-              <td>'.$row_report['pwd_info']?? ''.'</td>
-              <td>'.$row_report['single_parent']?? ''.'</td>
-              <td>'.$row_report['voters']?? ''.'</td>
               <td>'.$row_report['status']?? ''.'</td>
-              <td>'.$row_report['senior'] ?? ''.'</td>
           </tr>';
       }
 
@@ -452,12 +425,6 @@ try{
                   <p>List of Official</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="officialEndTerm.php" class="nav-link ">
-                  <i class="fas fa-circle nav-icon text-red"></i>
-                  <p>Official End Term</p>
-                </a>
-              </li>
             </ul>
           </li>
           <li class="nav-item">
@@ -621,19 +588,6 @@ try{
                   <div class="col-sm-4">
                     <div class="input-group mb-3">
                       <div class="input-group-prepend">
-                        <span class="input-group-text bg-indigo">VOTERS</span>
-                      </div>
-                        <select name="voters" id="voters" class="form-control">
-                          <option value="">--SELECT VOTERS--</option>
-                          <option value="YES" <?php if(isset($voters)&& $voters == 'YES') echo 'selected'; ?>>YES</option>
-                          <option value="NO" <?php if(isset($voters)&& $voters == 'NO') echo 'selected'; ?>>NO</option>
-                        </select>
-                    </div>
-                  </div>
-                  
-                  <div class="col-sm-4">
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
                         <span class="input-group-text bg-indigo">AGE</span>
                       </div>
                           <input type="number" name="age" id="age" class="form-control" value="<?php if(isset($age)) echo $age; ?>"> 
@@ -652,44 +606,7 @@ try{
                         </select>
                     </div>
                   </div>
-                  <div class="col-sm-4">
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text bg-indigo">PWD</span>
-                      </div>
-                        <select name="pwd" id="pwd" class="form-control">
-                          <option value="">--SELECT PWD--</option>
-                          <option value="YES" <?php if(isset($pwd)&& $pwd == 'YES') echo 'selected'; ?>>YES</option>
-                          <option value="NO" <?php if(isset($pwd)&& $pwd == 'NO') echo 'selected'; ?>>NO</option>
-                        </select>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text bg-indigo">SINGLE PARENT</span>
-                      </div>
-                        <select name="single_parent" id="single_parent" class="form-control">
-                          <option value="">--SELECT PARENT STATUS--</option>
-                          <option value="YES" <?php if(isset($single_parent)&& $single_parent == 'YES') echo 'selected'; ?>>YES</option>
-                          <option value="NO" <?php if(isset($single_parent)&& $single_parent == 'NO') echo 'selected'; ?>>NO</option>
-                        </select>
-                    </div>
-                  </div>
-             
-                
-                  <div class="col-sm-4">
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text bg-indigo">SENIOR</span>
-                      </div>
-                        <select name="senior" id="senior" class="form-control">
-                          <option value="">--SELECT SENIOR--</option>
-                          <option value="YES" <?php if(isset($senior)&& $senior == 'YES') echo 'selected'; ?>>YES</option>
-                          <option value="NO" <?php if(isset($senior)&& $senior == 'NO') echo 'selected'; ?>>NO</option>
-                        </select>
-                    </div>
-                  </div>
+
                   <div class="col-sm-12 text-center ">
                     <button type="submit" class="btn btn-flat bg-info px-3 elevation-3 text-white" name="submit" id="search"><i class="fas fa-filter"></i> FILTER</button>
                     <a href="report.php" class="btn btn-flat btn-danger px-3 elevation-3" id="reset"><i class="fas fa-undo"></i> RESET</a>
@@ -697,64 +614,13 @@ try{
                   </form>
                 </div>
                 <div class="form-group">
-                <a href="printReport.php?<?php 
-            
-            if(isset($_POST['submit'])){
-
-              $whereClauses = [];
-
-              $voters = $con->real_escape_string($_POST['voters']);
-              $age = $con->real_escape_string($_POST['age']);
-              $status = $con->real_escape_string($_POST['status']);
-              $pwd = $con->real_escape_string($_POST['pwd']);
-              $senior = $con->real_escape_string($_POST['senior']);
-      
-              $single_parent = $con->real_escape_string($_POST['single_parent']);
-
-
-              if(!empty($voters))
-                  $whereClauses[] = "voters=$voters";
-      
-              if(!empty($age))
-                $whereClauses[] = "age=$age";
-      
-              if(!empty($status))
-                $whereClauses[] = "status=$status";
-      
-              if(!empty($pwd))
-                $whereClauses[] = "pwd=$pwd";
-      
-              if(!empty($senior))
-                $whereClauses[] = "senior=$senior"; 
-
-                
-              if(!empty($single_parent))
-              $whereClauses[] = "single_parent=$single_parent"; 
-      
-              $wheres = '';
-      
-              if(count($whereClauses) > 0){
-                $wheres .= implode('&',$whereClauses);
-              }
-              echo $wheres;
-
-            }
-
-           
-            
-            ?>" target="_blank" class="btn btn-warning btn-flat elevation-5 px-3" ><i class="fas fa-print"></i> PRINT</a>
-       
                 </div>
                 <table class="table table-striped table-hover table-sm" id="tableReport">             
                   <thead>
                     <tr>
                       <th>Name</th>
                       <th>Age</th>
-                      <th>Pwd</th>
-                      <th>Single Parent</th>
-                      <th>Voters</th>
                       <th>Status</th>
-                      <th>Senior</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -840,19 +706,6 @@ try{
         this.value = this.value.replace(/^0/, "")
       }
     })
-
-
-  //   $(document).on('click','.print',function(){
- 
-
-  //   var printContents = $("#printReport").html();
-    
-  //     var originalContents = document.body.innerHTML;
-  //     document.body.innerHTML = printContents;
-  //     window.print();
-  //     document.body.innerHTML = originalContents;
-  //     window.location.reload();
-  // })
 
 
   })
