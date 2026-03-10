@@ -338,11 +338,41 @@ width: 100%;
           <br>
         
           <ul>
-              <li class="mx-5"><a href="myInfo.php" class="round green"><i class="fas fa-user" style="font-size: 50px;"></i><span class="round"><br> MY INFO</span></a></li>
-              <li class="mx-5"><a href="myAnnouncement.php" class="round red"><i class="fas fa-scroll" style="font-size: 50px;"></i><span class="round"><br> ANNNOUNCEMENT </span></a></li>
-              <li class="mx-5"><a href="myRecord.php" class="round yellow"><i class="fas fa-book-open" style="font-size: 50px;"></i> <span class="round"><br> INCIDENT</span></a></li>
-              <li class="mx-5"><a href="myPayment.php" class="round gray"><i class="fas fa-money-bill" style="font-size: 50px;"></i> <span class="round"><br> PAYMENT</span></a></li>
-            </ul> 
+              <li class="mx-5">
+<a href="myInfo.php" class="round green">
+<i class="fas fa-user" style="font-size: 50px;"></i>
+<span class="round"><br> MY INFO</span>
+</a>
+</li>
+
+<li class="mx-5">
+<a href="myAnnouncement.php" class="round red">
+<i class="fas fa-scroll" style="font-size: 50px;"></i>
+<span class="round"><br> ANNNOUNCEMENT</span>
+</a>
+</li>
+
+<li class="mx-5">
+<a href="myRecord.php" class="round yellow">
+<i class="fas fa-book-open" style="font-size: 50px;"></i>
+<span class="round"><br> INCIDENT</span>
+</a>
+</li>
+
+<li class="mx-5">
+<a href="myPayment.php" class="round gray">
+<i class="fas fa-money-bill" style="font-size: 50px;"></i>
+<span class="round"><br> PAYMENT</span>
+</a>
+</li>
+
+<li class="mx-5">
+<a href="officials.php" class="round green">
+<i class="fas fa-user-tie" style="font-size: 50px;"></i>
+<span class="round"><br> OFFICIALS</span>
+</a>
+</li>
+         </ul> 
 
       </div>
     </div>
