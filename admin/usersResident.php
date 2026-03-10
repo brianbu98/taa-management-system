@@ -409,7 +409,7 @@ input:checked + .slider .off{
      class="img-circle elevation-5 img-bordered-sm"
      alt="logo"
      style="width:70%;">
-      <span class="brand-text font-weight-light"></span>
+      <span class="brand-text font-weight-light">ADMIN</span>
     </a>
 
     <!-- Sidebar -->
