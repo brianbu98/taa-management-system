@@ -234,6 +234,15 @@ try{
 <body class="hold-transition dark-mode sidebar-mini   layout-footer-fixed">
 <div class="wrapper">
 
+<!-- Preloader -->
+<div class="preloader flex-column justify-content-center align-items-center">
+  <img class="animation__wobble"
+       src="../assets/dist/img/loader.gif"
+       alt="Loader"
+       height="70"
+       width="70">
+</div>
+
  
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-dark">
@@ -273,7 +282,7 @@ try{
             <!-- Message End -->
           </a>         
           <div class="dropdown-divider"></div>
-          <a href="../logout.php" class="dropdown-item dropdown-footer">LOGOUT</a>
+         <a href="../logout.php" class="dropdown-item dropdown-footer" id="logoutBtn">LOGOUT</a>
         </div>
       </li>
     </ul>
@@ -290,8 +299,7 @@ try{
          style="width:70%;"
          alt="Logo">
 </a>
-      <span class="brand-text font-weight-light"></span>
-    </a>
+     
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -1239,7 +1247,29 @@ $(document).on('click', '.sub_checkbox', function() {
 
 </script>
 
+<script>
+$(document).on("click","#logoutBtn",function(){
 
+  $(".preloader").show(); // show spinner
+
+  setTimeout(function(){
+      window.location.href="../logout.php";
+  },300);
+
+});
+</script>
+
+<script>
+$(document).on("click","a",function(){
+
+  var link = $(this).attr("href");
+
+  if(link && link !== "#" && !link.startsWith("javascript") && !link.includes("logout")){
+      $(".preloader").show();
+  }
+
+});
+</script>
 
 
 </body>
