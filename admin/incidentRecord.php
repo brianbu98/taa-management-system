@@ -498,14 +498,9 @@ try{
 
            
             <div class="card">
-              <div class="card-header border-transparent">
-                <h3 class="card-title">List of Records</h3>
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool bg-black btn-flat" id="addRecord" data-toggle="modal" data-target="#incidentRecordModal">
-                    <i class="fas fa-plus"></i> New Record
-                  </button>
-                </div>
-              </div>
+             <div class="card-header border-transparent">
+  <h3 class="card-title">List of Records</h3>
+</div>
               <!-- /.card-header -->
               <div class="card-body ">
                 <table class="table table-striped table-hover data-table" id="incidentRecordTable">           
