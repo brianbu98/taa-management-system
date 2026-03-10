@@ -31,6 +31,10 @@ try{
         $id = $row['id'];
     }
 
+    $logoSrc = (!empty($image_path))
+    ? '../' . ltrim($image_path, '/')
+    : '../assets/logo/logo.png';
+
     $table = '';
 
     if(isset($_POST['submit'])){
@@ -369,15 +373,12 @@ try{
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand">
     <!-- Brand Logo -->
-    <a href="#" class="brand-link text-center">
-    <?php 
-        if($image != '' || $image != null || !empty($image)){
-          echo '<img src="'.$image_path.'" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
-        }else{
-          echo ' <img src="../assets//logo//logo.png" id="logo_image" class="img-circle elevation-5 img-bordered-sm" alt="logo" style="width: 70%;">';
-        }
-
-      ?>
+  <a href="#" class="brand-link text-center">
+    <img src="<?= htmlspecialchars($logoSrc) ?>"
+         id="logo_image"
+         class="img-circle elevation-5 img-bordered-sm"
+         style="width:70%;">
+</a>
       <span class="brand-text font-weight-light"></span>
     </a>
 
@@ -388,15 +389,9 @@ try{
   <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
 <div class="image">
-
-<?php 
-if(!empty($image_path)){
-    echo '<img src="'.$image_path.'" class="img-circle elevation-5 img-bordered-sm" alt="Admin Logo">';
-}else{
-    echo '<img src="../assets/logo/logo.png" class="img-circle elevation-5 img-bordered-sm" alt="Admin Logo">';
-}
-?>
-
+<img src="<?= htmlspecialchars($logoSrc) ?>"
+     class="img-circle elevation-5 img-bordered-sm"
+     alt="Admin Logo">
 </div>
 
 <div class="info text-center">
