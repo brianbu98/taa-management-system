@@ -363,30 +363,6 @@ $logoSrc = (!empty($image_path))
                       </select>
                     </div>
                   </div>
-                  <div class="col-sm-6">
-                    <div class="form-group ">
-                      <label >Start</label>
-                      <input type="date" class="form-control" id="add_term_from" name="add_term_from">
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="form-group ">
-                      <label >End</label>
-                      <input type="date" class="form-control" id="add_term_to" name="add_term_to">
-                    </div>
-                  </div>
-                  <div class="col-sm-12">
-                    <div class="form-group">
-                      <label>Voters</label>
-                      <select name="add_voters" id="add_voters" class="form-control">
-                        <option value=""></option>
-                        <option value="NO">NO</option>
-                        <option value="YES">YES</option>
-                      </select>
-                    </div>
-                  </div>
-                  
-
                   <div class="col-sm-12">
                     <div class="form-group ">
                       <label >Date of Birth</label>
@@ -399,33 +375,6 @@ $logoSrc = (!empty($image_path))
                       <input type="text" class="form-control" id="add_birth_place" name="add_birth_place">
                     </div>
                   </div>
-                  <div class="col-sm-12">
-                    <div class="form-group">
-                      <label>PWD</label>
-                      <select name="add_pwd" id="add_pwd" class="form-control">
-                        <option value=""></option>
-                        <option value="NO">NO</option>
-                        <option value="YES">YES</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-sm-12" id="pwd_check" style="display: none;">
-                    <div class="form-group ">
-                      <label >TYPE OF PWD</label>
-                        <input type="text" class="form-control" id="add_pwd_info" name="add_pwd_info">
-                    </div>
-                  </div>
-                  <div class="col-sm-12">
-                    <div class="form-group ">
-                      <label >Single Parent</label>
-                      <select name="add_single_parent" id="add_single_parent" class="form-control">
-                        <option value=""></option>
-                        <option value="NO">NO</option>
-                        <option value="YES">YES</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
 
 
 
@@ -670,16 +619,6 @@ $logoSrc = (!empty($image_path))
 <script src="../assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <script>
   $(document).ready(function(){
-    $("#add_pwd").change(function(){
-      var pwd_check = $(this).val();
-
-      if(pwd_check == 'YES'){
-        $("#pwd_check").css('display', 'block');
-        $("#add_pwd_info").prop('disabled', false);
-      }else{
-        $("#pwd_check").css('display', 'none');
-        $("#add_pwd_info").prop('disabled', true);
-      }
 
     })
     
@@ -755,12 +694,6 @@ $logoSrc = (!empty($image_path))
           add_email_address:{
             email: true,
           },
-          add_term_from:{
-            required: true,
-          },
-          add_term_to:{
-            required: true,
-          },
           add_position:{
             required: true,
           },
@@ -768,18 +701,7 @@ $logoSrc = (!empty($image_path))
             required: true,
             minlength: 11,
           },
-          add_voters:{
-            required: true,
-          },
-          add_single_parent:{
-            required: true,
-          },
-          add_pwd:{
-            required: true,
-          },
-          add_pwd_info:{
-            required: true,
-          },
+         
         },
         messages: {
           add_first_name: {
@@ -798,12 +720,6 @@ $logoSrc = (!empty($image_path))
           },
           add_address: {
             required: "Please provide a Address",
-          },
-          add_term_from: {
-            required: "Please provide a Term Form",
-          },
-          add_term_to: {
-            required: "Please provide a Term To",
           },
           add_position: {
             required: "Please provide a Position",
@@ -874,7 +790,7 @@ $logoSrc = (!empty($image_path))
       }
     }  
 
-    $("#add_image").change(function(){
+    $("#add_image").change(functions
       displayImge(this);
     })
 
