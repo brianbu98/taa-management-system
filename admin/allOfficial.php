@@ -631,9 +631,6 @@ input:checked + .slider .off{
                     <th>Official Number</th>
                     <th>Name</th>
                     
-                    <th>PWD</th>
-                    <th>SINGLE PARENT</th>
-                    <th>Voters</th>
                     <th>
                       Status
                     </th>
@@ -966,43 +963,27 @@ function deleteOfficial(){
           },
         },
         order:[],
-        columnDefs:[
-          {
-            targets: 8,
-            orderable: false,
-            className: 'text-center',
-          },
-          {
-            targets: 0,
-            orderable: false,
-           
-          },
-          {
-            targets: 1,
-            orderable: false,
-            className: 'text-center text-lg text-uppercase',
-          },
-          {
-            targets: 5,
-            orderable: false,
-            className: 'text-center',
-           
-          },
-          {
-            targets: 6,
-            orderable: false,
-            className: 'text-center',
-           
-          },
-          {
-            targets: 7,
-            orderable: false,
-            className: 'text-center',
-           
-          },
-         
-          
-        ],
+       columnDefs:[
+{
+  targets: 0,
+  orderable:false
+},
+{
+  targets: 1,
+  orderable:false,
+  className:'text-center text-uppercase'
+},
+{
+  targets: 4,
+  orderable:false,
+  className:'text-center'
+},
+{
+  targets: 5,
+  orderable:false,
+  className:'text-center'
+}
+],
         dom: "<'row'<'col-sm-12 col-md-12'f><'col-sm-12 col-md-6'>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'d-flex flex-sm-row-reverse flex-column border-top '<'px-2 'p><'px-2'i> <'px-2'l> >",

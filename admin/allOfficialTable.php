@@ -29,18 +29,26 @@ try{
   image, official_information.image_path, position.color, position.position as official_position FROM official_status
   INNER JOIN official_information ON official_status.official_id = official_information.official_id
   INNER JOIN position ON official_status.position = position.position_id" .$where;
-  if($_REQUEST['search']['value']){
-    $sql .= " AND (first_name LIKE '%" . $_REQUEST['search']['value']. "%' ";
-    $sql .= " OR last_name LIKE '%" . $_REQUEST['search']['value']. "%' ";
-    $sql .= " OR official_information.official_id LIKE '%" . $_REQUEST['search']['value']. "%' ";
-    $sql .= " OR status LIKE '%" . $_REQUEST['search']['value']. "%' )";
-   
+ if(!empty($_REQUEST['search']['value'])){
+
+  $search = $_REQUEST['search']['value'];
+
+  if($where == ''){
+      $sql .= " WHERE ";
+  } else {
+      $sql .= " AND ";
   }
 
+  $sql .= "(official_information.first_name LIKE '%$search%' 
+            OR official_information.last_name LIKE '%$search%' 
+            OR official_information.official_id LIKE '%$search%' 
+            OR official_status.status LIKE '%$search%')";
+}
+
   $stmt = $con->prepare($sql) or die ($con->error);
-  $stmt->execute();
-  $stmt->get_result();
-  $totalData = $stmt->num_rows;
+$stmt->execute();
+$result = $stmt->get_result();
+$totalData = $result->num_rows;
 
 
 
