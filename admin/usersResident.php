@@ -343,6 +343,13 @@ input:checked + .slider .off{
   --webkit-box-shadow: inset 0 0 6px #6c757d; 
     background-color: #6c757d;
 }
+
+
+.admin-role{
+  font-weight: 700;   /* thicker */
+  color: #c0c0c0;     /* light gray */
+  letter-spacing: 1px;
+}
   </style>
  
  
@@ -425,7 +432,7 @@ input:checked + .slider .off{
   </div>
 
   <div class="info">
-    <a href="#" class="d-block text-white">
+   <a href="#" class="d-block admin-role">
       <?= strtoupper($user_type) ?>
     </a>
   </div>
