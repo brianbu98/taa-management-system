@@ -221,9 +221,6 @@ $logoSrc = (!empty($image_path))
               </li>
             </ul>
           </li>
-              </p>
-            </a>
-          </li>
           <li class="nav-item ">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user-shield"></i>
