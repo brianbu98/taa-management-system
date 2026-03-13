@@ -625,7 +625,161 @@ $logoSrc = (!empty($image_path))
 <script src="../assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <script>
 
+$(document).ready(function(){
 
+  // AUTO COMPUTE AGE
+  $("#add_birth_date").change(function(){
+
+    var birthDate = new Date($(this).val());
+    var today = new Date();
+
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    $("#add_age").val(age);
+
+  });
+
+
+  // FORM VALIDATION + AJAX
+  $.validator.setDefaults({
+    submitHandler: function (form) {
+
+      $.ajax({
+        url: 'addNewOfficial.php',
+        type: 'POST',
+        data: new FormData(form),
+        processData: false,
+        contentType: false,
+
+        success: function(data){
+
+          if(data === 'error'){
+
+            Swal.fire({
+              title: '<strong class="text-danger">ERROR</strong>',
+              icon: 'error',
+              html: '<b>Position Limited</b>',
+              width: '400px',
+              confirmButtonColor: '#6610f2',
+              allowOutsideClick: false
+            });
+
+          }else{
+
+            Swal.fire({
+              title: '<strong class="text-success">SUCCESS</strong>',
+              icon: 'success',
+              html: '<b>Added Official Successfully</b>',
+              width: '400px',
+              confirmButtonColor: '#6610f2',
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              timer: 2000
+            }).then(()=>{
+              window.location.reload();
+            });
+
+          }
+
+        },
+
+        error: function(xhr){
+
+          console.log(xhr.responseText);
+
+          Swal.fire({
+            title: 'Server Error',
+            html: xhr.responseText,
+            icon: 'error',
+            confirmButtonColor: '#6610f2'
+          });
+
+        }
+
+      });
+
+    }
+  });
+
+
+  // VALIDATION RULES
+  $('#newOfficialForm').validate({
+    ignore: "",
+    rules: {
+      add_first_name: {
+        required: true,
+        minlength: 2
+      },
+      add_last_name: {
+        required: true,
+        minlength: 2
+      },
+      add_birth_date: {
+        required: true
+      },
+      add_address:{
+        required: true
+      },
+      add_email_address:{
+        email: true
+      },
+      add_position:{
+        required: true
+      },
+      add_contact_number:{
+        required: true,
+        minlength: 11
+      }
+    },
+
+    messages: {
+      add_first_name: {
+        required: "Please provide a First Name",
+        minlength: "First Name must be at least 2 characters long"
+      },
+      add_last_name: {
+        required: "Please provide a Last Name",
+        minlength: "Last Name must be at least 2 characters long"
+      },
+      add_birth_date: {
+        required: "Please provide a Birth Date"
+      },
+      add_address: {
+        required: "Please provide an Address"
+      },
+      add_position: {
+        required: "Please provide a Position"
+      },
+      add_email_address:{
+        email:"Enter Valid Email!"
+      },
+      add_contact_number:{
+        required: "Please provide a Contact Number",
+        minlength: "Input Exact Contact Number"
+      }
+    },
+
+    errorElement: 'span',
+
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+
+    highlight: function (element) {
+      $(element).addClass('is-invalid');
+    },
+
+    unhighlight: function (element) {
+      $(element).removeClass('is-invalid');
+    }
+
+  });
    
 
     $("#add_first_name, #add_last_name").keyup(function(){
