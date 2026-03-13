@@ -23,7 +23,7 @@ try{
     $last_name_user = $row_user['last_name'];
 
   
-    $add_position = $_POST['add_position'] ?? '';
+    $add_position = intval($_POST['add_position'] ?? 0);
     $add_first_name = $_POST['add_first_name'] ?? '';
     $add_middle_name = $_POST['add_middle_name'] ?? '';
     $add_last_name = $_POST['add_last_name'] ?? '';
@@ -76,14 +76,14 @@ if(!move_uploaded_file($_FILES['add_image']['tmp_name'],$new_image_path)){
 
 $sql_position = "SELECT COUNT(position) AS count_position  FROM official_status WHERE position = ?";
 $stmt_position = $con->prepare($sql_position) or die ($con->error);
-$stmt_position->bind_param('s',$add_position);
+$stmt_position->bind_param('i',$add_position);
 $stmt_position->execute();
 $result_position = $stmt_position->get_result();
 $row_position = $result_position->fetch_assoc();
 
 $sql_limit_position = "SELECT position_limit, position FROM position WHERE position_id = ?";
 $stmt_position_limit = $con->prepare($sql_limit_position) or die ($con->error);
-$stmt_position_limit->bind_param('s',$add_position);
+$stmt_position_limit->bind_param('i',$add_position);
 $stmt_position_limit->execute();
 $result_position_limit = $stmt_position_limit->get_result();
 $row_position_limit = $result_position_limit->fetch_assoc();
