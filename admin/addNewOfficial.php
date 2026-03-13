@@ -186,7 +186,7 @@ if(!$stmt){
   
   $sql_official_status = "INSERT INTO `official_status` (`official_id`, `status`, `position`,`date_added`) VALUES (?,?,?,?)";
   $stmt_official_status = $con->prepare($sql_official_status) or die ($con->error);
-  $stmt_official_status->bind_param('ssis',$official_id,$add_status,$add_position,$date_added);
+  $stmt_official_status->bind_param('ssis', $official_id, $add_status, $add_position, $date_added);
   $stmt_official_status->execute();
   $stmt_official_status->close();
 
