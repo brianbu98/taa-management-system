@@ -627,7 +627,7 @@ $logoSrc = (!empty($image_path))
 
 $(document).ready(function(){
 
-    $("#add_birth_date").change(function(){
+  $("#add_birth_date").change(function(){
 
     var birthDate = new Date($(this).val());
     var today = new Date();
@@ -636,61 +636,75 @@ $(document).ready(function(){
     var m = today.getMonth() - birthDate.getMonth();
 
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
+      age--;
     }
 
     $("#add_age").val(age);
 
-});
-  
-        $.validator.setDefaults({
-          submitHandler: function (form) {
-            $.ajax({
-              url: 'addNewOfficial.php',
-              type: 'POST',
-              data: new FormData(form),
-              processData: false,
-              contentType: false,
-              success:function(data){
-                if(data == 'error'){
+  });
 
-                    Swal.fire({
-                      title: '<strong class="text-danger">ERROR</strong>',
-                      type: 'error',
-                      html: '<b>Position Limited<b>',
-                      width: '400px',
-                      confirmButtonColor: '#6610f2',
-                      allowOutsideClick: false,
-                    });
 
-                }else{
-                  Swal.fire({
-                    title: '<strong class="text-success">SUCCESS</strong>',
-                    type: 'success',
-                    html: '<b>Added Official has Successfully<b>',
-                    width: '400px',
-                    confirmButtonColor: '#6610f2',
-                    allowOutsideClick: false,
-                    showConfirmButton: false,
-                    timer: 2000,
-                  }).then(()=>{
-                    window.location.reload();
-                  })
+  $.validator.setDefaults({
+    submitHandler: function (form) {
 
-                }
-                
-              }
-            }).fail(function(){
-              Swal.fire({
-                title: '<strong class="text-danger">Ooppss..</strong>',
-                type: 'error',
-                html: '<b>Something went wrong with ajax !<b>',
-                width: '400px',
-                confirmButtonColor: '#6610f2',
-              })
-            })
+      $.ajax({
+        url: 'addNewOfficial.php',
+        type: 'POST',
+        data: new FormData(form),
+        processData: false,
+        contentType: false,
+
+        success: function(data){
+
+          if(data === 'error'){
+
+            Swal.fire({
+              title: '<strong class="text-danger">ERROR</strong>',
+              icon: 'error',
+              html: '<b>Position Limited</b>',
+              width: '400px',
+              confirmButtonColor: '#6610f2',
+              allowOutsideClick: false
+            });
+
+          }else{
+
+            Swal.fire({
+              title: '<strong class="text-success">SUCCESS</strong>',
+              icon: 'success',
+              html: '<b>Added Official Successfully</b>',
+              width: '400px',
+              confirmButtonColor: '#6610f2',
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              timer: 2000
+            }).then(()=>{
+              window.location.reload();
+            });
+
           }
-        });
+
+        },
+
+        error: function(xhr){
+
+          console.log(xhr.responseText);
+
+          Swal.fire({
+            title: 'Server Error',
+            html: xhr.responseText,
+            icon: 'error',
+            confirmButtonColor: '#6610f2'
+          });
+
+        }
+
+      });
+
+    }
+  });
+
+});
       $('#newOfficialForm').validate({
         ignore: "",
         rules: {
