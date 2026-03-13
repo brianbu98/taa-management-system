@@ -374,8 +374,7 @@ $logoSrc = (!empty($image_path))
                       <div class="col-sm-12">
                   <div class="form-group">
                     <label>Age</label>
-                    <input type="number" class="form-control" id="add_age" name="add_age">
-                    </div>
+                    <input type="number" class<input type="number" class="form-control" id="add_age" name="add_age" readonly>
                   </div>
 
                   <div class="col-sm-12">
@@ -629,6 +628,22 @@ $logoSrc = (!empty($image_path))
 <script>
 
 $(document).ready(function(){
+
+    $("#add_birth_date").change(function(){
+
+    var birthDate = new Date($(this).val());
+    var today = new Date();
+
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+
+    $("#add_age").val(age);
+
+});
   
         $.validator.setDefaults({
           submitHandler: function (form) {
