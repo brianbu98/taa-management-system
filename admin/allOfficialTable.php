@@ -2,145 +2,192 @@
 
 include_once '../connection.php';
 
-
 try{
 
+$position = $con->real_escape_string($_REQUEST['position'] ?? '');
 
-  $position = $con->real_escape_string($_REQUEST['position']);
+$where = "";
 
-  $whereClause = [];
-
-  if(!empty($position))
-    $whereClause[] = "official_status.position='".$position."'";
-
-    $where = '';
-
-    if(count($whereClause) > 0)
-    $where .= ' WHERE ' .implode(' AND ', $whereClause);
-
-
-
-
-
-
-
-  
-  $sql = "SELECT  official_status.position, official_status.status, official_information.official_id, official_information.first_name, official_information.middle_name, official_information.last_name, official_information.first_name,
-  image, official_information.image_path, position.color, position.position as official_position FROM official_status
-  INNER JOIN official_information ON official_status.official_id = official_information.official_id
-  INNER JOIN position ON official_status.position = position.position_id" .$where;
- if(!empty($_REQUEST['search']['value'])){
-
-  $search = $_REQUEST['search']['value'];
-
-  if($where == ''){
-      $sql .= " WHERE ";
-  } else {
-      $sql .= " AND ";
-  }
-
-  $sql .= "(official_information.first_name LIKE '%$search%' 
-            OR official_information.last_name LIKE '%$search%' 
-            OR official_information.official_id LIKE '%$search%' 
-            OR official_status.status LIKE '%$search%')";
+if(!empty($position)){
+    $where = " WHERE official_status.position = '$position' ";
 }
 
-  $stmt = $con->prepare($sql) or die ($con->error);
+
+/* BASE QUERY */
+
+$sql = "SELECT
+official_status.position,
+official_status.status,
+official_information.official_id,
+official_information.first_name,
+official_information.middle_name,
+official_information.last_name,
+official_information.image,
+official_information.image_path,
+position.color,
+position.position AS official_position
+
+FROM official_status
+
+INNER JOIN official_information
+ON official_status.official_id = official_information.official_id
+
+INNER JOIN position
+ON official_status.position = position.position_id
+
+".$where;
+
+
+/* SEARCH */
+
+if(!empty($_REQUEST['search']['value'])){
+
+$search = $con->real_escape_string($_REQUEST['search']['value']);
+
+if($where == ""){
+$sql .= " WHERE ";
+}else{
+$sql .= " AND ";
+}
+
+$sql .= "(official_information.first_name LIKE '%$search%' 
+OR official_information.last_name LIKE '%$search%' 
+OR official_information.official_id LIKE '%$search%' 
+OR official_status.status LIKE '%$search%')";
+}
+
+
+/* GET TOTAL */
+
+$stmt = $con->prepare($sql);
 $stmt->execute();
 $result = $stmt->get_result();
 $totalData = $result->num_rows;
 
 
+/* ORDER */
 
-
-  if(isset($_REQUEST['order'])){
-    $sql .= ' ORDER BY '.
-    $_REQUEST['order']['0']['column'].
-    ' '.
-    $_REQUEST['order']['0']['dir'].
-    ' ';
-  }else{
-    $sql .= ' ORDER BY position ASC ';
-  }
-
-  if($_REQUEST['length'] != -1){
-    $sql .= ' LIMIT '.
-    $_REQUEST['start'].
-    ' ,'.
-    $_REQUEST['length'].
-    ' ';
-  }
-
-  $stmt = $con->prepare($sql) or die ($con->error);
-  $stmt->execute();
-  
-  $result = $stmt->get_result();
-  $data = [];
-
-
-  while($row = $result->fetch_assoc()){
-    if($row['image'] != '' || $row['image'] != null || !empty($row['image'])){
-      $image = '<span style="cursor: pointer;" class="pop"><img src="'.$row['image_path'].'" alt="residence_image" class="img-circle" width="40"></span>';
-    }else{
-      $image = '<span style="cursor: pointer;" class="pop"><img src="../assets/dist/img/blank_image.png" alt="residence_image" class="img-circle"  width="40"></span>';
-    }
-
-
-  
-    if($row['middle_name'] != ''){
-      $middle_name = ucfirst($row['middle_name'])[0].'.';
-    }else{
-      $middle_name = '';
-    }
-    
-
-    if($row['status'] == 'ACTIVE'){
-      $status = '<label class="switch">
-                      <input type="checkbox" class="editStatus" data-status="ACTIVE"  id="'.$row['official_id'].'"  checked>
-                    <div class="slider round">
-                      <span class="on ">ACTIVE</span>
-                      <span class="off ">INACTIVE</span>
-                    </div>
-                </label>';
-  }else{
-      $status = '<label class="switch">
-                      <input type="checkbox" class="editStatus" id="'.$row['official_id'].'" data-status="INACTIVE">
-                    <div class="slider round">
-                      <span class="off ">INACTIVE</span>
-                      <span class="on ">ACTIVE</span>
-                    </div>
-                </label> ';
-  }
-  
-    $subdata = [];
-    $subdata[] = $image;
-    $subdata[] = '<span class="badge" style="background-color: '.$row['color'].'">'.$row['official_position'].'</span>';
-    $subdata[] = $row['official_id'];
-    $subdata[] =  ucfirst($row['first_name']).' '. $middle_name .' '. ucfirst($row['last_name']); 
-  
-    $subdata[] = $status;
-    $subdata[] = '<a href="viewOfficial.php?request='.$row['official_id'].'" style="cursor: pointer;  color: yellow;  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" class="fa fa-user-edit text-lg px-3 "></a>
-    <i style="cursor: pointer;  color: red;  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" class="fa fa-times text-lg px-2 deleteOfficial" id="'.$row['official_id'].'"></i>';
-    $data[] = $subdata;
-  }
-
-
-  $json_data = [
-    'draw' => intval($_REQUEST['draw']),
-    'recordsTotal' => intval($totalData),
-    'recordsFiltered' => intval($totalData),
-    'data' => $data,
-    'total' => number_format($totalData),
-  ];
-
-  echo json_encode($json_data);
-
-
-}catch(Exception $e){
-  echo $e->getMessage();
+if(isset($_REQUEST['order'])){
+$sql .= " ORDER BY official_status.position ".$_REQUEST['order']['0']['dir']." ";
+}else{
+$sql .= " ORDER BY official_status.position ASC ";
 }
 
 
+/* LIMIT */
 
+if($_REQUEST['length'] != -1){
+$sql .= " LIMIT ".$_REQUEST['start']." ,".$_REQUEST['length'];
+}
+
+
+/* EXECUTE FINAL QUERY */
+
+$stmt = $con->prepare($sql);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$data = [];
+
+
+/* LOOP DATA */
+
+while($row = $result->fetch_assoc()){
+
+/* IMAGE */
+
+if(!empty($row['image'])){
+$image = '<span style="cursor:pointer;" class="pop">
+<img src="'.$row['image_path'].'" class="img-circle" width="40">
+</span>';
+}else{
+$image = '<span style="cursor:pointer;" class="pop">
+<img src="../assets/dist/img/blank_image.png" class="img-circle" width="40">
+</span>';
+}
+
+
+/* MIDDLE INITIAL */
+
+if(!empty($row['middle_name'])){
+$middle_name = strtoupper(substr($row['middle_name'],0,1)).'.';
+}else{
+$middle_name = '';
+}
+
+
+/* STATUS SWITCH */
+
+if($row['status'] == 'ACTIVE'){
+
+$status = '<label class="switch">
+<input type="checkbox" class="editStatus" data-status="ACTIVE" id="'.$row['official_id'].'" checked>
+<div class="slider round">
+<span class="on">ACTIVE</span>
+<span class="off">INACTIVE</span>
+</div>
+</label>';
+
+}else{
+
+$status = '<label class="switch">
+<input type="checkbox" class="editStatus" data-status="INACTIVE" id="'.$row['official_id'].'">
+<div class="slider round">
+<span class="off">INACTIVE</span>
+<span class="on">ACTIVE</span>
+</div>
+</label>';
+
+}
+
+
+/* TABLE ROW */
+
+$subdata = [];
+
+$subdata[] = $image;
+
+$subdata[] = '<span class="badge" style="background-color: '.$row['color'].'">'.$row['official_position'].'</span>';
+
+$subdata[] = $row['official_id'];
+
+$subdata[] = ucfirst($row['first_name']).' '.$middle_name.' '.ucfirst($row['last_name']);
+
+$subdata[] = $status;
+
+$subdata[] = '
+<a href="viewOfficial.php?request='.$row['official_id'].'" 
+style="cursor:pointer;color:yellow;text-shadow:-1px 0 black,0 1px black,1px 0 black,0 -1px black;" 
+class="fa fa-user-edit text-lg px-3"></a>
+
+<i style="cursor:pointer;color:red;text-shadow:-1px 0 black,0 1px black,1px 0 black,0 -1px black;" 
+class="fa fa-times text-lg px-2 deleteOfficial" 
+id="'.$row['official_id'].'"></i>
+';
+
+$data[] = $subdata;
+
+}
+
+
+/* JSON OUTPUT */
+
+$json_data = [
+
+"draw" => intval($_REQUEST['draw']),
+"recordsTotal" => intval($totalData),
+"recordsFiltered" => intval($totalData),
+"data" => $data,
+"total" => number_format($totalData)
+
+];
+
+echo json_encode($json_data);
+
+}catch(Exception $e){
+
+echo $e->getMessage();
+
+}
 
 ?>
