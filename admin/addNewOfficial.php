@@ -154,7 +154,7 @@ if(!$stmt){
     die("Prepare failed: " . $con->error);
 }
   $stmt->bind_param(
-'ssssssssisssssssssssssssss',
+'ssssssssssssssssssssssssss',
 $official_id,
 $add_first_name,
 $add_middle_name,
