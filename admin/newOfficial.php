@@ -374,7 +374,7 @@ $logoSrc = (!empty($image_path))
                       <div class="col-sm-12">
                   <div class="form-group">
                     <label>Age</label>
-                    <input type="number" class<input type="number" class="form-control" id="add_age" name="add_age" readonly>
+                   <input type="number" class="form-control" id="add_age" name="add_age" readonly>
                   </div>
 
                   <div class="col-sm-12">
