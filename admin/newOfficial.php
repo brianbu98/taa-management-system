@@ -140,10 +140,10 @@ $logoSrc = (!empty($image_path))
          class="img-circle elevation-5 img-bordered-sm"
          alt="logo"
          style="width:70%;">
-</a>
       <span class="brand-text font-weight-light"></span>
-    </a>
 
+</a>
+    
     <!-- Sidebar -->
     <div class="sidebar">
     
@@ -802,8 +802,6 @@ $(document).ready(function(){
     });
 
 
-    
-  })
 </script>
 
 <script>
