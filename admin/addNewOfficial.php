@@ -151,7 +151,7 @@ $date_added = date("m/d/Y h:i A");
 if(!$stmt){
     die("Prepare failed: " . $con->error);
 }
-  $stmt->bind_param('ssssssssssssssssssssssssss',
+  $stmt->bind_param('sssssssisissssssssssssssss',
     $official_id,
     $add_first_name,
     $add_middle_name,
