@@ -627,11 +627,9 @@ $logoSrc = (!empty($image_path))
 <script src="../assets/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
 <script src="../assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <script>
-  $(document).ready(function(){
 
-    })
-    
-    $(function () {
+$(document).ready(function(){
+  
         $.validator.setDefaults({
           submitHandler: function (form) {
             $.ajax({
