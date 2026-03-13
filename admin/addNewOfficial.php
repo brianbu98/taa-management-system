@@ -37,7 +37,7 @@ $add_email_address = $con->real_escape_string($_POST['add_email_address']);
 $add_address = $con->real_escape_string($_POST['add_address']);
 $add_birth_date = $con->real_escape_string($_POST['add_birth_date']);
 $add_birth_place = $con->real_escape_string($_POST['add_birth_place']);
-$add_province=-] = $con->real_escape_string($_POST['add_province']);
+$add_province = $con->real_escape_string($_POST['add_province']);
 $add_zip = $con->real_escape_string($_POST['add_zip']);
 $add_city = $con->real_escape_string($_POST['add_city']);
 $add_house_number = $con->real_escape_string($_POST['add_house_number']);
