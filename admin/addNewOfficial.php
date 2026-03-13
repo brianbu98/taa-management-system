@@ -1,5 +1,9 @@
 <?php 
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+
 include_once '../connection.php';
 session_start();
 
@@ -58,8 +62,9 @@ if(!empty($add_image) && isset($_FILES['add_image']['tmp_name'])){
   $type = pathinfo($add_image, PATHINFO_EXTENSION);
   $new_image_name = uniqid(rand(), true) . '.' . $type;
   $new_image_path = '../assets/dist/img/' . $new_image_name;
-
-  move_uploaded_file($_FILES['add_image']['tmp_name'],$new_image_path);
+if(!move_uploaded_file($_FILES['add_image']['tmp_name'],$new_image_path)){
+    die("Image upload failed");
+}
 
 }else{
 
@@ -82,6 +87,10 @@ $stmt_position_limit->bind_param('s',$add_position);
 $stmt_position_limit->execute();
 $result_position_limit = $stmt_position_limit->get_result();
 $row_position_limit = $result_position_limit->fetch_assoc();
+
+if(!$row_position_limit){
+    die("Position not found in database");
+}
 
 if($row_position['count_position'] >= $row_position_limit['position_limit']){
   exit('error');
@@ -137,7 +146,11 @@ $date_added = date("m/d/Y h:i A");
    `image`, 
    `image_path`
    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-  $stmt = $con->prepare($sql) or die ($con->error);
+ $stmt = $con->prepare($sql);
+
+if(!$stmt){
+    die("Prepare failed: " . $con->error);
+}
   $stmt->bind_param('ssssssssssssssssssssssssss',
     $official_id,
     $add_first_name,
@@ -166,7 +179,9 @@ $date_added = date("m/d/Y h:i A");
     $new_image_name,
     $new_image_path
   );
-  $stmt->execute();
+ if(!$stmt->execute()){
+    die("Execute failed: " . $stmt->error);
+}
   $stmt->close();
   
   $sql_official_status = "INSERT INTO `official_status` (`official_id`, `status`, `position`,`date_added`) VALUES (?,?,?,?)";
