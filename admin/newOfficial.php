@@ -828,6 +828,7 @@ $(document).ready(function(){
       displayImge(this);
     });
 
+    });
 
 </script>
 
