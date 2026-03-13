@@ -101,14 +101,6 @@ $official_id = $date->format("mdYHisv").$add_age_date;
 $date_added = date("m/d/Y h:i A");
 
 
-if($add_age_date >= '60'){
-  $senior = 'YES';
-}else{
-  $senior = 'NO';
-}
-
-
-
   $sql = "INSERT INTO `official_information`
   (`official_id`,
    `first_name`, 
@@ -190,6 +182,9 @@ if($add_age_date >= '60'){
   $stmt_activity_log->execute();
   $stmt_activity_log->close();
   
+/* RETURN SUCCESS TO AJAX */
+echo 'success';
+exit;
 
  
 

@@ -108,7 +108,7 @@ $logoSrc = (!empty($image_path))
             <!-- Message Start -->
             <div class="media">
               <?php 
-                if(!empty($image)){
+                if(!empty($user_image)){
                   echo '<img src="../assets/dist/img/'.$user_image.'" class="img-size-50 mr-3 img-circle" alt="User Image">';
                 }else{
                   echo '<img src="../assets/dist/img/image.png" class="img-size-50 mr-3 img-circle" alt="User Image">';
@@ -367,8 +367,17 @@ $logoSrc = (!empty($image_path))
                     <div class="form-group ">
                       <label >Date of Birth</label>
                       <input type="date" class="form-control" id="add_birth_date" name="add_birth_date">
+
+                      </div>
+                    </div>
+
+                      <div class="col-sm-12">
+                  <div class="form-group">
+                    <label>Age</label>
+                    <input type="number" class="form-control" id="add_age" name="add_age">
                     </div>
                   </div>
+
                   <div class="col-sm-12">
                     <div class="form-group ">
                       <label >Place of Birth</label>
@@ -790,9 +799,9 @@ $logoSrc = (!empty($image_path))
       }
     }  
 
-    $("#add_image").change(functions
+    $("#add_image").change(function(){
       displayImge(this);
-    })
+    });
 
 
     
