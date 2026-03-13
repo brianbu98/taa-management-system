@@ -154,7 +154,7 @@ if(!$stmt){
     die("Prepare failed: " . $con->error);
 }
   $stmt->bind_param(
-'sssssssssssssssssssssssssss',
+'ssssssssssssssssssssssssss',
 $official_id,
 $add_first_name,
 $add_middle_name,
@@ -189,7 +189,7 @@ $add_city
   
   $sql_official_status = "INSERT INTO `official_status` (`official_id`, `status`, `position`,`date_added`) VALUES (?,?,?,?)";
   $stmt_official_status = $con->prepare($sql_official_status) or die ($con->error);
-  $stmt_official_status->bind_param('ssis', $official_id, $add_status, $add_position, $date_added);
+  $stmt_official_status->bind_param('ssss', $official_id, $add_status, $add_position, $date_added);
   $stmt_official_status->execute();
   $stmt_official_status->close();
 
