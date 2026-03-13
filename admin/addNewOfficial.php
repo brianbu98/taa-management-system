@@ -182,9 +182,9 @@ $add_province,
 $add_zip,
 $add_city
 );
- if(!$stmt->execute()){
-    die("Execute failed: " . $stmt->error);
-}
+ $stmt->execute();
+echo $stmt->error;
+exit;
   $stmt->close();
   
   $sql_official_status = "INSERT INTO `official_status` (`official_id`, `status`, `position`,`date_added`) VALUES (?,?,?,?)";
