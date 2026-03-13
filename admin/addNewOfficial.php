@@ -118,67 +118,70 @@ $official_id = $date->format("mdYHisv").$add_age_date;
 $date_added = date("m/d/Y h:i A");
 
 
-  $sql = "INSERT INTO `official_information`
-  (`official_id`,
-   `first_name`, 
-   `middle_name`, 
-   `last_name`, 
-   `gender`,
-   `suffix`, 
-   `birth_date`, 
-   `birth_place`, 
-   `age`, 
-   `civil_status`, 
-   `religion`, 
-   `nationality`, 
-   `province`, 
-   `zip`, 
-   `city`, 
-   `house_number`, 
-   `street`, 
-   `address`, 
-   `email_address`, 
-   `contact_number`, 
-   `fathers_name`, 
-   `mothers_name`, 
-   `guardian`, 
-   `guardian_contact`, 
-   `image`, 
-   `image_path`
-   ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+  $sql = "INSERT INTO official_information
+(
+official_id,
+first_name,
+middle_name,
+last_name,
+suffix,
+birth_date,
+birth_place,
+gender,
+age,
+civil_status,
+religion,
+nationality,
+house_number,
+street,
+address,
+email_address,
+contact_number,
+fathers_name,
+mothers_name,
+guardian,
+guardian_contact,
+image,
+image_path,
+province,
+zip,
+city
+)
+VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
  $stmt = $con->prepare($sql);
 
 if(!$stmt){
     die("Prepare failed: " . $con->error);
 }
-  $stmt->bind_param('sssssssisissssssssssssssss',
-    $official_id,
-    $add_first_name,
-    $add_middle_name,
-    $add_last_name,
-    $add_gender,
-    $add_suffix,
-    $add_birth_date,
-    $add_birth_place,
-    $add_age_date,
-    $add_civil_status,
-    $add_religion,
-    $add_nationality,
-    $add_province,
-    $add_zip,
-    $add_city,
-    $add_house_number,
-    $add_street,
-    $add_address,
-    $add_email_address,
-    $add_contact_number,
-    $add_fathers_name,
-    $add_mothers_name,
-    $add_guardian,
-    $add_guardian_contact,
-    $new_image_name,
-    $new_image_path
-  );
+  $stmt->bind_param(
+'ssssssssisssssssssssssssss',
+$official_id,
+$add_first_name,
+$add_middle_name,
+$add_last_name,
+$add_suffix,
+$add_birth_date,
+$add_birth_place,
+$add_gender,
+$add_age_date,
+$add_civil_status,
+$add_religion,
+$add_nationality,
+$add_house_number,
+$add_street,
+$add_address,
+$add_email_address,
+$add_contact_number,
+$add_fathers_name,
+$add_mothers_name,
+$add_guardian,
+$add_guardian_contact,
+$new_image_name,
+$new_image_path,
+$add_province,
+$add_zip,
+$add_city
+);
  if(!$stmt->execute()){
     die("Execute failed: " . $stmt->error);
 }
