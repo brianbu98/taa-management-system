@@ -368,18 +368,19 @@ $logoSrc = (!empty($image_path))
                       </div>
                     </div>
 
-                      <div class="col-sm-12">
-                  <div class="form-group">
-                    <label>Age</label>
-                   <input type="number" class="form-control" id="add_age" name="add_age" readonly>
-                  </div>
-
-                  <div class="col-sm-12">
-                    <div class="form-group ">
-                      <label >Place of Birth</label>
-                      <input type="text" class="form-control" id="add_birth_place" name="add_birth_place">
+                     <div class="col-sm-12">
+                      <div class="form-group">
+                        <label>Age</label>
+                        <input type="number" class="form-control" id="add_age" name="add_age" readonly>
+                      </div>
                     </div>
-                  </div>
+
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label>Place of Birth</label>
+                        <input type="text" class="form-control" id="add_birth_place" name="add_birth_place">
+                      </div>
+                    </div>
                
                 </div>
 
@@ -701,9 +702,6 @@ $(document).ready(function(){
             required: true,
             minlength: 2
           },
-          add_age: {
-            required: true,
-          },
           add_birth_date: {
             required: true,
           },
@@ -730,9 +728,6 @@ $(document).ready(function(){
           add_last_name: {
             required: "Please provide a Last Name",
             minlength: "Last Name must be at least 2 characters long"
-          },
-          add_age: {
-            required: "Please provide a age",
           },
           add_birth_date: {
             required: "Please provide a Birth Date",
