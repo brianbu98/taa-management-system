@@ -212,18 +212,29 @@ $stmt->close();
 /* INSERT OFFICIAL STATUS */
 
 $sql_official_status = "INSERT INTO official_status
-(official_id,status,position,date_added)
-VALUES (?,?,?,?)";
+(official_id, status, position, date_added)
+VALUES (?, ?, ?, ?)";
 
 $stmt_official_status = $con->prepare($sql_official_status);
-$stmt_official_status->bind_param('ssis',$official_id,$add_status,$add_position,$date_added);
 
-if(!$stmt_official_status->execute()){
-    die("OFFICIAL STATUS INSERT ERROR: " . $stmt_official_status->error);
+if(!$stmt_official_status){
+    die("Prepare failed: " . $con->error);
 }
 
-$stmt_official_status->close();
+$stmt_official_status->bind_param(
+    'ssis',
+    $official_id,
+    $add_status,
+    $add_position,
+    $date_added
+);
 
+if(!$stmt_official_status->execute()){
+    die("Execute failed: " . $stmt_official_status->error);
+}
+
+echo "STATUS INSERTED"; // temporary debug
+exit;
 
 /* ACTIVITY LOG */
 
