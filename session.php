@@ -39,7 +39,6 @@ switch ($env) {
         break;
 
     case 'testing':
-        // Use empty unless you explicitly want cross-subdomain sessions
         ini_set('session.cookie_domain', '');
         ini_set('session.cookie_secure', $is_https ? 1 : 0);
         break;
@@ -66,14 +65,23 @@ $timeout_secretary = 1200; // 20 minutes
 $timeout_resident = 1800;  // 30 minutes
 
 /* ======================================================
-   PREVENT REDIRECT LOOP (ALLOW LOGIN PAGE)
+   CURRENT PAGE
    ====================================================== */
 $current_page = basename($_SERVER['PHP_SELF']);
 
 /* ======================================================
+   ✅ ALLOW PUBLIC PAGES (IMPORTANT FIX)
+   ====================================================== */
+$public_pages = [
+    'login.php',
+    'loginForm.php',   // 🔥 CRITICAL (AJAX LOGIN)
+    'forgot.php'
+];
+
+/* ======================================================
    CHECK IF LOGGED IN
    ====================================================== */
-if ($current_page !== 'login.php' && !isset($_SESSION['user_id'])) {
+if (!in_array($current_page, $public_pages) && !isset($_SESSION['user_id'])) {
     header("Location: /login.php");
     exit();
 }
@@ -81,7 +89,7 @@ if ($current_page !== 'login.php' && !isset($_SESSION['user_id'])) {
 /* ======================================================
    SET TIMEOUT BASED ON ROLE
    ====================================================== */
-$user_type = $_SESSION['user_type'] ?? 'resident';
+$user_type = strtolower($_SESSION['user_type'] ?? 'resident');
 
 switch ($user_type) {
     case 'admin':
@@ -126,4 +134,3 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 
    UPDATE LAST ACTIVITY
    ====================================================== */
 $_SESSION['LAST_ACTIVITY'] = time();
-?>
