@@ -114,12 +114,21 @@ try{
           $middle_name = $row_report['middle_name'];
         }
 
-      $table .= '<tr>
-      <td>'.ucfirst($row_report['last_name']).' '.ucfirst($row_report['first_name']).'  '.$middle_name.' </td>
-              <td>'.$row_report['age'].'</td>
-              <td>'.$row_report['status'].'</td>
-              <td>'.htmlspecialchars($row_report['report_remarks'] ?? '-').'</td>
-          </tr>';
+     $table .= '<tr>
+<td>'.ucfirst($row_report['last_name']).' '.ucfirst($row_report['first_name']).' '.$middle_name.'</td>
+<td>'.$row_report['age'].'</td>
+<td>'.$row_report['status'].'</td>
+<td>'.htmlspecialchars($row_report['report_remarks'] ?? '-').'</td>
+
+<td>
+<button class="btn btn-sm btn-info editRemarkBtn" 
+data-id="'.$row_report['id'].'" 
+data-remark="'.htmlspecialchars($row_report['report_remarks']).'">
+Edit
+</button>
+</td>
+
+</tr>';
       }
 
 
@@ -593,6 +602,7 @@ try{
                       <th>Age</th>
                       <th>Status</th>
                       <th>Remarks</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -668,12 +678,60 @@ try{
       if (/^0/.test(this.value)) {
         this.value = this.value.replace(/^0/, "")
       }
-    })
+    });
 
+    
+    // =========================
+    // STEP 7 - REMARKS FUNCTION
+    // =========================
 
+    // OPEN MODAL
+    $(document).on('click', '.editRemarkBtn', function(){
+        let id = $(this).data('id');
+        let remark = $(this).data('remark');
+
+        $('#res_id').val(id);
+        $('#remark_text').val(remark);
+
+        $('#remarkModal').modal('show');
+    });
+
+    // SAVE REMARK
+    $('#saveRemark').click(function(){
+        let id = $('#res_id').val();
+        let remark = $('#remark_text').val();
+
+        $.post('save_report_remark.php', {
+            id: id,
+            remark: remark
+        }, function(res){
+            alert(res);
+            location.reload();
+        });
+    });
+
+  });
+</script>
 
   })
 </script>
+
+<div class="modal fade" id="remarkModal">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark">
+      <div class="modal-header">
+        <h5>Edit Remark</h5>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="res_id">
+        <textarea id="remark_text" class="form-control" placeholder="Enter remark..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" id="saveRemark">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
