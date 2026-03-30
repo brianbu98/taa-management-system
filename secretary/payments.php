@@ -82,8 +82,14 @@ $resResidents = $con->query("SELECT id, CONCAT(first_name, ' ', last_name) AS na
 // Fetch payments
 $res = $con->query("
     SELECT p.*, 
-           CONCAT(u.first_name,' ',u.last_name) AS name,
-           COALESCE(SUM(pr.amount_paid),0) AS total_paid
+       CONCAT(u.first_name,' ',u.last_name) AS name,
+       COALESCE(SUM(pr.amount_paid),0) AS total_paid,
+       (p.amount_due - COALESCE(SUM(pr.amount_paid),0)) AS balance,
+       CASE 
+           WHEN COALESCE(SUM(pr.amount_paid),0) = 0 THEN 'Unpaid'
+           WHEN COALESCE(SUM(pr.amount_paid),0) < p.amount_due THEN 'Partial'
+           ELSE 'Paid'
+       END AS computed_status
     FROM payments p
     LEFT JOIN users u ON p.user_id = u.id
     LEFT JOIN payment_records pr ON p.id = pr.payment_id
@@ -374,20 +380,37 @@ Users
                   <th>Amount Due</th>
                   <th>Total Paid</th>
                   <th>Status</th>
+                  <th>Remarks</th>
                   <th>Date</th>
                 </tr>
               </thead>
               <tbody>
                 <?php while($rw = $res->fetch_assoc()): ?>
-                  <tr>
-                    <td><?= htmlspecialchars($rw['id']) ?></td>
-                    <td><?= htmlspecialchars($rw['name'] ?? '—') ?></td>
-                    <td>₱<?= number_format($rw['amount_due'], 2) ?></td>
-                    <td><?= number_format($rw['total_paid'] ?? 0, 2) ?></td>
-                    <td><?= htmlspecialchars($rw['status']) ?></td>
-                    <td><?= htmlspecialchars(date('M d, Y h:i A', strtotime($rw['due_date']))) ?></td>
-                  </tr>
-                <?php endwhile; ?>
+            <tr>
+              <td><?= htmlspecialchars($rw['id']) ?></td>
+              <td><?= htmlspecialchars($rw['name'] ?? '—') ?></td>
+              <td>₱<?= number_format($rw['amount_due'], 2) ?></td>
+              <td><?= number_format($rw['total_paid'] ?? 0, 2) ?></td>
+
+              <?php
+                $status = $rw['computed_status'];
+                $badge = 'secondary';
+
+                if ($status == 'Paid') $badge = 'success';
+                elseif ($status == 'Partial') $badge = 'warning';
+                elseif ($status == 'Unpaid') $badge = 'danger';
+              ?>
+
+              <td>
+                <span class="badge badge-<?= $badge ?>">
+                  <?= $status ?>
+                </span>
+              </td>
+              <td><?= htmlspecialchars($rw['remarks'] ?? '-') ?></td>
+
+              <td><?= htmlspecialchars(date('M d, Y h:i A', strtotime($rw['due_date']))) ?></td>
+            </tr>
+                            <?php endwhile; ?>
               </tbody>
             </table>
           </div>
