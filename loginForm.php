@@ -3,40 +3,66 @@ require_once __DIR__ . '/session.php';
 require_once __DIR__ . '/connection.php';
 require_once __DIR__ . '/userInfo.php';
 
-ini_set('display_errors', 0);
-error_reporting(0);
+/* 🔧 ENABLE THIS TEMPORARILY IF STILL FAILING */
+// ini_set('display_errors', 1);
+// error_reporting(E_ALL);
 
-$username = $_POST['username'] ?? '';
-$password = $_POST['password'] ?? '';
+$username = trim($_POST['username'] ?? '');
+$password = trim($_POST['password'] ?? '');
 
+if ($username === '' || $password === '') {
+    exit('errorUsername');
+}
+
+/* 🔍 PREPARE QUERY */
 $stmt = $con->prepare(
   "SELECT id, username, password, user_type, first_name, last_name
    FROM users
-   WHERE username = ? OR id = ?"
+   WHERE username = ? OR id = ?
+   LIMIT 1"
 );
+
+if (!$stmt) {
+    exit('errorUsername');
+}
+
 $stmt->bind_param('ss', $username, $username);
 $stmt->execute();
 $result = $stmt->get_result();
 
-if (!$row = $result->fetch_assoc()) {
+/* ❌ USER NOT FOUND */
+if ($result->num_rows === 0) {
     exit('errorUsername');
 }
 
-/* ⚠️ Plain password comparison (OK for now) */
-if ($password !== $row['password']) {
-    exit('errorPassword');
+$row = $result->fetch_assoc();
+
+/* 🔐 PASSWORD CHECK */
+
+/* ✅ USE THIS IF PASSWORDS ARE HASHED */
+if (strlen($row['password']) > 20) {
+    if (!password_verify($password, $row['password'])) {
+        exit('errorPassword');
+    }
+} else {
+    /* ✅ FALLBACK: PLAIN TEXT */
+    if ($password !== $row['password']) {
+        exit('errorPassword');
+    }
 }
-/* 🔐 Regenerate session ID FIRST */
+
+/* 🔐 REGENERATE SESSION */
 session_regenerate_id(true);
 
 /* ✅ SESSION */
 $_SESSION['user_id']   = $row['id'];
-$_SESSION['username'] = $row['username'];
-$_SESSION['user_type'] = $row['user_type'] ?? 'resident';
+$_SESSION['username']  = $row['username'];
+$_SESSION['user_type'] = strtolower(trim($row['user_type'] ?? 'resident'));
 
 /* 📝 ACTIVITY LOG */
 date_default_timezone_set('Asia/Manila');
-$date_activity = date("j-n-Y g:i A");
+
+$date_activity = date("Y-m-d H:i:s"); // safer format
 $status_activity_log = 'login';
 
 $roleLabel = strtoupper($_SESSION['user_type']);
@@ -44,9 +70,13 @@ $message = $roleLabel . ': ' . $row['first_name'] . ' ' . $row['last_name'] . ' 
 
 $sql_log = "INSERT INTO activity_log (`message`, `date`, `status`) VALUES (?,?,?)";
 $stmt_log = $con->prepare($sql_log);
-$stmt_log->bind_param('sss', $message, $date_activity, $status_activity_log);
-$stmt_log->execute();
-$stmt_log->close();
 
-/* 🔥 OUTPUT MUST BE CLEAN */
-exit($_SESSION['user_type']);
+if ($stmt_log) {
+    $stmt_log->bind_param('sss', $message, $date_activity, $status_activity_log);
+    $stmt_log->execute();
+    $stmt_log->close();
+}
+
+/* 🔥 FINAL OUTPUT (STRICT) */
+echo $_SESSION['user_type'];
+exit;
