@@ -101,7 +101,7 @@ try{
    
 
      $sql_report = "SELECT residence_information.*, residence_status.* 
-    FROM residence_information 
+    FROM residence_information.report_remarks
     INNER JOIN residence_status 
     ON residence_information.residence_id = residence_status.residence_id 
     WHERE residence_information.archive = 'NO'";
@@ -118,6 +118,7 @@ try{
       <td>'.ucfirst($row_report['last_name']).' '.ucfirst($row_report['first_name']).'  '.$middle_name.' </td>
               <td>'.$row_report['age'].'</td>
               <td>'.$row_report['status'].'</td>
+              <td>'.htmlspecialchars($row_report['report_remarks'] ?? '-').'</td>
           </tr>';
       }
 
@@ -591,6 +592,7 @@ try{
                       <th>Name</th>
                       <th>Age</th>
                       <th>Status</th>
+                      <th>Remarks</th>
                     </tr>
                   </thead>
                   <tbody>

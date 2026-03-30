@@ -59,11 +59,15 @@ try{
           $where .= ' AND ' .implode(' AND ',$whereClause);
         }
 
-      
-        $sql_report = "SELECT residence_information.*, residence_status.* FROM residence_information 
-        INNER JOIN residence_status ON residence_information.residence_id =  residence_status.residence_id WHERE residence_information.archive = 'NO'".$where;
-        $query_report = $con->query($sql_report) or die ($con->error);
+                $sql_report = "SELECT residence_information.*, residence_status.*, residence_information.report_remarks
+        FROM residence_information
+        INNER JOIN residence_status 
+            ON residence_information.residence_id = residence_status.residence_id
+        WHERE residence_information.archive = 'NO' " . $where;
+
+        $query_report = $con->query($sql_report) or die($con->error);
         $count_report = $query_report->num_rows;
+
         if($count_report > 0){
 
 
@@ -81,6 +85,7 @@ try{
                     <td>'.ucfirst($row_report['last_name']).' '.ucfirst($row_report['first_name']).'  '.$middle_name.' </td>
                     <td>'.$row_report['age'].'</td>
                     <td>'.$row_report['status'].'</td>
+                    <td>'.htmlspecialchars($row_report['report_remarks'] ?? '-').'</td>
                 </tr>';
             }
 
@@ -627,6 +632,7 @@ try{
                       <th>Name</th>
                       <th>Age</th>
                       <th>Status</th>
+                      <th>Remarks</th>
                     </tr>
                   </thead>
                   <tbody>
