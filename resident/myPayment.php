@@ -12,7 +12,21 @@ $user_id = $_SESSION['user_id'];
 /* =========================
    FETCH USER BILLS
 ========================= */
-$bills = $con->prepare("SELECT * FROM payments WHERE user_id=? ORDER BY created_at DESC");
+$bills = $con->prepare("
+SELECT p.*, 
+       COALESCE(SUM(pr.amount_paid),0) AS total_paid,
+       (p.amount_due - COALESCE(SUM(pr.amount_paid),0)) AS balance,
+       CASE 
+           WHEN COALESCE(SUM(pr.amount_paid),0) = 0 THEN 'Unpaid'
+           WHEN COALESCE(SUM(pr.amount_paid),0) < p.amount_due THEN 'Partial'
+           ELSE 'Paid'
+       END AS computed_status
+FROM payments p
+LEFT JOIN payment_records pr ON p.id = pr.payment_id
+WHERE p.user_id=?
+GROUP BY p.id
+ORDER BY p.created_at DESC
+");
 $bills->bind_param("i", $user_id);
 $bills->execute();
 $bills_result = $bills->get_result();
@@ -75,9 +89,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <option value="<?= $bill['id'] ?>">
 <?= htmlspecialchars($bill['payment_name']) ?> 
 (₱ <?= number_format($bill['amount_due'],2) ?>)
+- <?= $bill['computed_status'] ?>
+<?= !empty($bill['remarks']) ? ' | Note: ' . htmlspecialchars($bill['remarks']) : '' ?>
 </option>
 <?php endwhile; ?>
 </select>
+
+
+<div id="remarksBox" class="mt-2 text-warning"></div>
+
 </div>
 
 <div class="form-group">
@@ -147,6 +167,12 @@ $('#paymentTable').DataTable({
         { data: 5 }
     ]
 });
+
+$('select[name="payment_id"]').on('change', function() {
+    let text = $(this).find(':selected').text();
+    $('#remarksBox').text(text.includes('Note:') ? text.split('Note:')[1] : '');
+});
+
 
 });
 </script>
