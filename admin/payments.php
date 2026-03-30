@@ -39,13 +39,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $resident_id = intval($_POST['resident_id']);
     $amount_due  = floatval($_POST['amount_due']);
     $description = trim($_POST['description']);
+    $remarks = trim($_POST['remarks']);
 
     $stmt = $con->prepare("
-        INSERT INTO payments (user_id, amount_due, description, status)
-        VALUES (?, ?, ?, 'unpaid')
+       INSERT INTO payments (user_id, amount_due, description, remarks, status)
+VALUES (?, ?, ?, ?, 'unpaid')
     ");
 
-    $stmt->bind_param("ids", $resident_id, $amount_due, $description);
+    $stmt->bind_param("idss", $resident_id, $amount_due, $description, $remarks);
     $stmt->execute();
     $stmt->close();
 
@@ -485,6 +486,16 @@ placeholder="Description">
 
 </div>
 
+<div class="col-md-3">
+
+
+<input type="text"
+name="remarks"
+class="form-control mt-2"
+placeholder="Remarks / Notes (optional)">
+
+</div>
+
 
 <div class="col-md-2">
 
@@ -513,6 +524,7 @@ Create
 <th>Resident</th>
 <th>Amount</th>
 <th>Status</th>
+<th>Remarks</th>
 <th>Date</th>
 </tr>
 
@@ -532,6 +544,8 @@ Create
 <td><?= htmlspecialchars($b['resident']) ?></td>
 
 <td>₱ <?= number_format($b['amount_due'],2) ?></td>
+
+<td><?= htmlspecialchars($b['remarks'] ?? '-') ?></td>
 
 <td>
 
