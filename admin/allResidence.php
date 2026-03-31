@@ -671,18 +671,20 @@ input:checked + .slider .off{
               </div>
                 
               
-            <table class="table table-striped table-hover " id="allResidenceTable">
-              <thead class="bg-black text-uppercase">
-                <tr>
-                  <th>Image</th>
-                  <th>Resident Number</th>
-                  <th>Name</th>
-                  <th>Age</th>
-                  <th>Status</th>
-                  <th class="text-center">Action</th>
-                </tr>
-              </thead>
-            </table>
+                   <table class="table table-striped table-hover" id="allResidenceTable">
+          <thead class="bg-black text-uppercase">
+            <tr>
+              <th>Image</th>
+              <th>Resident Number</th>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Household</th> <!-- NEW -->
+              <th>Address</th>   <!-- NEW -->
+              <th>Status</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+        </table>
           </fieldset>
         </div>
       </div>   
