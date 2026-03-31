@@ -100,11 +100,11 @@ try{
 
    
 
-     $sql_report = "SELECT residence_information.*, residence_status.* 
-    FROM residence_information.report_remarks
-    INNER JOIN residence_status 
-    ON residence_information.residence_id = residence_status.residence_id 
-    WHERE residence_information.archive = 'NO'";
+   $sql_report = "SELECT residence_information.*, residence_status.*, residence_information.report_remarks
+FROM residence_information
+INNER JOIN residence_status 
+ON residence_information.residence_id = residence_status.residence_id 
+WHERE residence_information.archive = 'NO'";
       $query_report = $con->query($sql_report) or die ($con->error);
       while($row_report = $query_report->fetch_assoc()){
 
@@ -122,7 +122,7 @@ try{
 
 <td>
 <button class="btn btn-sm btn-info editRemarkBtn" 
-data-id="'.$row_report['id'].'" 
+data-id="'.$row_report['residence_id'].'"
 data-remark="'.htmlspecialchars($row_report['report_remarks']).'">
 Edit
 </button>
@@ -713,7 +713,7 @@ Edit
   });
 </script>
 
-  })
+ 
 </script>
 
 <div class="modal fade" id="remarkModal">
