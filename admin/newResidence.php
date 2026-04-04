@@ -502,8 +502,14 @@ try{
                               <label>Email Address</label>
                               <input type="text" class="form-control" id="add_email_address" name="add_email_address" >
                             </div>
-                          </div>
+
+                            <div class="form-group">
+                          <label>Household ID</label>
+                          <input type="text" name="household_id" id="household_id" class="form-control">
                         </div>
+                       </div>
+
+                       </div>
                   </div>
                   <div class="tab-pane fade" id="guardian" role="tabpanel" aria-labelledby="guardian-tab">
                    
