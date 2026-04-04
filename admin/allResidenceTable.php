@@ -32,8 +32,8 @@ try {
     FROM residence_information
     LEFT JOIN residence_status 
         ON residence_information.residence_id = residence_status.residence_id
-    LEFT JOIN households
-        ON residence_information.household_id = households.id
+   LEFT JOIN households
+ON residence_information.household_id = households.household_id
     WHERE (residence_status.archive IS NULL OR UPPER(residence_status.archive) != 'YES')
     $where
     ";
@@ -87,8 +87,8 @@ try {
         residence_information.image,
         residence_information.image_path,
         residence_status.status,
-        households.household_no,
-        households.house_address
+       households.household_id,
+CONCAT(households.first_name, ' ', households.last_name) AS household_name
     $sqlBase
     $orderSql
     $limitSql
@@ -113,8 +113,8 @@ try {
         $fullName = ucfirst($row['first_name']).' '.$middle.' '.ucfirst($row['last_name']);
 
         // HOUSEHOLD
-        $household = $row['household_no'] ?? 'N/A';
-        $address   = $row['house_address'] ?? 'N/A';
+      $household = $row['household_id'] ?? 'N/A';
+      $address   = $row['household_name'] ?? 'N/A';
 
         // STATUS SWITCH
         $statusVal = $row['status'] ?? 'INACTIVE';
