@@ -17,6 +17,24 @@ if (strpos($host, 'localhost') !== false || strpos($host, '127.0.0.1') !== false
 }
 
 /* ======================================================
+   BASE PATH PER ENVIRONMENT
+   ====================================================== */
+switch ($env) {
+    case 'development':
+        $base_path = '/dev';
+        break;
+
+    case 'testing':
+        $base_path = '/test';
+        break;
+
+    case 'production':
+    default:
+        $base_path = '';
+        break;
+}
+
+/* ======================================================
    DETECT HTTPS
    ====================================================== */
 $is_https = (
@@ -70,20 +88,28 @@ $timeout_resident = 1800;  // 30 minutes
 $current_page = basename($_SERVER['PHP_SELF']);
 
 /* ======================================================
-   ✅ ALLOW PUBLIC PAGES (IMPORTANT FIX)
+   PUBLIC PAGES
    ====================================================== */
 $public_pages = [
     'login.php',
-    'loginForm.php',   // 🔥 CRITICAL (AJAX LOGIN)
+    'loginForm.php',
     'forgot.php'
 ];
+
+/* ======================================================
+   REDIRECT HELPER (🔥 CLEAN)
+   ====================================================== */
+function redirect($path) {
+    global $base_path;
+    header("Location: {$base_path}{$path}");
+    exit();
+}
 
 /* ======================================================
    CHECK IF LOGGED IN
    ====================================================== */
 if (!in_array($current_page, $public_pages) && !isset($_SESSION['user_id'])) {
-    header("Location: /login.php");
-    exit();
+    redirect('/login.php');
 }
 
 /* ======================================================
@@ -126,8 +152,7 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 
 
     session_destroy();
 
-    header("Location: /login.php?expired=1");
-    exit();
+    redirect('/login.php?expired=1');
 }
 
 /* ======================================================
