@@ -28,6 +28,7 @@ $last_name_user  = $row_user['last_name'];
 
 /* INPUTS */
 $add_position = intval($_POST['add_position'] ?? 0);
+die("POSITION VALUE: " . $add_position);
 $add_first_name = $_POST['add_first_name'] ?? '';
 $add_middle_name = $_POST['add_middle_name'] ?? '';
 $add_last_name = $_POST['add_last_name'] ?? '';
