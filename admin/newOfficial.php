@@ -1,4 +1,4 @@
-
+﻿
 <?php 
 
 include_once '../connection.php';
@@ -655,38 +655,39 @@ $(document).ready(function(){
         data: new FormData(form),
         processData: false,
         contentType: false,
+success: function(data){
 
-        success: function(data){
+  if(data.trim() === 'success'){
 
-          if(data === 'error'){
+    Swal.fire({
+      title: '<strong class="text-success">SUCCESS</strong>',
+      icon: 'success',
+      html: '<b>Added Official Successfully</b>',
+      timer: 2000,
+      showConfirmButton: false
+    }).then(()=>{
+      window.location.href = 'allOfficial.php';
+    });
 
-            Swal.fire({
-              title: '<strong class="text-danger">ERROR</strong>',
-              icon: 'error',
-              html: '<b>Position Limited</b>',
-              width: '400px',
-              confirmButtonColor: '#6610f2',
-              allowOutsideClick: false
-            });
+  }else if(data.trim() === 'error'){
 
-          }else{
+    Swal.fire({
+      title: '<strong class="text-danger">ERROR</strong>',
+      icon: 'error',
+      html: '<b>Position Limited</b>'
+    });
 
-            Swal.fire({
-              title: '<strong class="text-success">SUCCESS</strong>',
-              icon: 'success',
-              html: '<b>Added Official Successfully</b>',
-              width: '400px',
-              confirmButtonColor: '#6610f2',
-              allowOutsideClick: false,
-              showConfirmButton: false,
-              timer: 2000
-            }).then(()=>{
-              window.location.reload();
-            });
+  }else{
 
-          }
+    console.log(data); // 🔥 VERY IMPORTANT
+    Swal.fire({
+      title: 'Server Error',
+      html: data,
+      icon: 'error'
+    });
 
-        },
+  }
+},
 
         error: function(xhr){
 
