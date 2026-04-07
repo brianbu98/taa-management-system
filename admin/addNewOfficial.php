@@ -2,6 +2,7 @@
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 include_once '../connection.php';
 session_start();
@@ -106,10 +107,10 @@ if(!$row_position_limit){
     die("Position not found in database");
 }
 
-if($row_position['count_position'] >= $row_position_limit['position_limit']){
-    exit('error');
-}
-
+// TEMP DISABLE FOR DEBUG
+// if($row_position['count_position'] >= $row_position_limit['position_limit']){
+//     exit('error');
+// }
 
 /* AGE CALCULATION */
 
@@ -171,8 +172,12 @@ VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 $stmt = $con->prepare($sql);
 
+if(!$stmt){
+    die("Prepare failed: " . $con->error);
+}
+
 $stmt->bind_param(
-'ssssssssssssssssssssssssss',
+'sssssssissssssssssssssssss',
 $official_id,
 $add_first_name,
 $add_middle_name,
@@ -202,8 +207,7 @@ $add_city
 );
 
 if(!$stmt->execute()){
-    echo $stmt->error;
-    exit;
+    die("INSERT ERROR (official_information): " . $stmt->error);
 }
 
 $stmt->close();
@@ -230,7 +234,7 @@ $stmt_official_status->bind_param(
 );
 
 if(!$stmt_official_status->execute()){
-    die("Execute failed: " . $stmt_official_status->error);
+    die("INSERT ERROR (official_status): " . $stmt_official_status->error);
 }
 
 /* ACTIVITY LOG */
