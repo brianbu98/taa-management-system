@@ -233,9 +233,6 @@ if(!$stmt_official_status->execute()){
     die("Execute failed: " . $stmt_official_status->error);
 }
 
-echo "STATUS INSERTED"; // temporary debug
-exit;
-
 /* ACTIVITY LOG */
 
 $date_activity = date("j-n-Y g:i A");
