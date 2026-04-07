@@ -7,7 +7,7 @@ require_once __DIR__ . '/../session.php';
 require_once __DIR__ . '/../connection.php';
 
 if (!isset($_SESSION['user_id'], $_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
-    header("Location: ../login.php");
+    redirect('/login.php');
     exit;
 }
 
@@ -45,7 +45,7 @@ if (!$row_user) {
     // Session exists but user record is missing (DB mismatch, deleted user, wrong DB)
     session_unset();
     session_destroy();
-    header("Location: ../login.php");
+    redirect('/login.php');
     exit;
 }
 
@@ -303,7 +303,7 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
             <!-- Message End -->
           </a>         
           <div class="dropdown-divider"></div>
-          <a href="/dev/logout.php" class="dropdown-item dropdown-footer">LOGOUT</a>
+          <a href="<?= $base_path ?>/logout.php" class="dropdown-item dropdown-footer">LOGOUT</a>
         </div>
       </li>
     </ul>
