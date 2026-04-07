@@ -351,7 +351,7 @@ $logoSrc = (!empty($image_path))
                         $result_position = $stmt_position->get_result();
                         while($row_position = $result_position->fetch_assoc()){
 
-                         echo '<option value="'.$row_position['position_id'].'" class="text-uppercase">'.$row_position['position'].'</option>';
+                         echo '<option value="'.(int)$row_position['position_id'].'">'.htmlspecialchars($row_position['position']).'</option>';
 
                         }
                         
@@ -649,6 +649,9 @@ $(document).ready(function(){
   $.validator.setDefaults({
     submitHandler: function (form) {
 
+        var formData = new FormData(form);
+console.log("POSITION SENT:", formData.get("add_position"));
+
       $.ajax({
         url: 'addNewOfficial.php',
         type: 'POST',
@@ -679,12 +682,13 @@ success: function(data){
 
   }else{
 
-    console.log(data); // 🔥 VERY IMPORTANT
-    Swal.fire({
-      title: 'Server Error',
-      html: data,
-      icon: 'error'
-    });
+   console.log("SERVER RESPONSE:", data);
+
+Swal.fire({
+  title: 'Server Error',
+  html: "<pre style='text-align:left'>" + data + "</pre>",
+  icon: 'error'
+});
 
   }
 },
