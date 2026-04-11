@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once '../connection.php';
 
 error_reporting(E_ALL);
@@ -30,8 +30,11 @@ if (!empty($search)) {
         date_reported LIKE '%$search%'";
 }
 
-// Count filtered
-$queryFiltered = $con->query($sql);
+// 🔥 CLONE QUERY FOR FILTER COUNT (IMPORTANT)
+$sqlFiltered = $sql;
+
+// Count filtered BEFORE LIMIT
+$queryFiltered = $con->query($sqlFiltered);
 $recordsFiltered = $queryFiltered->num_rows;
 
 // Order
@@ -48,8 +51,8 @@ $columns = [
 
 if (isset($_POST['order'])) {
     $colIndex = $_POST['order'][0]['column'];
-    $colName  = $columns[$colIndex];
-    $colDir   = $_POST['order'][0]['dir'];
+    $colName  = $columns[$colIndex] ?? 'date_reported';
+    $colDir   = $_POST['order'][0]['dir'] === 'asc' ? 'asc' : 'desc';
 
     $sql .= " ORDER BY $colName $colDir";
 } else {
@@ -93,10 +96,12 @@ while ($row = $result->fetch_assoc()) {
     $data[] = $subdata;
 }
 
-// Output JSON
+// Output JSON (STRICT FORMAT)
 echo json_encode([
     "draw" => $draw,
-    "recordsTotal" => $totalData,
-    "recordsFiltered" => $recordsFiltered,
+    "recordsTotal" => intval($totalData),
+    "recordsFiltered" => intval($recordsFiltered),
     "data" => $data
 ]);
+
+exit;
