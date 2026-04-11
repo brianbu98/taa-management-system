@@ -756,8 +756,6 @@ console.log("DataTable loaded:", typeof $.fn.dataTable);
 <!-- AdminLTE App -->
 <script src="../assets/dist/js/adminlte.js"></script>
 <script src="../assets/plugins/popper/umd/popper.min.js"></script>
-<script src="../assets/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="../assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="../assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="../assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script src="../assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
@@ -768,7 +766,6 @@ console.log("DataTable loaded:", typeof $.fn.dataTable);
 <script src="../assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="../assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="../assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<script src="../assets/plugins/sweetalert2/js/sweetalert2.all.min.js"></script>
 <script src="../assets/plugins/select2/js/select2.full.min.js"></script>
 <script src="../assets/plugins/moment/moment.min.js"></script>
 <script src="../assets/plugins/chart.js/Chart.min.js"></script>
