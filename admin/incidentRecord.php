@@ -803,13 +803,13 @@ try{
             $("#viewIncidentRecordModal").modal('show');
    
           }
-        }).fail(function(){
+        }).fail(function(xhr){
+            console.log("AJAX ERROR:", xhr.responseText);
+
             Swal.fire({
-              title: '<strong class="text-danger">Ooppss..</strong>',
-              icon: 'error',
-              html: '<b>Something went wrong with ajax !<b>',
-              width: '400px',
-              confirmButtonColor: '#6610f2',
+                title: 'Error',
+                icon: 'error',
+                text: 'Something went wrong'
             })
         });
     });
@@ -941,7 +941,7 @@ try{
                   timer: 2000,
                 }).then(()=>{
                   $("#addNewRecordForm")[0].reset();
-                  $("#incidentRecordTable").DataTable().ajax.reload();
+                 $('#incidentRecordTable').DataTable().ajax.reload(null,false);
                   $("#incidentRecordModal").modal('hide');
                   $("#complainant_residence").val([]).trigger("change")
                   $("#person_involed").val([]).trigger("change")
@@ -1176,7 +1176,7 @@ $(document).ready(function() {
                     showConfirmButton: false,
                     allowOutsideClick: false,
                   }).then(()=>{
-                   $("#incidentRecordTable").DataTable().ajax.reload();
+                 $('#incidentRecordTable').DataTable().ajax.reload(null,false);
                    $("#select_count").text('0');
                    $('#select_all').prop('checked', false);
                   })
