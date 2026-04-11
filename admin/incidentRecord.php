@@ -1123,93 +1123,99 @@ $(document).ready(function(){
 </script>
 
 <script>
-/* delete subject records*/
 $(document).ready(function() {
-	$('#delete_records').on('click', function() {
-		var subject = [];
-		$(".sub_checkbox:checked").each(function() {
-			subject.push($(this).attr('id'));
-     
-		});
 
-		if(subject.length <= 0) {
-        Swal.fire({
-          title: '<strong class="text-info">NOTE</strong>',
-          html: '<b>Please Select Record to Delete!<b>',
-          icon: "info",
-          showConfirmButton: false,
-          confirmButtonColor: '#6610f2',
-          width: '400px',
-          showConfirmButton: true,
-          allowOutsideClick: false,
-        })
-    
-		} 
-		else { 
-      Swal.fire({
-        title: '<strong class="text-info">ARE YOU SURE?</strong>',
-        html: "<b>You want delete selected Record?</b>",
-        icon: 'info',
-        showCancelButton: true,
-        confirmButtonColor: '#6610f2',
-        width: '400px',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-        allowOutsideClick: false,
-     if(result.isConfirmed){
-          var selected_values = subject.join(",");
-         
-            $.ajax({
-              type: "POST",
-              url: "deleteIncidentRecord.php",
-              cache:false,
-              data: 'id='+selected_values,
-              success: function(data) {
-              
-                  Swal.fire({
-                    title: '<strong class="text-success">SUCESS</strong>',
-                    text: "Deleted Incident Record Successfully",
-                    icon: 'success',
-                    timer: 1500,
-                    width: '400px',
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                  }).then(()=>{
-                 $('#incidentRecordTable').DataTable().ajax.reload(null,false);
-                   $("#select_count").text('0');
-                   $('#select_all').prop('checked', false);
-                  })
+    $('#delete_records').on('click', function() {
 
-                
-                
-              } 
-            }).fail(function(){
-              Swal.fire({
-                title: 'Ooppss...',
-                text: 'Something went wrong with ajax !',
-                icon: 'error',
+        var subject = [];
+
+        $(".sub_checkbox:checked").each(function() {
+            subject.push($(this).attr('id'));
+        });
+
+        if(subject.length <= 0) {
+
+            Swal.fire({
+                title: '<strong class="text-info">NOTE</strong>',
+                html: '<b>Please Select Record to Delete!</b>',
+                icon: "info",
                 confirmButtonColor: '#6610f2',
-                allowOutsideClick: false,
                 width: '400px',
-              })             
-            })
-        }
-      });								 
-		} 
-	});
-});	
+                allowOutsideClick: false
+            });
 
-$(document).on('click', '#select_all', function() {
-	$(".sub_checkbox").prop("checked", this.checked);;
-	$("#select_count").html($("input.sub_checkbox:checked").length);
-});
-$(document).on('click', '.sub_checkbox', function() {
-	if ($('.sub_checkbox:checked').length == $('.sub_checkbox').length) {
-	$('#select_all').prop('checked', true);
-	} else {
-	$('#select_all').prop('checked', false);
-	}
-	$("#select_count").html($("input.sub_checkbox:checked").length);
+        } else {
+
+            Swal.fire({
+                title: '<strong class="text-info">ARE YOU SURE?</strong>',
+                html: "<b>You want delete selected Record?</b>",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#6610f2',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                allowOutsideClick: false
+            }).then((result) => {
+
+                if(result.isConfirmed){
+
+                    var selected_values = subject.join(",");
+
+                    $.ajax({
+                        type: "POST",
+                        url: "deleteIncidentRecord.php",
+                        data: { id: selected_values },
+                        success: function() {
+
+                            Swal.fire({
+                                title: '<strong class="text-success">SUCCESS</strong>',
+                                text: "Deleted Incident Record Successfully",
+                                icon: 'success',
+                                timer: 1500,
+                                width: '400px',
+                                showConfirmButton: false,
+                                allowOutsideClick: false
+                            }).then(()=>{
+                                $('#incidentRecordTable').DataTable().ajax.reload(null,false);
+                                $("#select_count").text('0');
+                                $('#select_all').prop('checked', false);
+                            });
+
+                        }
+                    }).fail(function(){
+                        Swal.fire({
+                            title: 'Ooppss...',
+                            text: 'Something went wrong with ajax !',
+                            icon: 'error',
+                            confirmButtonColor: '#6610f2',
+                            width: '400px'
+                        });
+                    });
+
+                }
+
+            });
+
+        }
+
+    });
+
+    // SELECT ALL
+    $(document).on('click', '#select_all', function() {
+        $(".sub_checkbox").prop("checked", this.checked);
+        $("#select_count").html($("input.sub_checkbox:checked").length);
+    });
+
+    // COUNT CHECKED
+    $(document).on('click', '.sub_checkbox', function() {
+        if ($('.sub_checkbox:checked').length == $('.sub_checkbox').length) {
+            $('#select_all').prop('checked', true);
+        } else {
+            $('#select_all').prop('checked', false);
+        }
+        $("#select_count").html($("input.sub_checkbox:checked").length);
+    });
+
 });
 </script>
 <script>
