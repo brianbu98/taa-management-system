@@ -793,7 +793,7 @@ try{
 
         $.ajax({
           url: 'viewRecordsModal.php',
-          type: 'POST',
+          icon: 'POST',
           data:{
             incidentlog_id:incidentlog_id,
           },
@@ -806,7 +806,7 @@ try{
         }).fail(function(){
             Swal.fire({
               title: '<strong class="text-danger">Ooppss..</strong>',
-              type: 'error',
+              icon: 'error',
               html: '<b>Something went wrong with ajax !<b>',
               width: '400px',
               confirmButtonColor: '#6610f2',
@@ -814,20 +814,26 @@ try{
         });
     });
 
-    $('#incidentRecordTable').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax:{
-            url: 'incidentRecordTable.php',
-            type: 'POST'
-        },
-        order:[],
-        columnDefs:[
-            { targets:0, orderable:false },
-            { targets:8, orderable:false }
-        ]
-    });
-  
+   $('#incidentRecordTable').DataTable({
+    processing: true,
+    serverSide: true,
+    ajax:{
+        url: 'incidentRecordTable.php',
+        icon: 'POST',
+        error: function(xhr){
+            console.log("DATATABLE ERROR:");
+            console.log(xhr.responseText);
+        }
+    },
+    order:[],
+    columnDefs:[
+        { targets:0, orderable:false },
+        { targets:8, orderable:false }
+    ],
+    language: {
+        processing: "Loading..."
+    }
+});
    
     $("#complainant_residence, #person_involed").on('select2:select', function(e){
 
@@ -838,7 +844,7 @@ try{
 
     $.ajax({
       url: 'showResidenceInfo.php',
-      type: 'POST',
+      icon: 'POST',
       data:{
         residence_id: residence_id
       },
@@ -850,7 +856,7 @@ try{
     }).fail(function(){
       Swal.fire({
         title: '<strong class="text-danger">Ooppss..</strong>',
-        type: 'error',
+        icon: 'error',
         html: '<b>Something went wrong with ajax !<b>',
         width: '400px',
         confirmButtonColor: '#6610f2'
@@ -876,7 +882,7 @@ try{
             if(complainant == '' && complainant_not_residence == ''){
               Swal.fire({
                 title: '<strong class="text-danger">Ooppss..</strong>',
-                type: 'error',
+                icon: 'error',
                 html: '<b>Complainant is Required<b>',
                 width: '400px',
                 confirmButtonColor: '#6610f2',
@@ -887,7 +893,7 @@ try{
             if(complainant_statement == ''){
               Swal.fire({
                 title: '<strong class="text-danger">Ooppss..</strong>',
-                type: 'error',
+                icon: 'error',
                 html: '<b>Complainant is Statement Required<b>',
                 width: '400px',
                 confirmButtonColor: '#6610f2',
@@ -898,7 +904,7 @@ try{
             if(person_involed == '' && person_involevd_not_resident == ''){
               Swal.fire({
                 title: '<strong class="text-danger">Ooppss..</strong>',
-                type: 'error',
+                icon: 'error',
                 html: '<b>Person Involved is Required<b>',
                 width: '400px',
                 confirmButtonColor: '#6610f2',
@@ -909,7 +915,7 @@ try{
             if(person_statement == ''){
               Swal.fire({
                 title: '<strong class="text-danger">Ooppss..</strong>',
-                type: 'error',
+                icon: 'error',
                 html: '<b>Person Involved Statement is Required<b>',
                 width: '400px',
                 confirmButtonColor: '#6610f2',
@@ -919,14 +925,14 @@ try{
 
             $.ajax({
               url: 'addNewIncidentRecord.php',
-              type: 'POST',
+              icon: 'POST',
               data: $(form).serialize(),
               cache: false,
               success:function(){
 
                 Swal.fire({
                   title: '<strong class="text-success">SUCCESS</strong>',
-                  type: 'success',
+                  icon: 'success',
                   html: '<b>Added Record Incident has Successfully<b>',
                   width: '400px',
                   confirmButtonColor: '#6610f2',
@@ -946,7 +952,7 @@ try{
             }).fail(function(){
               Swal.fire({
                 title: '<strong class="text-danger">Ooppss..</strong>',
-                type: 'error',
+                icon: 'error',
                 html: '<b>Something went wrong with ajax !<b>',
                 width: '400px',
                 confirmButtonColor: '#6610f2',
@@ -1092,7 +1098,7 @@ $(document).ready(function(){
 
       $.ajax({
         url: 'showPerson.php',
-            type: 'POST',
+            icon: 'POST',
             data:  {
               selected_values:selected_values
             },
@@ -1103,7 +1109,7 @@ $(document).ready(function(){
       }).fail(function(){
           Swal.fire({
             title: '<strong class="text-danger">Ooppss..</strong>',
-            type: 'error',
+            icon: 'error',
             html: '<b>Something went wrong with ajax !<b>',
             width: '400px',
             confirmButtonColor: '#6610f2',
@@ -1130,7 +1136,7 @@ $(document).ready(function() {
         Swal.fire({
           title: '<strong class="text-info">NOTE</strong>',
           html: '<b>Please Select Record to Delete!<b>',
-          type: "info",
+          icon: "info",
           showConfirmButton: false,
           confirmButtonColor: '#6610f2',
           width: '400px',
@@ -1143,7 +1149,7 @@ $(document).ready(function() {
       Swal.fire({
         title: '<strong class="text-info">ARE YOU SURE?</strong>',
         html: "<b>You want delete selected Record?</b>",
-        type: 'info',
+        icon: 'info',
         showCancelButton: true,
         confirmButtonColor: '#6610f2',
         width: '400px',
@@ -1155,7 +1161,7 @@ $(document).ready(function() {
           var selected_values = subject.join(",");
          
             $.ajax({
-              type: "POST",
+              icon: "POST",
               url: "deleteIncidentRecord.php",
               cache:false,
               data: 'id='+selected_values,
@@ -1164,7 +1170,7 @@ $(document).ready(function() {
                   Swal.fire({
                     title: '<strong class="text-success">SUCESS</strong>',
                     text: "Deleted Incident Record Successfully",
-                    type: 'success',
+                    icon: 'success',
                     timer: 1500,
                     width: '400px',
                     showConfirmButton: false,
@@ -1182,7 +1188,7 @@ $(document).ready(function() {
               Swal.fire({
                 title: 'Ooppss...',
                 text: 'Something went wrong with ajax !',
-                type: 'error',
+                icon: 'error',
                 confirmButtonColor: '#6610f2',
                 allowOutsideClick: false,
                 width: '400px',
