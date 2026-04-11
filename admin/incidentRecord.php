@@ -793,7 +793,7 @@ try{
 
         $.ajax({
           url: 'viewRecordsModal.php',
-          icon: 'POST',
+          type: 'POST',
           data:{
             incidentlog_id:incidentlog_id,
           },
@@ -819,7 +819,7 @@ try{
     serverSide: true,
     ajax:{
         url: 'incidentRecordTable.php',
-        icon: 'POST',
+        type: 'POST',
         error: function(xhr){
             console.log("DATATABLE ERROR:");
             console.log(xhr.responseText);
@@ -844,7 +844,7 @@ try{
 
     $.ajax({
       url: 'showResidenceInfo.php',
-      icon: 'POST',
+      type: 'POST',
       data:{
         residence_id: residence_id
       },
@@ -925,7 +925,7 @@ try{
 
             $.ajax({
               url: 'addNewIncidentRecord.php',
-              icon: 'POST',
+              type: 'POST',
               data: $(form).serialize(),
               cache: false,
               success:function(){
@@ -1098,7 +1098,7 @@ $(document).ready(function(){
 
       $.ajax({
         url: 'showPerson.php',
-            icon: 'POST',
+            type: 'POST',
             data:  {
               selected_values:selected_values
             },
@@ -1161,7 +1161,7 @@ $(document).ready(function() {
           var selected_values = subject.join(",");
          
             $.ajax({
-              icon: "POST",
+              type: "POST",
               url: "deleteIncidentRecord.php",
               cache:false,
               data: 'id='+selected_values,
