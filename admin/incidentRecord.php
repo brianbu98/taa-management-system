@@ -866,7 +866,7 @@ console.log("DataTable:", typeof $.fn.dataTable);
       Swal.fire({
         title: '<strong class="text-danger">Ooppss..</strong>',
         icon: 'error',
-        html: '<b>Something went wrong with ajax !<b>',
+        html: '<b>Something went wrong with ajax !</b>',
         width: '400px',
         confirmButtonColor: '#6610f2'
       });
@@ -892,7 +892,7 @@ console.log("DataTable:", typeof $.fn.dataTable);
               Swal.fire({
                 title: '<strong class="text-danger">Ooppss..</strong>',
                 icon: 'error',
-                html: '<b>Complainant is Required<b>',
+                html: '<b>Complainant is Required</b>',
                 width: '400px',
                 confirmButtonColor: '#6610f2',
               })
@@ -903,7 +903,7 @@ console.log("DataTable:", typeof $.fn.dataTable);
               Swal.fire({
                 title: '<strong class="text-danger">Ooppss..</strong>',
                 icon: 'error',
-                html: '<b>Complainant is Statement Required<b>',
+                html: '<b>Complainant is Statement Required</b>',
                 width: '400px',
                 confirmButtonColor: '#6610f2',
               })
@@ -914,7 +914,7 @@ console.log("DataTable:", typeof $.fn.dataTable);
               Swal.fire({
                 title: '<strong class="text-danger">Ooppss..</strong>',
                 icon: 'error',
-                html: '<b>Person Involved is Required<b>',
+                html: '<b>Person Involved is Required</b>',
                 width: '400px',
                 confirmButtonColor: '#6610f2',
               })
@@ -925,7 +925,7 @@ console.log("DataTable:", typeof $.fn.dataTable);
               Swal.fire({
                 title: '<strong class="text-danger">Ooppss..</strong>',
                 icon: 'error',
-                html: '<b>Person Involved Statement is Required<b>',
+                html: '<b>Person Involved Statement is Required</b>',
                 width: '400px',
                 confirmButtonColor: '#6610f2',
               })
@@ -942,7 +942,7 @@ console.log("DataTable:", typeof $.fn.dataTable);
                 Swal.fire({
                   title: '<strong class="text-success">SUCCESS</strong>',
                   icon: 'success',
-                  html: '<b>Added Record Incident has Successfully<b>',
+                  html: '<b>Added Record Incident has Successfully</b>',
                   width: '400px',
                   confirmButtonColor: '#6610f2',
                   allowOutsideClick: false,
@@ -962,7 +962,7 @@ console.log("DataTable:", typeof $.fn.dataTable);
               Swal.fire({
                 title: '<strong class="text-danger">Ooppss..</strong>',
                 icon: 'error',
-                html: '<b>Something went wrong with ajax !<b>',
+                html: '<b>Something went wrong with ajax !</b>',
                 width: '400px',
                 confirmButtonColor: '#6610f2',
               })
@@ -1119,7 +1119,7 @@ $(document).ready(function(){
           Swal.fire({
             title: '<strong class="text-danger">Ooppss..</strong>',
             icon: 'error',
-            html: '<b>Something went wrong with ajax !<b>',
+            html: '<b>Something went wrong with ajax !</b>',
             width: '400px',
             confirmButtonColor: '#6610f2',
           })
