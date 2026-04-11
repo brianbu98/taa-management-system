@@ -1156,8 +1156,7 @@ $(document).ready(function() {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!',
         allowOutsideClick: false,
-      }).then((result) => {
-        if(result.value){
+     if(result.isConfirmed){
           var selected_values = subject.join(",");
          
             $.ajax({
