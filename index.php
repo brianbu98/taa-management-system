@@ -43,9 +43,6 @@ $sql = "SELECT * FROM `taa_information`";
   $query->execute();
   $result = $query->get_result();
   while($row = $result->fetch_assoc()){
-      $barangay = $row['barangay'];
-      $zone = $row['zone'];
-      $district = $row['district'];
       $image = $row['image'];
       $image_path = $row['image_path'];
       $id = $row['id'];
