@@ -38,14 +38,11 @@ if(isset($_SESSION['user_id']) && $_SESSION['user_type']){
 
 
 }
-$sql = "SELECT * FROM `barangay_information`";
+$sql = "SELECT * FROM `taa_information`";
   $query = $con->prepare($sql) or die ($con->error);
   $query->execute();
   $result = $query->get_result();
   while($row = $result->fetch_assoc()){
-      $barangay = $row['barangay'];
-      $zone = $row['zone'];
-      $district = $row['district'];
       $image = $row['image'];
       $image_path = $row['image_path'];
       $id = $row['id'];
