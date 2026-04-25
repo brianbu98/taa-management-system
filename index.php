@@ -38,7 +38,7 @@ if(isset($_SESSION['user_id']) && $_SESSION['user_type']){
 
 
 }
-$sql = "SELECT * FROM `barangay_information`";
+$sql = "SELECT * FROM `taa_information`";
   $query = $con->prepare($sql) or die ($con->error);
   $query->execute();
   $result = $query->get_result();
