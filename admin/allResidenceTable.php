@@ -15,6 +15,7 @@ try {
 
     $whereParts = [];
 
+
     if ($first_name !== '')  $whereParts[] = "residence_information.first_name LIKE '%$first_name%'";
     if ($middle_name !== '') $whereParts[] = "residence_information.middle_name LIKE '%$middle_name%'";
     if ($last_name !== '')   $whereParts[] = "residence_information.last_name LIKE '%$last_name%'";
@@ -22,10 +23,19 @@ try {
     if ($age !== '')         $whereParts[] = "residence_information.age = '$age'";
     if ($resident_id !== '') $whereParts[] = "residence_information.residence_id = '$resident_id'";
 
+    if ($first_name !== '')    $whereParts[] = "residence_information.first_name LIKE '%$first_name%'";
+    if ($middle_name !== '')   $whereParts[] = "residence_information.middle_name LIKE '%$middle_name%'";
+    if ($last_name !== '')     $whereParts[] = "residence_information.last_name LIKE '%$last_name%'";
+    if ($status !== '')        $whereParts[] = "residence_status.status = '$status'";
+    if ($age !== '')           $whereParts[] = "residence_information.age = '$age'";
+    if ($resident_id !== '')   $whereParts[] = "residence_information.residence_id = '$resident_id'";
+
+
     $where = '';
     if (!empty($whereParts)) {
         $where = ' AND ' . implode(' AND ', $whereParts);
     }
+
 
     // BASE QUERY WITH HOUSEHOLD
     $sqlBase = "
@@ -37,6 +47,22 @@ ON residence_information.household_id = households.household_id
     WHERE (residence_status.archive IS NULL OR UPPER(residence_status.archive) != 'YES')
     $where
     ";
+
+    // --- Archive logic: exclude only rows explicitly archived = 'YES' in residence_status ---
+    // Use only residence_status.archive because residence_information doesn't have 'archive' column.
+    $archiveChecks = "1=1";
+
+
+    // --- BASE SQL (LEFT JOIN so new rows without status still appear) ---
+   $sqlBase = "
+    FROM residence_information
+    LEFT JOIN residence_status 
+        ON residence_information.residence_id = residence_status.residence_id
+    WHERE (residence_status.archive IS NULL OR UPPER(residence_status.archive) != 'YES')
+    $where
+";
+
+
 
     // COUNT
     $countSql = "SELECT COUNT(*) AS total $sqlBase";
@@ -58,10 +84,15 @@ ON residence_information.household_id = households.household_id
         1 => 'residence_information.residence_id',
         2 => 'residence_information.first_name',
         3 => 'residence_information.age',
+
         4 => 'households.household_no',
         5 => 'households.house_address',
         6 => 'residence_status.status',
         7 => 'residence_information.residence_id'
+
+        4 => 'residence_status.status',
+        5 => 'residence_information.residence_id' // safe placeholder for actions column
+
     ];
 
     $orderSql = " ORDER BY residence_information.residence_id DESC ";
@@ -82,6 +113,7 @@ ON residence_information.household_id = households.household_id
 
     // FINAL QUERY
     $sql = "
+
     SELECT
         residence_information.residence_id,
         residence_information.first_name,
@@ -96,6 +128,20 @@ CONCAT(households.first_name, ' ', households.last_name) AS household_name
     $sqlBase
     $orderSql
     $limitSql
+
+        SELECT
+            residence_information.residence_id,
+            residence_information.first_name,
+            residence_information.middle_name,
+            residence_information.last_name,
+            residence_information.age,
+            residence_information.image,
+            residence_information.image_path,
+            residence_status.status
+        $sqlBase
+        $orderSql
+        $limitSql
+
     ";
 
     $stmt = $con->prepare($sql);
@@ -116,11 +162,13 @@ CONCAT(households.first_name, ' ', households.last_name) AS household_name
         $middle = !empty($row['middle_name']) ? strtoupper($row['middle_name'][0]).'.' : '';
         $fullName = ucfirst($row['first_name']).' '.$middle.' '.ucfirst($row['last_name']);
 
+
         // HOUSEHOLD
       $household = $row['household_id'] ?? 'N/A';
       $address   = $row['household_name'] ?? 'N/A';
 
         // STATUS SWITCH
+
         $statusVal = $row['status'] ?? 'INACTIVE';
         $checked = ($statusVal === 'ACTIVE') ? 'checked' : '';
 
@@ -142,9 +190,13 @@ CONCAT(households.first_name, ' ', households.last_name) AS household_name
             $img,
             $row['residence_id'],
             $fullName,
+
             $row['age'],
             $household,
             $address,
+
+            $row['age'] ?? '',
+
             $statusSwitch,
             $actions
         ];

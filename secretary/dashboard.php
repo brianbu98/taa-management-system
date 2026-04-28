@@ -73,7 +73,9 @@ try {
                         group by date_added 
                         order by yyyy";
 
-=======
+
+
+
 
         $result_incident = $con->query($sql_incident);
 
@@ -142,7 +144,6 @@ try {
         // ------------------------------
         // ANNOUNCEMENTS (new)
         // ------------------------------
-<<<<<<< HEAD
        $sql_announcements = "
     SELECT a.*, CONCAT(u.first_name,' ',u.last_name) AS posted_name
     FROM announcements a
@@ -151,10 +152,15 @@ try {
     ORDER BY a.created_at DESC
     LIMIT 5
 ";
-=======
+
        $sql_announcements = "SELECT * FROM announcements ORDER BY id DESC LIMIT 5";
 
-        $result_announcements = $con->query($sql_announcements) or die($con->error);
+
+       $sql_announcements = "SELECT * FROM announcements ORDER BY id DESC LIMIT 5";
+
+
+
+$result_announcements = $con->query($sql_announcements) or die($con->error);
 
         // ------------------------------
         // PAYMENTS (new)

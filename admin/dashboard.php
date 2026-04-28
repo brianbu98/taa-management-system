@@ -7,7 +7,11 @@ require_once __DIR__ . '/../session.php';
 require_once __DIR__ . '/../connection.php';
 
 if (!isset($_SESSION['user_id'], $_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
+
     redirect('/login.php');
+
+    header("Location: ../login.php");
+
     exit;
 }
 
@@ -38,14 +42,22 @@ try {
     $stmt_user = $con->prepare($sql_user);
     $stmt_user->bind_param('i', $user_id);
     $stmt_user->execute();
+
     $result_user = $stmt_user->get_result();
+
+   $result_user = $stmt_user->get_result();
+
     $row_user = $result_user->fetch_assoc();
 
 if (!$row_user) {
     // Session exists but user record is missing (DB mismatch, deleted user, wrong DB)
     session_unset();
     session_destroy();
+
     redirect('/login.php');
+
+    header("Location: ../login.php");
+>>>>>>> 452b3c1b268d93d7154af8674d1edf85e23fcd52
     exit;
 }
 
@@ -88,7 +100,11 @@ $user_image      = $row_user['image'] ?? null;
     $stmt_users_no->store_result();
     $count_users_no = $stmt_users_no->num_rows;
 
+
    $sql_total_residence = "SELECT residence_id FROM residence_status WHERE archive = ?";
+
+    $sql_total_residence = "SELECT residence_id FROM residence_status WHERE archive = ?";
+
 $query_total_residence = $con->prepare($sql_total_residence);
 if (!$query_total_residence) {
     throw new Exception($con->error);
@@ -303,7 +319,11 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
             <!-- Message End -->
           </a>         
           <div class="dropdown-divider"></div>
+
           <a href="<?= $base_path ?>/logout.php" class="dropdown-item dropdown-footer">LOGOUT</a>
+
+          <a href="/test/logout.php" class="dropdown-item dropdown-footer">LOGOUT</a>
+
         </div>
       </li>
     </ul>

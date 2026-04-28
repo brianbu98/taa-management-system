@@ -40,7 +40,9 @@ try {
     $add_mothers_name     = $con->real_escape_string($_POST['add_mothers_name'] ?? '');
     $add_guardian         = $con->real_escape_string($_POST['add_guardian'] ?? '');
     $add_guardian_contact = $con->real_escape_string($_POST['add_guardian_contact'] ?? '');
+
     $household_id = $con->real_escape_string($_POST['household_id'] ?? '');
+
     
 
     $add_status = 'ACTIVE';
@@ -91,8 +93,13 @@ try {
     // insert residence_information (no date_added here)
     $sql_info = "INSERT INTO residence_information
 
+
       (residence_id, first_name, middle_name, last_name, age, suffix, alias, gender, civil_status, religion, nationality, contact_number, email_address, address, birth_date, birth_place, house_number, street, fathers_name, mothers_name, guardian, guardian_contact, image, image_path, household_id)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+      (residence_id, first_name, middle_name, last_name, age, suffix, alias, gender, civil_status, religion, nationality, contact_number, email_address, address, birth_date, birth_place, house_number, street, fathers_name, mothers_name, guardian, guardian_contact, image, image_path)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 
       (residence_id, first_name, middle_name, last_name, age, suffix, alias, gender, civil_status, religion, nationality, contact_number, email_address, address, birth_date, birth_place, house_number, street, fathers_name, mothers_name, guardian, guardian_contact, image, image_path)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
