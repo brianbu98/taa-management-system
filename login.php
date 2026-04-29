@@ -157,7 +157,7 @@ $sql = "SELECT * FROM `taa_information`";
                 <img src="assets/dist/img/<?= $image;?>" alt="logo" class="img-circle logo">
               </div>
               <div class="col-sm-12">
-                <h1 class="card-text" style="font-weight: 1000; color: #0036af">TEREMIL ASSISTANCE APPLICATION</h1>
+                <h1 class="card-text" style="font-weight: 1000; color: #0036af">TEREMIL ASSOCIATION ASSISTANCE</h1>
               </div>
              
               <div class="col-sm-12 mt-4">
