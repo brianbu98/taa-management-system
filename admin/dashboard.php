@@ -88,7 +88,7 @@ $user_image      = $row_user['image'] ?? null;
     $stmt_users_no->store_result();
     $count_users_no = $stmt_users_no->num_rows;
 
-   $sql_total_residence = "SELECT residence_id FROM residence_status WHERE archive = ?";
+   $sql_total_residence = "SELECT residence_id FROM residence_status WHERE residence_status.archive = ?";
 $query_total_residence = $con->prepare($sql_total_residence);
 if (!$query_total_residence) {
     throw new Exception($con->error);
@@ -147,12 +147,12 @@ $query_total_residence->execute();
     $count_result_official = $result_official_position->num_rows;
     if($count_result_official > 0){
       while($row_official_position = $result_official_position->fetch_assoc()){
-        $official_postition[] = strtoupper($row_official_position['official_position']);
+        $official_position[] = strtoupper($row_official_position['official_position']);
         $position_color[] = $row_official_position['color'];
         $total_per_official[] = $row_official_position['dis'];
       }
     }else{
-      $official_postition[] = ['BLANK'];
+      $official_position[] = ['BLANK'];
       $position_color[] = ['red'];
       $total_per_official[] = ['1'];
 
