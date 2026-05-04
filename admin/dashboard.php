@@ -354,7 +354,7 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
       <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href="dashboard.php" class="nav-link bg-indigo">
+            <a href="dashboard" class="nav-link bg-indigo">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
