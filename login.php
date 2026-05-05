@@ -10,13 +10,13 @@ try{
 if (isset($_SESSION['user_id'], $_SESSION['user_type'])) {
     switch ($_SESSION['user_type']) {
         case 'admin':
-            header("Location: admin/dashboard.php");
+            header("Location: admin/dashboard");
             break;
         case 'secretary':
-            header("Location: secretary/dashboard.php");
+            header("Location: secretary/dashboard");
             break;
         default:
-            header("Location: resident/dashboard.php");
+            header("Location: resident/dashboard");
     }
     exit;
 }
@@ -185,7 +185,7 @@ $sql = "SELECT * FROM `taa_information`";
                 </div>
               </div>
             <div class="col-sm-12 text-right">
-                    <a href="forgot.php">Forgot Password</a>
+                    <a href="forgot">Forgot Password</a>
             </div>
             <div class="col-sm-12 mt-4">
                 <button type="submit" class="btn btn-flat bg-blue btn-lg btn-block">Sign In</button>

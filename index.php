@@ -18,17 +18,17 @@ if(isset($_SESSION['user_id']) && $_SESSION['user_type']){
   $account_type = $row['user_type'];
   if ($account_type == 'admin') {
   echo '<script>
-          window.location.href="admin/dashboard.php";
+          window.location.href="admin/dashboard";
       </script>';
   
   } elseif ($account_type == 'secretary') {
       echo '<script>
-          window.location.href="secretary/dashboard.php";
+          window.location.href="secretary/dashboard";
       </script>';
   
   } else {
       echo '<script>
-      window.location.href="resident/dashboard.php";
+      window.location.href="resident/dashboard";
   </script>';
   
 }
@@ -176,7 +176,7 @@ width: 100%;
     <div class="container">
       <a href="" class="navbar-brand">
         <img src="assets/dist/img/<?= $image  ?>" alt="logo" class="brand-image img-circle " >
-        <span class="brand-text  text-white"  style="font-weight: 700">TEREMIL ASSISTANCE APPLICATION</span>
+        <span class="brand-text  text-white"  style="font-weight: 700">TEREMIL ASSOCIATION ASSISTANCE</span>
       </a>
 
       <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -196,7 +196,7 @@ width: 100%;
             <a href="#" class="nav-link text-white rightBar" style="  border-bottom: 3px solid red;">HOME</a>
           </li>
           <li class="nav-item">
-            <a href="login.php" class="nav-link text-white rightBar"><i class="fas fa-user-alt"></i> LOGIN</a>
+            <a href="login" class="nav-link text-white rightBar"><i class="fas fa-user-alt"></i> LOGIN</a>
           </li>
       </ul>
     </div>

@@ -8,6 +8,15 @@ error_reporting(E_ALL);
 include_once '../connection.php';
 session_start();
 
+function generateCode($length = 6) {
+    $characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    $code = '';
+    for ($i = 0; $i < $length; $i++) {
+        $code .= $characters[rand(0, strlen($characters) - 1)];
+    }
+    return $code;
+}
+
 try {
     // Auth check
     if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'admin') {
@@ -16,8 +25,10 @@ try {
         exit;
     }
 
-    // generate a unique residence id
-    $number = time() . mt_rand(1000, 9999);
+    do {
+    $number = 'RES' . generateCode(4); // e.g. RES7K3Q
+    $check = $con->query("SELECT id FROM users WHERE username='$number'");
+} while ($check->num_rows > 0);
 
     // collect/sanitize inputs
     $add_first_name       = trim($con->real_escape_string($_POST['add_first_name'] ?? ''));
@@ -163,7 +174,8 @@ try {
 
     // insert users
     $user_type = 'resident';
-    $password = $number; // legacy plain; consider hashing
+    $password_plain = generateCode(6); // e.g. A9M2XZ
+    $password = password_hash($password_plain, PASSWORD_DEFAULT);
 
     $sql_user = "INSERT INTO users (id, first_name, middle_name, last_name, username, password, user_type, contact_number, image, image_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt_user = $con->prepare($sql_user);
@@ -198,7 +210,12 @@ try {
 
     file_put_contents(__DIR__.'/save_debug.txt', "Saved resident ID: ".$number.PHP_EOL, FILE_APPEND);
 
-    echo json_encode(['success' => true, 'id' => $number, 'message' => 'inserted']);
+    echo json_encode([
+    'success' => true,
+    'username' => $number,
+    'password' => $password_plain,
+    'message' => 'inserted'
+  ]);
     exit;
 
 } catch (Exception $e) {
