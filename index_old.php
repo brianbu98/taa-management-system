@@ -222,7 +222,7 @@ width: 100%;
         
           <br>
           <br>
-          <a href="index.php" class="btn btn-outline-info btn-lg px-3 text-white" style="font-weight: 900; border: 2px solid #fff">LOGIN</a>
+          <a href="./" class="btn btn-outline-info btn-lg px-3 text-white" style="font-weight: 900; border: 2px solid #fff">LOGIN</a>
       </div>
     </div>
 
