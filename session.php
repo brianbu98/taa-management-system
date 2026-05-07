@@ -6,11 +6,11 @@
 /* ======================================================
    DETECT ENVIRONMENT
    ====================================================== */
-$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$request_uri = $_SERVER['REQUEST_URI'] ?? '';
 
-if (strpos($host, 'localhost') !== false || strpos($host, '127.0.0.1') !== false) {
+if (strpos($request_uri, '/dev/') !== false) {
     $env = 'development';
-} elseif (strpos($host, 'test') !== false) {
+} elseif (strpos($request_uri, '/test/') !== false) {
     $env = 'testing';
 } else {
     $env = 'production';
