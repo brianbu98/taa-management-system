@@ -92,6 +92,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
    ====================================================== */
 $public_pages = [
     'index.php',
+    '',
     'loginForm.php',
     'forgot.php'
 ];
@@ -109,7 +110,7 @@ function redirect($path) {
    CHECK IF LOGGED IN
    ====================================================== */
 if (!in_array($current_page, $public_pages) && !isset($_SESSION['user_id'])) {
-    redirect('/index.php');
+    redirect('/');
 }
 
 /* ======================================================
@@ -152,7 +153,7 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 
 
     session_destroy();
 
-    redirect('/index.php?expired=1');
+   redirect('/?expired=1');
 }
 
 /* ======================================================
