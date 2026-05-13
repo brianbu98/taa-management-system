@@ -61,11 +61,11 @@ switch ($env) {
         ini_set('session.cookie_secure', $is_https ? 1 : 0);
         break;
 
-    case 'development':
+   case 'development':
     default:
-        ini_set('session.cookie_domain', '');
-        ini_set('session.cookie_secure', 0);
-        break;
+    ini_set('session.cookie_domain', '');
+    ini_set('session.cookie_secure', $is_https ? 1 : 0);
+    break;
 }
 
 /* ======================================================
