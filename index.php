@@ -9,15 +9,19 @@ try{
 
 if (isset($_SESSION['user_id'], $_SESSION['user_type'])) {
     switch ($_SESSION['user_type']) {
-        case 'admin':
-            header("Location: ./admin/dashboard");
-            break;
-        case 'secretary':
-            header("Location: ./secretary/dashboard");
-            break;
-        default:
-            header("Location: ./resident/dashboard");
-    }
+
+    case 'admin':
+        redirect('/admin/dashboard');
+        break;
+
+    case 'secretary':
+        redirect('/secretary/dashboard');
+        break;
+
+    default:
+        redirect('/resident/dashboard');
+        break;
+}
     exit;
 }
 
