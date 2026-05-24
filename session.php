@@ -92,7 +92,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
    ====================================================== */
 $public_pages = [
     'index.php',
-    '',
     'loginForm.php',
     'forgot.php'
 ];

@@ -7,7 +7,7 @@ require_once __DIR__ . '/../session.php';
 require_once __DIR__ . '/../connection.php';
 
 if (!isset($_SESSION['user_id'], $_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
-    redirect('/login.php');
+    redirect('/');
     exit;
 }
 
@@ -45,7 +45,7 @@ if (!$row_user) {
     // Session exists but user record is missing (DB mismatch, deleted user, wrong DB)
     session_unset();
     session_destroy();
-    redirect('/login.php');
+    redirect('/');
     exit;
 }
 
@@ -283,7 +283,7 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
           <i class="far fa-user"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="myProfile.php" class="dropdown-item">
+          <a href="myProfile" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
               <?php 
@@ -371,13 +371,13 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="newOfficial.php" class="nav-link ">
+                <a href="newOfficial" class="nav-link ">
                   <i class="fas fa-circle nav-icon text-red"></i>
                   <p>New Official</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="allOfficial.php" class="nav-link">
+                <a href="allOfficial" class="nav-link">
                   <i class="fas fa-circle nav-icon text-red"></i>
                   <p>List of Official</p>
                 </a>
@@ -396,19 +396,19 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="newResidence.php" class="nav-link ">
+                <a href="newResidence" class="nav-link ">
                   <i class="fas fa-circle nav-icon text-red"></i>
                   <p>New Residence</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="allResidence.php" class="nav-link ">
+                <a href="allResidence" class="nav-link ">
                   <i class="fas fa-circle nav-icon text-red"></i>
                   <p>All Residence</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="archiveResidence.php" class="nav-link ">
+                <a href="archiveResidence" class="nav-link ">
                   <i class="fas fa-circle nav-icon text-red"></i>
                   <p>Archive Residence</p>
                 </a>
@@ -428,13 +428,13 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="usersResident.php" class="nav-link ">
+                <a href="usersResident" class="nav-link ">
                   <i class="fas fa-circle nav-icon text-red"></i>
                   <p>Resident</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="userAdministrator.php" class="nav-link">
+                <a href="userAdministrator" class="nav-link">
                   <i class="fas fa-circle nav-icon text-red"></i>
                   <p>Administrator</p>
                 </a>
@@ -443,7 +443,7 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
             </ul>
           </li>
           <li class="nav-item">
-            <a href="position.php" class="nav-link">
+            <a href="position" class="nav-link">
               <i class="nav-icon fas fa-user-tie"></i>
               <p>
                 Position
@@ -451,7 +451,7 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
             </a>
           </li>
           <li class="nav-item">
-            <a href="incidentRecord.php" class="nav-link">
+            <a href="incidentRecord" class="nav-link">
               <i class="nav-icon fas fa-clipboard"></i>
               <p>
                 Incident Record
@@ -459,7 +459,7 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
             </a>
           </li>
           <li class="nav-item">
-            <a href="report.php" class="nav-link">
+            <a href="report" class="nav-link">
               <i class="nav-icon fas fa-bookmark"></i>
               <p>
                 Reports
@@ -467,7 +467,7 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
             </a>
           </li>
           <li class="nav-item">
-            <a href="announcements.php" class="nav-link">
+            <a href="announcements" class="nav-link">
               <i class="nav-icon fas fa-bullhorn"></i>
               <p>
               Announcements
@@ -475,7 +475,7 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
             </a>
           </li>
           <li class="nav-item">
-            <a href="payments.php" class="nav-link">
+            <a href="payments" class="nav-link">
               <i class="nav-icon fas fa-money-bill-wave"></i>
               <p>
               Payments
@@ -483,7 +483,7 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
             </a>
           </li>
           <li class="nav-item">
-            <a href="settings.php" class="nav-link">
+            <a href="settings" class="nav-link">
               <i class="nav-icon fas fa-cog"></i>
               <p>
                 Settings
@@ -491,7 +491,7 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
             </a>
           </li>
           <li class="nav-item">
-            <a href="systemLog.php" class="nav-link">
+            <a href="systemLog" class="nav-link">
               <i class="nav-icon fas fa-history"></i>
               <p>
                 System Logs
@@ -499,7 +499,7 @@ $total_payment_amount  = (float)$row_payment_records['total_collected'];
             </a>
           </li>
           <li class="nav-item">
-            <a href="backupRestore.php" class="nav-link">
+            <a href="backupRestore" class="nav-link">
               <i class="nav-icon fas fa-database"></i>
               <p>
                 Backup/Restore
@@ -938,7 +938,7 @@ new Chart("donutChart", {
       $("#showOfficial").html('');
 
       $.ajax({
-          url: 'viewOfficialModal.php',
+          url: 'viewOfficialModal',
           type: 'POST',
           dataType: 'html',
           cache: false,

@@ -6,8 +6,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 
-include_once 'connection.php';
-session_start();
+require_once __DIR__ . '/session.php';
+require_once __DIR__ . '/connection.php';
 if(isset($_SESSION['user_id']) && $_SESSION['user_type']){
 
 
@@ -22,9 +22,7 @@ if(isset($_SESSION['user_id']) && $_SESSION['user_type']){
       </script>';
   
   } elseif ($account_type == 'secretary') {
-      echo '<script>
-          window.location.href="secretary/dashboard";
-      </script>';
+      
   
   } else {
       echo '<script>

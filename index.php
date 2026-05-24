@@ -271,7 +271,7 @@ $(document).ready(function () {
             allowOutsideClick: false,
             timer: 1800
           }).then(() => {
-            window.location.href = "./" + data + "/dashboard";
+            window.location.href = window.location.origin + "/dev/" + data + "/dashboard";
           });
           return;
         }
