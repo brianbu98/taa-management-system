@@ -8,7 +8,7 @@ require_once __DIR__ . '/../connection.php';
 
 /* 🔐 AUTH GUARD */
 if (!isset($_SESSION['user_id'], $_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
-    header("Location: ../login.php");
+    header("Location: /dev/");
     exit;
 }
 
@@ -45,7 +45,7 @@ if (!$row_user) {
     // Session exists but user record is missing (DB mismatch, deleted user, wrong DB)
     session_unset();
     session_destroy();
-    header("Location: ../login.php");
+    header("Location: /dev/");
     exit;
 }
 

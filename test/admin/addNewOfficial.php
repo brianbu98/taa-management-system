@@ -17,7 +17,7 @@ try{
     $last_name_user = $row_user['last_name'];
   }else{
     echo '<script>
-           window.location.href = "../login.php";
+           window.location.href = "../login";
          </script>';
    }
    if(isset($_POST['add_pwd_info'])){

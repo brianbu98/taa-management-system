@@ -3,7 +3,7 @@ require_once __DIR__ . '/../session.php';
 require_once __DIR__ . '/../connection.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'admin') {
-    header("Location: ../login.php");
+    header("Location: /dev/");
     exit;
 }
 

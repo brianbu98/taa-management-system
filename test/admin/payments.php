@@ -4,7 +4,7 @@ session_start();
 
 // --- SECURITY: Only admins can access ---
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'admin') {
-    header("Location: ../login.php");
+    header("Location: /dev/");
     exit;
 }
 

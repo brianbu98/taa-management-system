@@ -199,7 +199,7 @@ width: 100%;
             <a href="#" class="nav-link text-white rightBar" style="  border-bottom: 3px solid red;">HOME</a>
           </li>
           <li class="nav-item">
-            <a href="login.php" class="nav-link text-white rightBar"><i class="fas fa-user-alt"></i> LOGIN</a>
+            <a href="login" class="nav-link text-white rightBar"><i class="fas fa-user-alt"></i> LOGIN</a>
           </li>
       </ul>
     </div>
@@ -225,7 +225,7 @@ width: 100%;
         
           <br>
           <br>
-          <a href="login.php" class="btn btn-outline-info btn-lg px-3 text-white" style="font-weight: 900; border: 2px solid #fff">LOGIN</a>
+          <a href="login" class="btn btn-outline-info btn-lg px-3 text-white" style="font-weight: 900; border: 2px solid #fff">LOGIN</a>
       </div>
     </div>
 

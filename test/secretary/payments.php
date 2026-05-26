@@ -4,7 +4,7 @@ include_once '../connection.php';
 session_start();
 
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'secretary') {
-    header("Location: ../login.php");
+    header("Location: /dev/");
     exit;
 }
 
@@ -262,7 +262,7 @@ $res = $con->query("SELECT p.*, CONCAT(u.first_name, ' ', u.last_name) AS name F
                 <?php while($rw = $res->fetch_assoc()): ?>
                   <tr>
                     <td><?= htmlspecialchars($rw['id']) ?></td>
-                    <td><?= htmlspecialchars($rw['name'] ?? '—') ?></td>
+                    <td><?= htmlspecialchars($rw['name'] ?? 'ï¿½') ?></td>
                     <td>?<?= number_format($rw['amount'], 2) ?></td>
                     <td><?= htmlspecialchars($rw['method']) ?></td>
                     <td><?= htmlspecialchars($rw['reference_no']) ?></td>

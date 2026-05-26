@@ -155,7 +155,7 @@ $sql = "SELECT * FROM `taa_information`";
       <!-- Right navbar links -->
       <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto " >
           <li class="nav-item">
-            <a href="login.php" class="nav-link text-white rightBar" ><i class="fas fa-user-alt"></i> LOGIN</a>
+            <a href="login" class="nav-link text-white rightBar" ><i class="fas fa-user-alt"></i> LOGIN</a>
           </li>
       </ul>
     </div>

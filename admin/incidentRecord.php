@@ -6,7 +6,7 @@ session_start();
 
 /* CHECK SESSION FIRST */
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
-    header("Location: ../login.php");
+    header("Location: /dev/");
     exit();
 }
 
@@ -23,7 +23,7 @@ try{
 
     if(!$row_user){
         session_destroy();
-        header("Location: ../login.php");
+        header("Location: /dev/");
         exit();
     }
 

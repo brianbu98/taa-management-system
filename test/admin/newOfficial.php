@@ -36,7 +36,7 @@ while($row = $result->fetch_assoc()){
 
 }else{
  echo '<script>
-        window.location.href = "../login.php";
+        window.location.href = "../login";
       </script>';
 }
 

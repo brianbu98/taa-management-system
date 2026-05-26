@@ -191,7 +191,7 @@ $(document).ready(function(){
                                   showConfirmButton: false,
                                   timer: 2000,
                                 }).then(()=>{
-                                  window.location.href="login.php";
+                                  window.location.href="login";
                                 })
 
                               }

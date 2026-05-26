@@ -38,7 +38,7 @@ try{
 
   }else{
    echo '<script>
-          window.location.href = "../login.php";
+          window.location.href = "../login";
         </script>';
   }
 

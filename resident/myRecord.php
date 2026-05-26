@@ -58,7 +58,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 /* ------------------- Page Output ------------------- */
 
 if(!isset($_SESSION['user_id']) || !isset($_SESSION['user_type'])){
-    echo '<script>window.location.href = "../login.php";</script>';
+    echo '<script>window.location.href = "../login";</script>';
     exit;
 }
 

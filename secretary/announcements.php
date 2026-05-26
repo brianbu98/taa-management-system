@@ -5,7 +5,7 @@ session_start();
 
 try {
   if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'secretary') {
-    header("Location: ../login.php");
+    header("Location: /dev/");
     exit;
   }
 
@@ -416,7 +416,7 @@ Users
                         <?= $a['status'] ?>
                     </span>
                 </td>
-                <td><?= htmlspecialchars($a['posted_name'] ?? '—') ?></td>
+                <td><?= htmlspecialchars($a['posted_name'] ?? 'ï¿½') ?></td>
                 <td><?= date('M d, Y h:i A', strtotime($a['created_at'])) ?></td>
             </tr>
             <?php endwhile; ?>

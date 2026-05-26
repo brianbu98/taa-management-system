@@ -30,7 +30,7 @@ if(isset($_SESSION['user_id']) && isset($_SESSION['user_type']) && $_SESSION['us
 
 }else{
  echo '<script>
-        window.location.href = "../login.php";
+        window.location.href = "../login";
       </script>';
 }
 
