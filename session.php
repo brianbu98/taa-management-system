@@ -109,7 +109,7 @@ function redirect($path) {
    CHECK IF LOGGED IN
    ====================================================== */
 if (!in_array($current_page, $public_pages) && !isset($_SESSION['user_id'])) {
-    redirect('/');
+    redirect('/index.php');
 }
 
 /* ======================================================
@@ -152,7 +152,7 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 
 
     session_destroy();
 
-   redirect('/?expired=1');
+   redirect('/index.php?expired=1');
 }
 
 /* ======================================================
