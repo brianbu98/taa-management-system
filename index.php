@@ -241,7 +241,7 @@ $(document).ready(function () {
     e.preventDefault();
 
     $.ajax({
-      url: "loginForm.php",
+      url: "<?= $base_path ?>/loginForm",
       type: "POST",
       data: $(this).serialize(),
       success: function (data) {
