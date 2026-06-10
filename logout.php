@@ -38,7 +38,8 @@ unset($_SESSION['user_type']);
 session_unset();
 session_destroy();
 
-echo '<script>
-            window.location.href="login.php";
-        </script>';
+
+header('Location: ' . $base_path . '/');
+exit;
+
 ?>
