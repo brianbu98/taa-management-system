@@ -73,7 +73,7 @@ try {
                         group by date_added 
                         order by yyyy";
 
-=======
+
 
         $result_incident = $con->query($sql_incident);
 
@@ -142,7 +142,7 @@ try {
         // ------------------------------
         // ANNOUNCEMENTS (new)
         // ------------------------------
-<<<<<<< HEAD
+
        $sql_announcements = "
     SELECT a.*, CONCAT(u.first_name,' ',u.last_name) AS posted_name
     FROM announcements a
@@ -151,7 +151,7 @@ try {
     ORDER BY a.created_at DESC
     LIMIT 5
 ";
-=======
+
        $sql_announcements = "SELECT * FROM announcements ORDER BY id DESC LIMIT 5";
 
         $result_announcements = $con->query($sql_announcements) or die($con->error);
@@ -162,7 +162,7 @@ try {
    
 
     } else {
-        echo '<script>window.location.href = "../login.php";</script>';
+       redirect('/');
     }
 
 } catch(Exception $e){
@@ -257,7 +257,7 @@ try {
             <!-- Message End -->
           </a>         
           <div class="dropdown-divider"></div>
-          <a href="../logout.php" class="dropdown-item dropdown-footer">LOGOUT</a>
+          <a href="../logout" class="dropdown-item dropdown-footer">LOGOUT</a>
         </div>
       </li>
     </ul>
