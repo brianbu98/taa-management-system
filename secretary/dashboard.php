@@ -88,20 +88,6 @@ try {
         }
 
 
-
-        $result_incident = $con->query($sql_incident);
-
-        if($result_incident->num_rows > 0){
-            while ($row_incident = $result_incident->fetch_array()) { 
-                $year[]  = $row_incident['yyyy'];
-                $totalIncident[] = number_format($row_incident['comp']);
-            }
-        }else{
-            $year[]  = ['0000','1000'];
-            $totalIncident[] = ['100','200'];
-        }
-
-
         $sql_gender ="SELECT 
         COUNT(CASE WHEN gender = 'Male' THEN residence_information.residence_id END) as male,
         COUNT(CASE WHEN gender = 'Female' THEN residence_information.residence_id END) as female
@@ -143,7 +129,7 @@ try {
         // ANNOUNCEMENTS (new)
         // ------------------------------
 
-       $sql_announcements = "
+ $sql_announcements = "
     SELECT a.*, CONCAT(u.first_name,' ',u.last_name) AS posted_name
     FROM announcements a
     LEFT JOIN users u ON a.posted_by = u.id
@@ -152,7 +138,7 @@ try {
     LIMIT 5
 ";
 
-       $sql_announcements = "SELECT * FROM announcements ORDER BY id DESC LIMIT 5";
+$result_announcements = $con->query($sql_announcements) or die($con->error);
 
         $result_announcements = $con->query($sql_announcements) or die($con->error);
 
