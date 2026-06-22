@@ -237,7 +237,7 @@ try {
           <i class="far fa-user"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="myProfile.php" class="dropdown-item">
+          <a href="myProfile" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
               <?php 
@@ -300,7 +300,7 @@ $logoSrc = (!empty($image_path))
       <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href="dashboard.php" class="nav-link bg-indigo">
+            <a href="dashboard" class="nav-link bg-indigo">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -318,7 +318,7 @@ $logoSrc = (!empty($image_path))
             <ul class="nav nav-treeview">
              
               <li class="nav-item">
-                <a href="allOfficial.php" class="nav-link">
+                <a href="allOfficial" class="nav-link">
                   <i class="fas fa-circle nav-icon text-red"></i>
                   <p>List of Official</p>
                 </a>
@@ -337,19 +337,19 @@ $logoSrc = (!empty($image_path))
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="newResidence.php" class="nav-link ">
+                <a href="newResidence" class="nav-link ">
                   <i class="fas fa-circle nav-icon text-red"></i>
                   <p>New Residence</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="allResidence.php" class="nav-link ">
+                <a href="allResidence" class="nav-link ">
                   <i class="fas fa-circle nav-icon text-red"></i>
                   <p>All Residence</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="archiveResidence.php" class="nav-link ">
+                <a href="archiveResidence" class="nav-link ">
                   <i class="fas fa-circle nav-icon text-red"></i>
                   <p>Archive Residence</p>
                 </a>
@@ -369,7 +369,7 @@ $logoSrc = (!empty($image_path))
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="usersResident.php" class="nav-link ">
+                <a href="usersResident" class="nav-link ">
                   <i class="fas fa-circle nav-icon text-red"></i>
                   <p>Resident</p>
                 </a>
@@ -379,7 +379,7 @@ $logoSrc = (!empty($image_path))
           </li>
        
           <li class="nav-item">
-            <a href="incidentRecord.php" class="nav-link">
+            <a href="incidentRecord" class="nav-link">
               <i class="nav-icon fas fa-clipboard"></i>
               <p>
                 Incident Management
@@ -387,7 +387,7 @@ $logoSrc = (!empty($image_path))
             </a>
           </li>
           <li class="nav-item">
-            <a href="report.php" class="nav-link">
+            <a href="report" class="nav-link">
               <i class="nav-icon fas fa-bookmark"></i>
               <p>
                 Reports
@@ -396,7 +396,7 @@ $logoSrc = (!empty($image_path))
           </li>
          
           <li class="nav-item">
-            <a href="announcements.php" class="nav-link">
+            <a href="announcements" class="nav-link">
               <i class="nav-icon fas fa-history"></i>
               <p>
                Announcements
@@ -404,7 +404,7 @@ $logoSrc = (!empty($image_path))
             </a>
           </li>
           <li class="nav-item">
-            <a href="payments.php" class="nav-link">
+            <a href="payments" class="nav-link">
               <i class="nav-icon fas fa-money-bill-wave"></i>
               <p>
               Payments
@@ -834,7 +834,7 @@ new Chart("donutChart", {
       $("#showOfficial").html('');
 
       $.ajax({
-          url: 'viewOfficialModal.php',
+          url: 'viewOfficialModal',
           type: 'POST',
           dataType: 'html',
           cache: false,

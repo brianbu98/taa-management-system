@@ -40,9 +40,7 @@ try{
 
 
   }else{
-   echo '<script>
-          window.location.href = "../login.php";
-        </script>';
+   redirect('/');
   }
 
 }catch(Exception $e){
@@ -305,7 +303,7 @@ width: 100%;
             <a href="#" class="nav-link text-white rightBar" style="  border-bottom: 3px solid red;"><i class="fas fa-home"></i> DASHBOARD</a>
           </li>
           <li class="nav-item">
-            <a href="profile.php" class="nav-link text-white rightBar" style="text-transform:uppercase;"><i class="fas fa-user-alt"></i> <?= $last_name_user ?>-<?= $user_id ?></a>
+            <a href="profile" class="nav-link text-white rightBar" style="text-transform:uppercase;"><i class="fas fa-user-alt"></i> <?= $last_name_user ?>-<?= $user_id ?></a>
           </li>
           <li class="nav-item">
             <a href="../logout" class="nav-link text-white rightBar" style="text-transform:uppercase;"><i class="fas fa-sign-out-alt"></i> Logout</a>
@@ -339,35 +337,35 @@ width: 100%;
         
           <ul>
               <li class="mx-5">
-<a href="myInfo.php" class="round green">
+<a href="myInfo" class="round green">
 <i class="fas fa-user" style="font-size: 50px;"></i>
 <span class="round"><br> MY INFO</span>
 </a>
 </li>
 
 <li class="mx-5">
-<a href="myAnnouncement.php" class="round red">
+<a href="myAnnouncement" class="round red">
 <i class="fas fa-scroll" style="font-size: 50px;"></i>
 <span class="round"><br> ANNNOUNCEMENT</span>
 </a>
 </li>
 
 <li class="mx-5">
-<a href="myRecord.php" class="round yellow">
+<a href="myRecord" class="round yellow">
 <i class="fas fa-book-open" style="font-size: 50px;"></i>
 <span class="round"><br> INCIDENT</span>
 </a>
 </li>
 
 <li class="mx-5">
-<a href="myPayment.php" class="round gray">
+<a href="myPayment" class="round gray">
 <i class="fas fa-money-bill" style="font-size: 50px;"></i>
 <span class="round"><br> PAYMENT</span>
 </a>
 </li>
 
 <li class="mx-5">
-<a href="myOfficials.php" class="round green">
+<a href="myOfficials" class="round green">
 <i class="fas fa-user-tie" style="font-size: 50px;"></i>
 <span class="round"><br> OFFICIALS</span>
 </a>
